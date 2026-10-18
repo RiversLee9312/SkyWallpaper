@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <exclude domain="sharedpref" path="sky.xml" />
+    <exclude domain="device_sharedpref" path="sky.xml" />
+    <exclude domain="device_file" path="wallpapers/" />
+</full-backup-content>
