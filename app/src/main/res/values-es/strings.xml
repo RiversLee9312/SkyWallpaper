@@ -21,7 +21,7 @@
     <string name="gallery_description">Vista previa de %1$s</string>
     <string name="current_sky">Actual</string>
     <string name="preview_badge">Vista previa</string>
-    <string name="view_wallpaper">Previsualizar fondo</string>
+    <string name="view_wallpaper">Vista previa a pantalla completa</string>
     <string name="enable_wallpaper">Establecer fondo</string>
     <string name="preview_status">Vista previa: %1$s · Actual: %2$s</string>
     <string name="today">Amanecer y atardecer</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">Se usa para calcular el amanecer, el atardecer y los cambios de fondo.</string>
     <string name="get_gps">Usar ubicación del dispositivo</string>
     <string name="manual_coordinates">Introducir coordenadas</string>
-    <string name="fixed_using">Fijo: %1$s</string>
-    <string name="next_sky">Siguiente: %1$s · %2$s</string>
-    <string name="no_transition">No habrá cambios en las próximas 48 horas</string>
     <string name="polar_notice">Hoy no hay amanecer ni atardecer en esta ubicación.</string>
-    <string name="stale_location">La ubicación lleva más de un día sin actualizarse. Actualízala si te has desplazado.</string>
     <string name="follow_sun">Cambio automático</string>
     <string name="follow_description">Cambia según el sol en la ubicación guardada</string>
     <string name="fix_preview">Mantener %1$s</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">Vista previa del degradado</string>
     <string name="gradient_geometry">Geometría</string>
     <string name="done">Listo</string>
+    <string name="enter_fullscreen">Pantalla completa</string>
+    <string name="exit_fullscreen">Salir de pantalla completa</string>
+    <string name="preview_time">Hora de vista previa</string>
 </resources>

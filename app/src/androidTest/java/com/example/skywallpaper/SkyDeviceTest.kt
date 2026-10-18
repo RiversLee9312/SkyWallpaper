@@ -6,6 +6,8 @@ import android.graphics.drawable.AdaptiveIconDrawable
 import androidx.activity.BackEventCompat
 import androidx.compose.ui.test.*
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
@@ -42,26 +44,138 @@ class SkyDeviceTest {
         edit.commit()
     }
 
-    @Test fun automaticPreviewUsesSolarPositionAndGalleryOnlyChangesPreview() {
+    @Test fun previewTimeChangesOnlyThePreviewAndRestoresAcrossRecreation() {
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).performClick()
         val phase = SolarClock.phase(Instant.now(), GeoPoint(39.90, 116.40))
         compose.onNodeWithContentDescription(context.getString(R.string.image_description, context.getString(phase.titleRes))).assertExists()
-        val other = SkyPhase.entries.first { it != phase }
-        compose.onNodeWithContentDescription(context.getString(R.string.gallery_description, context.getString(other.titleRes))).performClick().assertIsSelected()
-        compose.onNodeWithContentDescription(context.getString(R.string.image_description, context.getString(other.titleRes))).assertExists()
+        compose.onNodeWithText(context.getString(R.string.event_sunrise)).performScrollTo().performClick()
+        compose.onNodeWithContentDescription(context.getString(R.string.image_description, context.getString(R.string.phase_dawn))).assertExists()
+        val chosen = compose.onNodeWithTag("preview-selected-time").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.Text]
+        scenario?.recreate()
+        Assert.assertEquals(chosen, compose.onNodeWithTag("preview-selected-time").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.Text])
         compose.onNodeWithContentDescription(context.getString(R.string.reset_preview)).performClick()
-        compose.onNodeWithContentDescription(context.getString(R.string.gallery_description, context.getString(phase.titleRes))).assertIsSelected()
+        compose.onNodeWithContentDescription(context.getString(R.string.image_description, context.getString(phase.titleRes))).assertExists()
         Assert.assertTrue(SkyRepository(context).automatic)
-        compose.onNodeWithText(context.getString(R.string.utc_label)).performScrollTo().assertIsDisplayed()
+        Assert.assertEquals(SkyPhase.DAY, SkyRepository(context).manualPhase)
+    }
+
+    @Test fun homeHasTwoActionsAndFullscreenHidesBackAndTimeCardTogether() {
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.enable_wallpaper)).assertIsDisplayed()
+        compose.onNodeWithTag("preview-time-card").assertDoesNotExist()
+        compose.onNodeWithText(context.getString(R.string.today)).assertDoesNotExist()
+        SkyPhase.entries.forEach {
+            compose.onNodeWithContentDescription(context.getString(R.string.gallery_description, context.getString(it.titleRes))).assertIsDisplayed()
+        }
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).performClick()
+        val bounds = compose.onNodeWithContentDescription(context.getString(R.string.image_description,
+            context.getString(SolarClock.phase(Instant.now(), GeoPoint(39.90, 116.40)).titleRes))).fetchSemanticsNode().boundsInRoot
+        Assert.assertEquals(context.resources.displayMetrics.widthPixels.toFloat(), bounds.width, 1f)
+        Assert.assertEquals(context.resources.displayMetrics.heightPixels.toFloat(), bounds.height, 1f)
+        compose.onNodeWithTag("preview-time-card").assertIsDisplayed()
+        compose.onNodeWithContentDescription(context.getString(R.string.back)).assertIsDisplayed()
+        compose.onNodeWithContentDescription(context.getString(R.string.enter_fullscreen)).performClick()
+        compose.onNodeWithTag("preview-time-card").assertDoesNotExist()
+        compose.onNodeWithContentDescription(context.getString(R.string.back)).assertDoesNotExist()
+        compose.onNodeWithContentDescription(context.getString(R.string.exit_fullscreen)).assertIsDisplayed()
+        scenario?.recreate()
+        compose.onNodeWithContentDescription(context.getString(R.string.exit_fullscreen)).assertIsDisplayed()
+        compose.onNodeWithTag("preview-time-card").assertDoesNotExist()
+        scenario?.onActivity {
+            val insets = androidx.core.view.ViewCompat.getRootWindowInsets(it.window.decorView)!!
+            Assert.assertFalse(insets.isVisible(androidx.core.view.WindowInsetsCompat.Type.statusBars()))
+            Assert.assertFalse(insets.isVisible(androidx.core.view.WindowInsetsCompat.Type.navigationBars()))
+        }
+        compose.onNodeWithContentDescription(context.getString(R.string.exit_fullscreen)).performClick()
+        compose.onNodeWithTag("preview-time-card").assertIsDisplayed()
+        compose.onNodeWithContentDescription(context.getString(R.string.back)).assertIsDisplayed()
+        compose.onNodeWithContentDescription(context.getString(R.string.enter_fullscreen)).performClick()
+        androidx.test.espresso.Espresso.pressBack()
+        compose.onNodeWithTag("preview-time-card").assertIsDisplayed()
+        compose.onNodeWithContentDescription(context.getString(R.string.back)).performClick()
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).assertIsDisplayed()
+        compose.waitUntil(5_000) {
+            var visible = false
+            scenario?.onActivity {
+                val insets = androidx.core.view.ViewCompat.getRootWindowInsets(it.window.decorView)!!
+                visible = insets.isVisible(androidx.core.view.WindowInsetsCompat.Type.statusBars()) &&
+                    insets.isVisible(androidx.core.view.WindowInsetsCompat.Type.navigationBars())
+            }
+            visible
+        }
+    }
+
+    @Test fun fullScreenPreviewStartsWithThePeriodSelectedInTheHomeGallery() {
+        compose.onNodeWithContentDescription(context.getString(R.string.gallery_description, context.getString(R.string.phase_dawn))).performClick()
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).performScrollTo().performClick()
+        compose.onNodeWithContentDescription(context.getString(R.string.image_description, context.getString(R.string.phase_dawn))).assertExists()
+        compose.onNodeWithContentDescription(context.getString(R.string.reset_preview)).performClick()
+        compose.onNodeWithContentDescription(context.getString(R.string.back)).performClick()
+        compose.onNodeWithText(context.getString(R.string.current_sky)).assertExists()
+        Assert.assertTrue(SkyRepository(context).automatic)
+    }
+
+    @Test fun previewSliderRendersSavedNightGradientWithoutChangingWallpaperSettings() {
+        val store = SkyRepository(context).wallpapers
+        val night = SkyGradient(listOf(GradientStop(0xFF123456.toInt(), .1f), GradientStop(0xFFAC7654.toInt(), .8f)),
+            start = GradientPoint(.1f, .8f), end = GradientPoint(.9f, .2f))
+        store.setMode(WallpaperMode.GRADIENT)
+        store.saveGradient(SkyPhase.NIGHT, night)
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).performClick()
+        compose.onNodeWithTag("preview-time-slider").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.SetProgress) { it(0f) }
+        val description = context.getString(R.string.image_description, context.getString(R.string.phase_night))
+        compose.onNodeWithContentDescription(description).assertExists()
+        compose.onNodeWithContentDescription(context.getString(R.string.enter_fullscreen)).performClick()
+        val bitmap = compose.onNodeWithContentDescription(description).captureToImage()
+        val x = bitmap.width / 2; val y = bitmap.height / 2
+        val actual = bitmap.toPixelMap()[x, y].toArgb()
+        val reference = android.graphics.Bitmap.createBitmap(bitmap.width, bitmap.height, android.graphics.Bitmap.Config.ARGB_8888)
+        android.graphics.Canvas(reference).drawRect(0f, 0f, bitmap.width.toFloat(), bitmap.height.toFloat(),
+            GradientRenderer.paint(GradientType.LINEAR, GradientFrame.from(night), bitmap.width.toFloat(), bitmap.height.toFloat()))
+        val expected = reference.getPixel(x, y)
+        reference.recycle()
+        for (shift in listOf(0, 8, 16)) Assert.assertTrue(kotlin.math.abs((actual ushr shift and 255) - (expected ushr shift and 255)) <= 2)
+        Assert.assertTrue(SkyRepository(context).automatic)
+        Assert.assertEquals(SkyPhase.DAY, SkyRepository(context).manualPhase)
+        Assert.assertEquals(night, store.gradient(SkyPhase.NIGHT))
+    }
+
+    @Test fun previewWithoutLocationKeepsPresetsAndLocationEntryAvailable() {
+        SkyPreferenceStorage.open(context).edit().remove("latitude").remove("longitude").commit()
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).performClick()
+        compose.onNodeWithContentDescription(context.getString(R.string.gallery_description, context.getString(R.string.phase_dusk))).performClick()
+        compose.onNodeWithContentDescription(context.getString(R.string.image_description, context.getString(R.string.phase_dusk))).assertExists()
+        compose.onNodeWithText(context.getString(R.string.manual_coordinates)).performScrollTo().performClick()
+        compose.onNodeWithText(context.getString(R.string.latitude)).assertExists()
+        compose.onNodeWithText(context.getString(R.string.cancel)).performClick()
+        Assert.assertNull(SkyRepository(context).point)
+        Assert.assertEquals(SkyPhase.DAY, SkyRepository(context).manualPhase)
+    }
+
+    @Test fun previewAtPoleKeepsTimeScrubbingWithoutInventingSunriseOrSunset() {
+        val point = GeoPoint(90.0, 0.0)
+        SkyRepository(context).savePoint(point, manual = true)
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).performClick()
+        compose.onNodeWithTag("preview-time-slider").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.SetProgress) { it(43200f) }
+        compose.onNodeWithText(context.getString(R.string.polar_notice)).performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.event_sunrise)).assertDoesNotExist()
+        compose.onNodeWithText(context.getString(R.string.event_sunset)).assertDoesNotExist()
+        compose.onNodeWithContentDescription(context.getString(R.string.enter_fullscreen)).performClick()
+        compose.onNodeWithContentDescription(context.getString(R.string.exit_fullscreen)).assertIsDisplayed()
     }
 
     @Test fun fixedWallpaperChoicePersistsAcrossActivityRecreation() {
-        compose.onNodeWithContentDescription(context.getString(R.string.gallery_description, context.getString(R.string.phase_dawn))).performClick()
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).performClick()
+        compose.onNodeWithText(context.getString(R.string.event_sunrise)).performScrollTo().performClick()
+        compose.onNodeWithContentDescription(context.getString(R.string.back)).performClick()
         compose.onNodeWithContentDescription(context.getString(R.string.settings)).performClick()
         compose.onNodeWithText(context.getString(R.string.fix_preview, context.getString(R.string.phase_dawn))).performClick()
         Assert.assertFalse(SkyRepository(context).automatic)
         Assert.assertEquals(SkyPhase.DAWN, SkyRepository(context).manualPhase)
         scenario?.recreate()
-        compose.onNodeWithContentDescription(context.getString(R.string.image_description, context.getString(R.string.phase_dawn))).assertExists()
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.enable_wallpaper)).assertIsDisplayed()
+        Assert.assertEquals(SkyPhase.DAWN, SkyRepository(context).manualPhase)
     }
 
     @Test fun manifestRequestsGpsAndBackgroundWithApproximateFallback() {
@@ -71,7 +185,7 @@ class SkyDeviceTest {
         Assert.assertTrue(permissions.contains("android.permission.ACCESS_FINE_LOCATION"))
     }
 
-    @Test fun settingsSwitchWorksFromTheWholeRowAndBackReturnsToGallery() {
+    @Test fun settingsSwitchWorksFromTheWholeRowAndBackReturnsToHome() {
         compose.onNodeWithContentDescription(context.getString(R.string.settings)).performClick()
         compose.onNodeWithText(context.getString(R.string.follow_sun)).assertIsOn().performClick()
         Assert.assertFalse(SkyRepository(context).automatic)
@@ -80,12 +194,13 @@ class SkyDeviceTest {
         compose.onNodeWithText(context.getString(R.string.follow_sun)).assertIsOff().performClick()
         Assert.assertTrue(SkyRepository(context).automatic)
         compose.onNodeWithContentDescription(context.getString(R.string.back)).performClick()
-        compose.onNodeWithContentDescription(context.getString(R.string.gallery_description, context.getString(R.string.phase_dawn))).assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).assertIsDisplayed()
     }
 
     @Test fun predictiveBackPreviewsHomeCanCancelAndThenCommitWithoutLosingPreview() {
-        val preview = context.getString(R.string.gallery_description, context.getString(R.string.phase_dusk))
-        compose.onNodeWithContentDescription(preview).performClick()
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).performClick()
+        compose.onNodeWithText(context.getString(R.string.event_sunset)).performScrollTo().performClick()
+        compose.onNodeWithContentDescription(context.getString(R.string.back)).performClick()
         compose.onNodeWithContentDescription(context.getString(R.string.settings)).performClick()
         compose.waitForIdle()
         fun startAndProgress() {
@@ -99,15 +214,15 @@ class SkyDeviceTest {
             compose.waitForIdle()
         }
         startAndProgress()
-        compose.onNodeWithContentDescription(preview).assertExists()
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).assertExists()
         scenario?.onActivity { it.onBackPressedDispatcher.dispatchOnBackCancelled() }
         compose.waitForIdle()
         compose.onNodeWithText(context.getString(R.string.follow_sun)).assertIsDisplayed()
-        compose.onNodeWithContentDescription(preview).assertDoesNotExist()
+        compose.onNodeWithText(context.getString(R.string.fix_preview, context.getString(R.string.phase_dusk))).assertIsDisplayed()
         startAndProgress()
         scenario?.onActivity { it.onBackPressedDispatcher.onBackPressed() }
         compose.waitForIdle()
-        compose.onNodeWithContentDescription(context.getString(R.string.image_description, context.getString(R.string.phase_dusk))).assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).assertIsDisplayed()
         compose.onNodeWithContentDescription(context.getString(R.string.back)).assertDoesNotExist()
         Assert.assertTrue(SkyRepository(context).automatic)
     }
@@ -140,7 +255,6 @@ class SkyDeviceTest {
             val localized = context.createConfigurationContext(configuration)
             val phase = localized.getString(R.string.phase_day)
             Assert.assertTrue(localized.getString(R.string.fix_preview, phase).contains(phase))
-            Assert.assertTrue(localized.getString(R.string.preview_status, phase, phase).contains(phase))
             Assert.assertTrue(localized.getString(R.string.permission_format, "test", "precision").contains("test"))
             Assert.assertTrue(localized.getString(R.string.updated_format, "10-05 00:28").contains("10-05 00:28"))
             Assert.assertEquals("42%", localized.getString(R.string.percent_format, 42).let { value ->
@@ -317,11 +431,12 @@ class SkyDeviceTest {
     }
 
     @Test fun changingPhoneTimezoneKeepsUtcSunriseUnchanged() {
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).performClick()
         val originalZone = java.util.TimeZone.getDefault().id
         val now = Instant.now()
         val sunrise = SolarClock.events(now, GeoPoint(39.90, 116.40)).first { it.type == SolarEventType.SUNRISE }
         val utc = java.time.ZoneOffset.UTC
-        val pattern = if (sunrise.instant.atOffset(utc).toLocalDate() == now.atOffset(utc).toLocalDate()) "HH:mm" else "MM-dd HH:mm"
+        val pattern = "MM-dd HH:mm"
         val time = java.time.format.DateTimeFormatter.ofPattern(pattern).withZone(utc).format(sunrise.instant)
         fun setZone(zone: String) {
             val command = InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand("cmd alarm set-timezone $zone")

@@ -21,7 +21,7 @@
     <string name="gallery_description">Aperçu de %1$s</string>
     <string name="current_sky">Actuel</string>
     <string name="preview_badge">Aperçu</string>
-    <string name="view_wallpaper">Aperçu du fond d’écran</string>
+    <string name="view_wallpaper">Aperçu en plein écran</string>
     <string name="enable_wallpaper">Définir le fond d’écran</string>
     <string name="preview_status">Aperçu : %1$s · Actuel : %2$s</string>
     <string name="today">Lever et coucher du soleil</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">Sert à calculer le lever et le coucher du soleil ainsi que les changements de fond d’écran.</string>
     <string name="get_gps">Utiliser la position de l’appareil</string>
     <string name="manual_coordinates">Saisir des coordonnées</string>
-    <string name="fixed_using">Fixe : %1$s</string>
-    <string name="next_sky">Ensuite : %1$s · %2$s</string>
-    <string name="no_transition">Aucun changement dans les prochaines 48 heures</string>
     <string name="polar_notice">Il n’y a ni lever ni coucher de soleil à cet endroit aujourd’hui.</string>
-    <string name="stale_location">La position n’a pas été actualisée depuis plus d’un jour. Actualisez-la si vous avez bougé.</string>
     <string name="follow_sun">Changement automatique</string>
     <string name="follow_description">Change selon le soleil à la position enregistrée</string>
     <string name="fix_preview">Garder %1$s</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">Aperçu du dégradé</string>
     <string name="gradient_geometry">Géométrie</string>
     <string name="done">Terminé</string>
+    <string name="enter_fullscreen">Plein écran</string>
+    <string name="exit_fullscreen">Quitter le plein écran</string>
+    <string name="preview_time">Heure de l’aperçu</string>
 </resources>

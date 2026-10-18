@@ -21,7 +21,7 @@
     <string name="gallery_description">预览%1$s</string>
     <string name="current_sky">当前</string>
     <string name="preview_badge">壁纸预览</string>
-    <string name="view_wallpaper">预览壁纸</string>
+    <string name="view_wallpaper">全屏预览</string>
     <string name="enable_wallpaper">设为壁纸</string>
     <string name="preview_status">预览：%1$s · 当前：%2$s</string>
     <string name="today">日出日落</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">用于计算日出、日落和壁纸切换时间。</string>
     <string name="get_gps">使用设备位置</string>
     <string name="manual_coordinates">输入经纬度</string>
-    <string name="fixed_using">固定：%1$s</string>
-    <string name="next_sky">下次切换：%1$s · %2$s</string>
-    <string name="no_transition">未来 48 小时无时段切换</string>
     <string name="polar_notice">此位置今天没有日出或日落。</string>
-    <string name="stale_location">位置已超过一天未更新，移动后请刷新。</string>
     <string name="follow_sun">自动切换</string>
     <string name="follow_description">根据所设位置的日照切换壁纸</string>
     <string name="fix_preview">固定为%1$s</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">渐变预览</string>
     <string name="gradient_geometry">位置</string>
     <string name="done">完成</string>
+    <string name="enter_fullscreen">全屏</string>
+    <string name="exit_fullscreen">退出全屏</string>
+    <string name="preview_time">预览时间</string>
 </resources>

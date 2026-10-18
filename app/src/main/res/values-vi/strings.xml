@@ -21,7 +21,7 @@
     <string name="gallery_description">Xem trước %1$s</string>
     <string name="current_sky">Hiện tại</string>
     <string name="preview_badge">Xem trước</string>
-    <string name="view_wallpaper">Xem trước hình nền</string>
+    <string name="view_wallpaper">Xem trước toàn màn hình</string>
     <string name="enable_wallpaper">Đặt hình nền</string>
     <string name="preview_status">Xem trước: %1$s · Hiện tại: %2$s</string>
     <string name="today">Mặt trời mọc và lặn</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">Dùng để tính giờ mặt trời mọc, lặn và đổi hình nền.</string>
     <string name="get_gps">Dùng vị trí thiết bị</string>
     <string name="manual_coordinates">Nhập tọa độ</string>
-    <string name="fixed_using">Cố định: %1$s</string>
-    <string name="next_sky">Tiếp theo: %1$s · %2$s</string>
-    <string name="no_transition">Không có chuyển đổi trong 48 giờ tới</string>
     <string name="polar_notice">Hôm nay không có mặt trời mọc hoặc lặn tại vị trí này.</string>
-    <string name="stale_location">Vị trí đã quá một ngày chưa cập nhật. Hãy làm mới nếu bạn đã di chuyển.</string>
     <string name="follow_sun">Tự động chuyển đổi</string>
     <string name="follow_description">Thay đổi theo mặt trời tại vị trí đã lưu</string>
     <string name="fix_preview">Giữ %1$s</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">Xem trước dải màu</string>
     <string name="gradient_geometry">Vị trí</string>
     <string name="done">Xong</string>
+    <string name="enter_fullscreen">Toàn màn hình</string>
+    <string name="exit_fullscreen">Thoát toàn màn hình</string>
+    <string name="preview_time">Thời gian xem trước</string>
 </resources>

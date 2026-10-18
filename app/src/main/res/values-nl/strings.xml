@@ -21,7 +21,7 @@
     <string name="gallery_description">Voorbeeld %1$s</string>
     <string name="current_sky">Huidig</string>
     <string name="preview_badge">Voorbeeld</string>
-    <string name="view_wallpaper">Achtergrond bekijken</string>
+    <string name="view_wallpaper">Voorbeeld op volledig scherm</string>
     <string name="enable_wallpaper">Achtergrond instellen</string>
     <string name="preview_status">Voorbeeld: %1$s · Huidig: %2$s</string>
     <string name="today">Zonsopgang en zonsondergang</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">Wordt gebruikt om zonsopgang, zonsondergang en achtergrondwisselingen te berekenen.</string>
     <string name="get_gps">Locatie van apparaat gebruiken</string>
     <string name="manual_coordinates">Coördinaten invoeren</string>
-    <string name="fixed_using">Vast: %1$s</string>
-    <string name="next_sky">Volgende: %1$s · %2$s</string>
-    <string name="no_transition">Geen overgang in de komende 48 uur</string>
     <string name="polar_notice">Geen zonsopgang of zonsondergang op deze locatie vandaag.</string>
-    <string name="stale_location">De locatie is meer dan een dag oud. Werk deze bij als je bent verhuisd.</string>
     <string name="follow_sun">Automatisch wisselen</string>
     <string name="follow_description">Wisselen op basis van de zon op je opgeslagen locatie</string>
     <string name="fix_preview">Behoud %1$s</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">Voorbeeld van kleurverloop</string>
     <string name="gradient_geometry">Geometrie</string>
     <string name="done">Klaar</string>
+    <string name="enter_fullscreen">Volledig scherm</string>
+    <string name="exit_fullscreen">Volledig scherm afsluiten</string>
+    <string name="preview_time">Voorbeeldtijd</string>
 </resources>

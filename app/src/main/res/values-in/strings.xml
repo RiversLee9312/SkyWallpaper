@@ -21,7 +21,7 @@
     <string name="gallery_description">Pratinjau %1$s</string>
     <string name="current_sky">Saat ini</string>
     <string name="preview_badge">Pratinjau</string>
-    <string name="view_wallpaper">Pratinjau wallpaper</string>
+    <string name="view_wallpaper">Pratinjau layar penuh</string>
     <string name="enable_wallpaper">Atur wallpaper</string>
     <string name="preview_status">Pratinjau: %1$s · Saat ini: %2$s</string>
     <string name="today">Matahari terbit dan terbenam</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">Digunakan untuk menghitung waktu matahari terbit, terbenam, dan pergantian wallpaper.</string>
     <string name="get_gps">Gunakan lokasi perangkat</string>
     <string name="manual_coordinates">Masukkan koordinat</string>
-    <string name="fixed_using">Tetap: %1$s</string>
-    <string name="next_sky">Berikutnya: %1$s · %2$s</string>
-    <string name="no_transition">Tidak ada pergantian dalam 48 jam ke depan</string>
     <string name="polar_notice">Tidak ada matahari terbit atau terbenam di lokasi ini hari ini.</string>
-    <string name="stale_location">Lokasi belum diperbarui selama lebih dari satu hari. Perbarui jika berpindah.</string>
     <string name="follow_sun">Pergantian otomatis</string>
     <string name="follow_description">Berganti mengikuti matahari di lokasi tersimpan</string>
     <string name="fix_preview">Pertahankan %1$s</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">Pratinjau gradien</string>
     <string name="gradient_geometry">Geometri</string>
     <string name="done">Selesai</string>
+    <string name="enter_fullscreen">Layar penuh</string>
+    <string name="exit_fullscreen">Keluar dari layar penuh</string>
+    <string name="preview_time">Waktu pratinjau</string>
 </resources>

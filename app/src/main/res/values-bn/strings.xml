@@ -21,7 +21,7 @@
     <string name="gallery_description">প্রিভিউ %1$s</string>
     <string name="current_sky">বর্তমান</string>
     <string name="preview_badge">প্রিভিউ</string>
-    <string name="view_wallpaper">ওয়ালপেপার প্রিভিউ</string>
+    <string name="view_wallpaper">পূর্ণ পর্দায় প্রিভিউ</string>
     <string name="enable_wallpaper">ওয়ালপেপার সেট করুন</string>
     <string name="preview_status">প্রিভিউ: %1$s · বর্তমান: %2$s</string>
     <string name="today">সূর্যোদয় ও সূর্যাস্ত</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">সূর্যোদয়, সূর্যাস্ত ও ওয়ালপেপার পরিবর্তনের সময় হিসাব করতে ব্যবহৃত হয়।</string>
     <string name="get_gps">ডিভাইসের অবস্থান ব্যবহার করুন</string>
     <string name="manual_coordinates">স্থানাঙ্ক লিখুন</string>
-    <string name="fixed_using">স্থির: %1$s</string>
-    <string name="next_sky">পরবর্তী: %1$s · %2$s</string>
-    <string name="no_transition">আগামী ৪৮ ঘণ্টায় কোনো পরিবর্তন নেই</string>
     <string name="polar_notice">আজ এই অবস্থানে সূর্যোদয় বা সূর্যাস্ত হয় না।</string>
-    <string name="stale_location">অবস্থান এক দিনের বেশি পুরোনো। স্থান বদলালে এটি রিফ্রেশ করুন।</string>
     <string name="follow_sun">স্বয়ংক্রিয় পরিবর্তন</string>
     <string name="follow_description">সংরক্ষিত অবস্থানে সূর্যের অবস্থান অনুযায়ী পরিবর্তন করুন</string>
     <string name="fix_preview">%1$s রাখুন</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">গ্রেডিয়েন্ট প্রিভিউ</string>
     <string name="gradient_geometry">জ্যামিতি</string>
     <string name="done">সম্পন্ন</string>
+    <string name="enter_fullscreen">পূর্ণ পর্দা</string>
+    <string name="exit_fullscreen">পূর্ণ পর্দা থেকে বের হন</string>
+    <string name="preview_time">প্রিভিউয়ের সময়</string>
 </resources>

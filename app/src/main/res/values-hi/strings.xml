@@ -21,7 +21,7 @@
     <string name="gallery_description">%1$s का पूर्वावलोकन</string>
     <string name="current_sky">वर्तमान</string>
     <string name="preview_badge">पूर्वावलोकन</string>
-    <string name="view_wallpaper">वॉलपेपर का पूर्वावलोकन</string>
+    <string name="view_wallpaper">पूर्ण स्क्रीन पूर्वावलोकन</string>
     <string name="enable_wallpaper">वॉलपेपर सेट करें</string>
     <string name="preview_status">पूर्वावलोकन: %1$s · वर्तमान: %2$s</string>
     <string name="today">सूर्योदय और सूर्यास्त</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">सूर्योदय, सूर्यास्त और वॉलपेपर बदलने का समय निकालने के लिए उपयोग किया जाता है।</string>
     <string name="get_gps">डिवाइस का स्थान इस्तेमाल करें</string>
     <string name="manual_coordinates">निर्देशांक दर्ज करें</string>
-    <string name="fixed_using">स्थिर: %1$s</string>
-    <string name="next_sky">अगला: %1$s · %2$s</string>
-    <string name="no_transition">अगले 48 घंटों में कोई बदलाव नहीं</string>
     <string name="polar_notice">इस स्थान पर आज सूर्योदय या सूर्यास्त नहीं है।</string>
-    <string name="stale_location">स्थान एक दिन से अधिक पुराना है। स्थान बदलने पर इसे अपडेट करें।</string>
     <string name="follow_sun">स्वचालित बदलाव</string>
     <string name="follow_description">सहेजे गए स्थान पर सूरज के अनुसार बदलाव</string>
     <string name="fix_preview">%1$s रखें</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">ग्रेडिएंट पूर्वावलोकन</string>
     <string name="gradient_geometry">ज्यामिति</string>
     <string name="done">पूरा</string>
+    <string name="enter_fullscreen">फ़ुल स्क्रीन</string>
+    <string name="exit_fullscreen">फ़ुल स्क्रीन से बाहर निकलें</string>
+    <string name="preview_time">पूर्वावलोकन समय</string>
 </resources>

@@ -21,7 +21,7 @@
     <string name="gallery_description">معاينة %1$s</string>
     <string name="current_sky">الحالي</string>
     <string name="preview_badge">معاينة</string>
-    <string name="view_wallpaper">معاينة الخلفية</string>
+    <string name="view_wallpaper">معاينة بملء الشاشة</string>
     <string name="enable_wallpaper">تعيين الخلفية</string>
     <string name="preview_status">معاينة: %1$s · الحالي: %2$s</string>
     <string name="today">الشروق والغروب</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">يُستخدم الموقع لحساب الشروق والغروب وتغييرات الخلفية.</string>
     <string name="get_gps">استخدام موقع الجهاز</string>
     <string name="manual_coordinates">إدخال الإحداثيات</string>
-    <string name="fixed_using">ثابت: %1$s</string>
-    <string name="next_sky">التالي: %1$s · %2$s</string>
-    <string name="no_transition">لا يوجد تغيير خلال الساعات الـ 48 القادمة</string>
     <string name="polar_notice">لا يوجد شروق أو غروب في هذا الموقع اليوم.</string>
-    <string name="stale_location">مرّ أكثر من يوم على تحديث الموقع. حدّثه إذا انتقلت.</string>
     <string name="follow_sun">التبديل التلقائي</string>
     <string name="follow_description">التبديل حسب الشمس في موقعك المحفوظ</string>
     <string name="fix_preview">تثبيت %1$s</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">معاينة التدرج اللوني</string>
     <string name="gradient_geometry">الهندسة</string>
     <string name="done">تم</string>
+    <string name="enter_fullscreen">ملء الشاشة</string>
+    <string name="exit_fullscreen">الخروج من وضع ملء الشاشة</string>
+    <string name="preview_time">وقت المعاينة</string>
 </resources>

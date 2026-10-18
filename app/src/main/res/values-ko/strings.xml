@@ -21,7 +21,7 @@
     <string name="gallery_description">%1$s 미리보기</string>
     <string name="current_sky">현재</string>
     <string name="preview_badge">미리보기</string>
-    <string name="view_wallpaper">배경화면 미리보기</string>
+    <string name="view_wallpaper">전체 화면 미리보기</string>
     <string name="enable_wallpaper">배경화면 설정</string>
     <string name="preview_status">미리보기: %1$s · 현재: %2$s</string>
     <string name="today">일출과 일몰</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">일출, 일몰 및 배경화면 전환 시각을 계산하는 데 사용합니다.</string>
     <string name="get_gps">기기 위치 사용</string>
     <string name="manual_coordinates">좌표 입력</string>
-    <string name="fixed_using">고정: %1$s</string>
-    <string name="next_sky">다음: %1$s · %2$s</string>
-    <string name="no_transition">앞으로 48시간 동안 전환이 없습니다</string>
     <string name="polar_notice">이 위치에는 오늘 일출이나 일몰이 없습니다.</string>
-    <string name="stale_location">위치가 하루 넘게 업데이트되지 않았습니다. 이동했다면 새로고침하세요.</string>
     <string name="follow_sun">자동 전환</string>
     <string name="follow_description">저장된 위치의 태양에 따라 전환</string>
     <string name="fix_preview">%1$s 유지</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">그라데이션 미리보기</string>
     <string name="gradient_geometry">위치</string>
     <string name="done">완료</string>
+    <string name="enter_fullscreen">전체 화면</string>
+    <string name="exit_fullscreen">전체 화면 종료</string>
+    <string name="preview_time">미리보기 시간</string>
 </resources>

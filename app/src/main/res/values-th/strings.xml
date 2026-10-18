@@ -21,7 +21,7 @@
     <string name="gallery_description">ตัวอย่าง %1$s</string>
     <string name="current_sky">ปัจจุบัน</string>
     <string name="preview_badge">ดูตัวอย่าง</string>
-    <string name="view_wallpaper">ดูตัวอย่างวอลเปเปอร์</string>
+    <string name="view_wallpaper">ดูตัวอย่างแบบเต็มหน้าจอ</string>
     <string name="enable_wallpaper">ตั้งค่าวอลเปเปอร์</string>
     <string name="preview_status">ตัวอย่าง: %1$s · ปัจจุบัน: %2$s</string>
     <string name="today">พระอาทิตย์ขึ้นและตก</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">ใช้คำนวณเวลาพระอาทิตย์ขึ้น พระอาทิตย์ตก และการเปลี่ยนวอลเปเปอร์</string>
     <string name="get_gps">ใช้ตำแหน่งของอุปกรณ์</string>
     <string name="manual_coordinates">ป้อนพิกัด</string>
-    <string name="fixed_using">คงที่: %1$s</string>
-    <string name="next_sky">ถัดไป: %1$s · %2$s</string>
-    <string name="no_transition">ไม่มีการเปลี่ยนผ่านใน 48 ชั่วโมงข้างหน้า</string>
     <string name="polar_notice">วันนี้ไม่มีพระอาทิตย์ขึ้นหรือตกที่ตำแหน่งนี้</string>
-    <string name="stale_location">ตำแหน่งไม่ได้อัปเดตมานานกว่าหนึ่งวัน หากเดินทางไปที่อื่น โปรดรีเฟรช</string>
     <string name="follow_sun">เปลี่ยนอัตโนมัติ</string>
     <string name="follow_description">เปลี่ยนตามดวงอาทิตย์ที่ตำแหน่งที่บันทึกไว้</string>
     <string name="fix_preview">คง %1$s ไว้</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">ตัวอย่างการไล่ระดับสี</string>
     <string name="gradient_geometry">ตำแหน่ง</string>
     <string name="done">เสร็จสิ้น</string>
+    <string name="enter_fullscreen">เต็มหน้าจอ</string>
+    <string name="exit_fullscreen">ออกจากโหมดเต็มหน้าจอ</string>
+    <string name="preview_time">เวลาแสดงตัวอย่าง</string>
 </resources>

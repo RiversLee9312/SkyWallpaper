@@ -21,11 +21,11 @@ The official release APK uses a different signing key from local debug builds, s
 
 ## Use
 
-1. Open the app and allow location access, or enter fixed coordinates.
+1. Add your device location from Settings or the preview card, or enter fixed coordinates.
 2. Under “Settings → Wallpapers,” choose Images or Gradient, then edit each period.
-3. Tap “Set wallpaper” and choose the Home screen or Lock screen in the system preview.
+3. Tap “Full screen preview” on the home screen to scrub through the solar day, or tap “Set wallpaper” to apply it through Android’s system preview. The two actions remain separate, including when the wallpaper is already active.
 
-To update your location automatically as you move, set location access to “Allow all the time.” The period selector on the home screen changes only the preview; “Keep…” in Settings turns off automatic switching. Manually entered coordinates stay fixed until you refresh the device location.
+To update your location automatically as you move, set location access to “Allow all the time.” The preview fills the screen with the saved wallpaper. Drag the time slider or tap sunrise/sunset to inspect another moment; the sun chart and wallpaper update together. The top-right full-screen button hides the back button and time card and can restore them; system Back first leaves full screen. Previewing never changes the active wallpaper or automatic-switching preference. “Keep…” in Settings fixes the last previewed period and turns off automatic switching. Manually entered coordinates stay fixed until you refresh the device location.
 
 Images are imported through the system photo picker, without requiring access to your entire photo library. The app corrects image orientation, limits images to 4096 pixels on the longest edge and 8 megapixels total, and saves a local copy so it no longer depends on the original photo library file.
 

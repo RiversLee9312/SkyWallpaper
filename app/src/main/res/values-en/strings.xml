@@ -21,7 +21,7 @@
     <string name="gallery_description">Preview %1$s</string>
     <string name="current_sky">Current</string>
     <string name="preview_badge">Preview</string>
-    <string name="view_wallpaper">Preview wallpaper</string>
+    <string name="view_wallpaper">Full screen preview</string>
     <string name="enable_wallpaper">Set wallpaper</string>
     <string name="preview_status">Preview: %1$s · Current: %2$s</string>
     <string name="today">Sunrise &amp; sunset</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">Used to calculate sunrise, sunset and wallpaper changes.</string>
     <string name="get_gps">Use device location</string>
     <string name="manual_coordinates">Enter coordinates</string>
-    <string name="fixed_using">Fixed: %1$s</string>
-    <string name="next_sky">Next: %1$s · %2$s</string>
-    <string name="no_transition">No transition in the next 48 hours</string>
     <string name="polar_notice">No sunrise or sunset here today.</string>
-    <string name="stale_location">Location is over a day old. Refresh it if you have moved.</string>
     <string name="follow_sun">Automatic switching</string>
     <string name="follow_description">Change with the sun at your saved location</string>
     <string name="fix_preview">Keep %1$s</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">Gradient preview</string>
     <string name="gradient_geometry">Geometry</string>
     <string name="done">Done</string>
+    <string name="enter_fullscreen">Full screen</string>
+    <string name="exit_fullscreen">Exit full screen</string>
+    <string name="preview_time">Preview time</string>
 </resources>

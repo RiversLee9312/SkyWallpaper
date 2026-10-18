@@ -21,7 +21,7 @@
     <string name="gallery_description">Podgląd %1$s</string>
     <string name="current_sky">Teraz</string>
     <string name="preview_badge">Podgląd</string>
-    <string name="view_wallpaper">Podgląd tapety</string>
+    <string name="view_wallpaper">Podgląd na pełnym ekranie</string>
     <string name="enable_wallpaper">Ustaw tapetę</string>
     <string name="preview_status">Podgląd: %1$s · Teraz: %2$s</string>
     <string name="today">Wschód i zachód słońca</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">Służy do obliczania wschodu i zachodu słońca oraz zmiany tapety.</string>
     <string name="get_gps">Użyj lokalizacji urządzenia</string>
     <string name="manual_coordinates">Wprowadź współrzędne</string>
-    <string name="fixed_using">Na stałe: %1$s</string>
-    <string name="next_sky">Następnie: %1$s · %2$s</string>
-    <string name="no_transition">Brak przejścia w ciągu najbliższych 48 godzin</string>
     <string name="polar_notice">W tym miejscu dziś nie ma wschodu ani zachodu słońca.</string>
-    <string name="stale_location">Lokalizacja nie była aktualizowana od ponad doby. Odśwież ją po zmianie miejsca.</string>
     <string name="follow_sun">Automatyczna zmiana</string>
     <string name="follow_description">Zmiana zgodnie ze słońcem w zapisanej lokalizacji</string>
     <string name="fix_preview">Zachowaj %1$s</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">Podgląd gradientu</string>
     <string name="gradient_geometry">Geometria</string>
     <string name="done">Gotowe</string>
+    <string name="enter_fullscreen">Pełny ekran</string>
+    <string name="exit_fullscreen">Wyjdź z pełnego ekranu</string>
+    <string name="preview_time">Czas podglądu</string>
 </resources>

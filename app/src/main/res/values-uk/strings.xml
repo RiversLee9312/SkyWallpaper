@@ -21,7 +21,7 @@
     <string name="gallery_description">Попередній перегляд %1$s</string>
     <string name="current_sky">Зараз</string>
     <string name="preview_badge">Попередній перегляд</string>
-    <string name="view_wallpaper">Попередній перегляд шпалер</string>
+    <string name="view_wallpaper">Повноекранний перегляд</string>
     <string name="enable_wallpaper">Встановити шпалери</string>
     <string name="preview_status">Перегляд: %1$s · Зараз: %2$s</string>
     <string name="today">Схід і захід сонця</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">Використовується для розрахунку часу сходу й заходу сонця та зміни шпалер.</string>
     <string name="get_gps">Використовувати місцезнаходження пристрою</string>
     <string name="manual_coordinates">Ввести координати</string>
-    <string name="fixed_using">Зафіксовано: %1$s</string>
-    <string name="next_sky">Далі: %1$s · %2$s</string>
-    <string name="no_transition">Протягом наступних 48 годин переходів не буде</string>
     <string name="polar_notice">Сьогодні в цьому місці немає сходу чи заходу сонця.</string>
-    <string name="stale_location">Місцезнаходження не оновлювалося понад добу. Оновіть його, якщо переїхали.</string>
     <string name="follow_sun">Автоматичне перемикання</string>
     <string name="follow_description">Змінювати шпалери за положенням сонця у збереженому місці</string>
     <string name="fix_preview">Залишити %1$s</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">Попередній перегляд градієнта</string>
     <string name="gradient_geometry">Геометрія</string>
     <string name="done">Готово</string>
+    <string name="enter_fullscreen">На весь екран</string>
+    <string name="exit_fullscreen">Вийти з повноекранного режиму</string>
+    <string name="preview_time">Час попереднього перегляду</string>
 </resources>

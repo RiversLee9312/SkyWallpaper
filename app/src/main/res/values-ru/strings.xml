@@ -21,7 +21,7 @@
     <string name="gallery_description">Предпросмотр: %1$s</string>
     <string name="current_sky">Сейчас</string>
     <string name="preview_badge">Предпросмотр</string>
-    <string name="view_wallpaper">Предпросмотр обоев</string>
+    <string name="view_wallpaper">Полноэкранный предпросмотр</string>
     <string name="enable_wallpaper">Установить обои</string>
     <string name="preview_status">Предпросмотр: %1$s · Сейчас: %2$s</string>
     <string name="today">Восход и закат</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">Используется для расчёта времени восхода, заката и смены обоев.</string>
     <string name="get_gps">Использовать местоположение устройства</string>
     <string name="manual_coordinates">Ввести координаты</string>
-    <string name="fixed_using">Зафиксировано: %1$s</string>
-    <string name="next_sky">Далее: %1$s · %2$s</string>
-    <string name="no_transition">В ближайшие 48 часов смены не будет</string>
     <string name="polar_notice">Сегодня в этом месте нет восхода или заката.</string>
-    <string name="stale_location">Местоположение не обновлялось больше суток. Обновите его, если вы переехали.</string>
     <string name="follow_sun">Автоматическая смена</string>
     <string name="follow_description">Смена в соответствии с солнцем в сохранённом местоположении</string>
     <string name="fix_preview">Оставить %1$s</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">Предпросмотр градиента</string>
     <string name="gradient_geometry">Геометрия</string>
     <string name="done">Готово</string>
+    <string name="enter_fullscreen">Полный экран</string>
+    <string name="exit_fullscreen">Выйти из полноэкранного режима</string>
+    <string name="preview_time">Время предпросмотра</string>
 </resources>

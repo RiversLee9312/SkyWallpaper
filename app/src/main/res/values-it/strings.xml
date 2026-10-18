@@ -21,7 +21,7 @@
     <string name="gallery_description">Anteprima di %1$s</string>
     <string name="current_sky">Attuale</string>
     <string name="preview_badge">Anteprima</string>
-    <string name="view_wallpaper">Anteprima dello sfondo</string>
+    <string name="view_wallpaper">Anteprima a schermo intero</string>
     <string name="enable_wallpaper">Imposta sfondo</string>
     <string name="preview_status">Anteprima: %1$s · Attuale: %2$s</string>
     <string name="today">Alba e tramonto</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">Serve a calcolare alba, tramonto e cambi dello sfondo.</string>
     <string name="get_gps">Usa la posizione del dispositivo</string>
     <string name="manual_coordinates">Inserisci le coordinate</string>
-    <string name="fixed_using">Fisso: %1$s</string>
-    <string name="next_sky">Prossimo: %1$s · %2$s</string>
-    <string name="no_transition">Nessun cambio nelle prossime 48 ore</string>
     <string name="polar_notice">Oggi in questa posizione non ci sono alba né tramonto.</string>
-    <string name="stale_location">La posizione non è aggiornata da più di un giorno. Aggiornala se ti sei spostato.</string>
     <string name="follow_sun">Cambio automatico</string>
     <string name="follow_description">Cambia in base al sole nella posizione salvata</string>
     <string name="fix_preview">Mantieni %1$s</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">Anteprima gradiente</string>
     <string name="gradient_geometry">Geometria</string>
     <string name="done">Fine</string>
+    <string name="enter_fullscreen">Schermo intero</string>
+    <string name="exit_fullscreen">Esci da schermo intero</string>
+    <string name="preview_time">Ora di anteprima</string>
 </resources>

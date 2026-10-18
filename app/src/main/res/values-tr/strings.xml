@@ -21,7 +21,7 @@
     <string name="gallery_description">%1$s önizlemesi</string>
     <string name="current_sky">Şu an</string>
     <string name="preview_badge">Önizleme</string>
-    <string name="view_wallpaper">Duvar kâğıdını önizle</string>
+    <string name="view_wallpaper">Tam ekran önizleme</string>
     <string name="enable_wallpaper">Duvar kâğıdını ayarla</string>
     <string name="preview_status">Önizleme: %1$s · Şu an: %2$s</string>
     <string name="today">Gün doğumu ve gün batımı</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">Gün doğumu, gün batımı ve duvar kâğıdı değişim zamanlarını hesaplamak için kullanılır.</string>
     <string name="get_gps">Cihaz konumunu kullan</string>
     <string name="manual_coordinates">Koordinatları gir</string>
-    <string name="fixed_using">Sabit: %1$s</string>
-    <string name="next_sky">Sıradaki: %1$s · %2$s</string>
-    <string name="no_transition">Önümüzdeki 48 saatte geçiş yok</string>
     <string name="polar_notice">Bu konumda bugün gün doğumu veya gün batımı yok.</string>
-    <string name="stale_location">Konum bir günden uzun süredir güncellenmedi. Taşındıysanız yenileyin.</string>
     <string name="follow_sun">Otomatik geçiş</string>
     <string name="follow_description">Kaydedilen konumdaki güneşe göre değişir</string>
     <string name="fix_preview">%1$s sabit kalsın</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">Gradyan önizlemesi</string>
     <string name="gradient_geometry">Geometri</string>
     <string name="done">Bitti</string>
+    <string name="enter_fullscreen">Tam ekran</string>
+    <string name="exit_fullscreen">Tam ekrandan çık</string>
+    <string name="preview_time">Önizleme zamanı</string>
 </resources>

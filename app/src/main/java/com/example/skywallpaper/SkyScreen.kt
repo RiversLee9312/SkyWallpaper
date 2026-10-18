@@ -13,7 +13,6 @@ import android.text.TextDirectionHeuristics
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -30,8 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -52,12 +49,11 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-private val utcTime = DateTimeFormatter.ofPattern("HH:mm", Locale.ROOT).withZone(ZoneOffset.UTC)
 private val utcDateTime = DateTimeFormatter.ofPattern("MM-dd HH:mm", Locale.ROOT).withZone(ZoneOffset.UTC)
 // Keep invariant coordinates and UTC values together inside a translated RTL sentence.
-private fun ltrValue(value: String, direction: LayoutDirection): String =
+internal fun ltrValue(value: String, direction: LayoutDirection): String =
     BidiFormatter.getInstance(direction == LayoutDirection.Rtl).unicodeWrap(value, TextDirectionHeuristics.LTR)
-private fun coordinate(point: GeoPoint) = String.format(Locale.ROOT, "%.2f°%s · %.2f°%s",
+internal fun coordinate(point: GeoPoint) = String.format(Locale.ROOT, "%.2f°%s · %.2f°%s",
     kotlin.math.abs(point.latitude), if (point.latitude >= 0) "N" else "S",
     kotlin.math.abs(point.longitude), if (point.longitude >= 0) "E" else "W")
 
@@ -101,11 +97,6 @@ fun SkyScreen(repository: SkyRepository, revision: Int, locationStatus: String, 
                 WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT, ComponentName(context, SkyWallpaperService::class.java)))
         } catch (_: android.content.ActivityNotFoundException) { notice = resources.getString(R.string.wallpaper_unavailable) }
     }
-    val next = remember(now.epochSecond / 60, point, automatic) {
-        point?.takeIf { automatic }?.let { SolarClock.nextTransition(now, it) }
-    }
-    val events = remember(now.epochSecond / 60, point) { point?.let { SolarClock.events(now, it) }.orEmpty() }
-    val active = context.getSystemService(WallpaperManager::class.java).wallpaperInfo?.packageName == context.packageName
     val colors = MaterialTheme.colorScheme
     val spatialSpec = MaterialTheme.motionScheme.defaultSpatialSpec<IntOffset>()
     val effectsSpec = MaterialTheme.motionScheme.defaultEffectsSpec<Float>()
@@ -148,10 +139,10 @@ fun SkyScreen(repository: SkyRepository, revision: Int, locationStatus: String, 
                         }
                         Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent, Color.Transparent, Color(0xA6001026)))))
                         Surface(Modifier.align(Alignment.TopStart).padding(16.dp), color = Color(0xFF172431).copy(alpha = .72f), shape = MaterialTheme.shapes.extraLarge) {
-                            Text(if (selected == current) stringResource(R.string.current_sky) else stringResource(R.string.preview_badge),
+                            Text(if (preview == null) stringResource(R.string.current_sky) else stringResource(R.string.preview_badge),
                                 Modifier.padding(12.dp, 7.dp), color = Color.White, style = MaterialTheme.typography.labelMedium)
                         }
-                        if (selected != current) {
+                        if (preview != null) {
                             FilledTonalIconButton(onClick = { preview = null }, shapes = IconButtonDefaults.shapes(), modifier = Modifier.align(Alignment.TopEnd).padding(12.dp),
                                 colors = IconButtonDefaults.filledTonalIconButtonColors(containerColor = Color(0xFF172431).copy(alpha = .72f), contentColor = Color.White)) {
                                 Icon(painterResource(R.drawable.ic_symbol_history), stringResource(R.string.reset_preview))
@@ -163,61 +154,34 @@ fun SkyScreen(repository: SkyRepository, revision: Int, locationStatus: String, 
                     }
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         SkyGallery(store, revision, selected, onSelect = { preview = it })
-                        if (selected != current) {
+                        if (preview != null) {
                             Text(stringResource(R.string.preview_status, selectedTitle, currentTitle), style = MaterialTheme.typography.bodySmall,
                                 color = colors.onSurfaceVariant, modifier = Modifier.align(Alignment.CenterHorizontally))
                         }
-                        Button(onClick = { activate() }, modifier = Modifier.fillMaxWidth().heightIn(min = ButtonDefaults.MediumContainerHeight),
+                        Button(onClick = { navigation.navigate("preview") { launchSingleTop = true } },
+                            modifier = Modifier.fillMaxWidth().heightIn(min = ButtonDefaults.MediumContainerHeight),
+                            shapes = ButtonDefaults.shapesFor(ButtonDefaults.MediumContainerHeight),
+                            contentPadding = ButtonDefaults.contentPaddingFor(ButtonDefaults.MediumContainerHeight)) {
+                            Icon(painterResource(R.drawable.ic_symbol_visibility), null, Modifier.size(ButtonDefaults.iconSizeFor(ButtonDefaults.MediumContainerHeight)))
+                            Spacer(Modifier.width(ButtonDefaults.IconSpacing))
+                            Text(stringResource(R.string.view_wallpaper), style = ButtonDefaults.textStyleFor(ButtonDefaults.MediumContainerHeight))
+                        }
+                        FilledTonalButton(onClick = ::activate,
+                            modifier = Modifier.fillMaxWidth().heightIn(min = ButtonDefaults.MediumContainerHeight),
                             shapes = ButtonDefaults.shapesFor(ButtonDefaults.MediumContainerHeight),
                             contentPadding = ButtonDefaults.contentPaddingFor(ButtonDefaults.MediumContainerHeight)) {
                             Icon(painterResource(R.drawable.ic_symbol_wallpaper), null, Modifier.size(ButtonDefaults.iconSizeFor(ButtonDefaults.MediumContainerHeight)))
                             Spacer(Modifier.width(ButtonDefaults.IconSpacing))
-                            Text(if (active) stringResource(R.string.view_wallpaper) else stringResource(R.string.enable_wallpaper), style = ButtonDefaults.textStyleFor(ButtonDefaults.MediumContainerHeight))
-                        }
-                    }
-                    Surface(shape = MaterialTheme.shapes.extraLarge, color = colors.surfaceContainerLow) {
-                        Column(Modifier.fillMaxWidth().padding(20.dp).animateContentSize(MaterialTheme.motionScheme.defaultSpatialSpec()), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                                Text(stringResource(R.string.today), style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
-                                Text(stringResource(R.string.utc_label), style = MaterialTheme.typography.labelSmall, color = colors.onSurfaceVariant)
-                            }
-                            if (point == null) {
-                                Text(stringResource(R.string.connect_sky), style = MaterialTheme.typography.titleMedium)
-                                Text(stringResource(R.string.location_intro), style = MaterialTheme.typography.bodyMedium, color = colors.onSurfaceVariant)
-                                FilledTonalButton(onClick = { requestLocation() }, shapes = ButtonDefaults.shapes()) {
-                                    Icon(painterResource(R.drawable.ic_symbol_my_location), null, Modifier.size(18.dp))
-                                    Spacer(Modifier.width(ButtonDefaults.IconSpacing))
-                                    Text(stringResource(R.string.get_gps))
-                                }
-                                TextButton(onClick = { manualLocationDialog = true }) { Text(stringResource(R.string.manual_coordinates)) }
-                            } else {
-                                SunArc(now, point)
-                                Text(if (!automatic) stringResource(R.string.fixed_using, currentTitle) else next?.let {
-                                    resources.getString(R.string.next_sky, resources.getString(it.phase.titleRes), ltrValue("${utcDateTime.format(it.instant)} UTC", direction))
-                                } ?: stringResource(R.string.no_transition), style = MaterialTheme.typography.titleMedium)
-                                events.filter { it.type == SolarEventType.SUNRISE || it.type == SolarEventType.SUNSET }.forEach { event ->
-                                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-                                            Icon(painterResource(if (event.type == SolarEventType.SUNRISE) R.drawable.ic_symbol_wb_twilight else R.drawable.ic_symbol_dark_mode), null,
-                                                Modifier.size(20.dp), tint = colors.onSurfaceVariant)
-                                            Text(stringResource(event.type.titleRes), style = MaterialTheme.typography.bodyMedium, color = colors.onSurfaceVariant)
-                                        }
-                                        val sameUtcDate = event.instant.atOffset(ZoneOffset.UTC).toLocalDate() == now.atOffset(ZoneOffset.UTC).toLocalDate()
-                                        Text(ltrValue((if (sameUtcDate) utcTime else utcDateTime).format(event.instant), direction),
-                                            style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
-                                    }
-                                }
-                                if (events.none { it.type == SolarEventType.SUNRISE || it.type == SolarEventType.SUNSET })
-                                    Text(stringResource(R.string.polar_notice), style = MaterialTheme.typography.bodySmall)
-                                Text(ltrValue(coordinate(point), direction), style = MaterialTheme.typography.labelMedium, color = colors.primary)
-                                val age = repository.updatedAt?.let { now.epochSecond - it.epochSecond } ?: 0
-                                if (!repository.manualLocation && age > 86400) Text(stringResource(R.string.stale_location), color = colors.error, style = MaterialTheme.typography.bodySmall)
-                            }
-                            if (locationStatus.isNotBlank()) Text(locationStatus, style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant)
+                            Text(stringResource(R.string.enable_wallpaper), style = ButtonDefaults.textStyleFor(ButtonDefaults.MediumContainerHeight))
                         }
                     }
                 }
             }
+        }
+        composable("preview") {
+            WallpaperPreviewScreen(store, revision, point, now, repository.manualPhase, locationStatus,
+                onBack = { navigation.popBackStack() }, onPhase = { preview = it },
+                onLocation = ::requestLocation, onManualLocation = { manualLocationDialog = true }, initialPhase = preview)
         }
         composable("settings") {
             SkySettingsScreen(
@@ -298,27 +262,4 @@ private fun LocationDialog(point: GeoPoint?, onDismiss: () -> Unit, onSave: (Geo
         }
     }, confirmButton = { TextButton(enabled = valid, onClick = { onSave(GeoPoint(lat!!, lon!!)) }) { Text(stringResource(R.string.save_location)) } },
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } })
-}
-
-@Composable
-private fun SunArc(now: Instant, point: GeoPoint) {
-    val colors = MaterialTheme.colorScheme
-    val start = SolarClock.dayStart(now, point)
-    val sun = SolarClock.position(now, point)
-    val points = remember(start, point) { (0..96).map { SolarClock.position(start.plusSeconds(it * 900L), point).elevation } }
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Canvas(Modifier.fillMaxWidth().height(82.dp)) {
-            val horizon = size.height * .65f
-            fun y(elevation: Double) = (horizon - elevation / 90 * size.height * .55).toFloat()
-            drawLine(colors.outlineVariant, androidx.compose.ui.geometry.Offset(0f, horizon), androidx.compose.ui.geometry.Offset(size.width, horizon), strokeWidth = 1.dp.toPx())
-            val path = Path()
-            points.forEachIndexed { index, elevation -> if (index == 0) path.moveTo(0f, y(elevation)) else path.lineTo(index / 96f * size.width, y(elevation)) }
-            drawPath(path, colors.primary.copy(alpha = .55f), style = Stroke(3.dp.toPx()))
-            val x = ((now.epochSecond - start.epochSecond) / 86400f).coerceIn(0f, 1f) * size.width
-            drawCircle(colors.tertiaryContainer, 12.dp.toPx(), androidx.compose.ui.geometry.Offset(x, y(sun.elevation)))
-            drawCircle(colors.primary, 6.dp.toPx(), androidx.compose.ui.geometry.Offset(x, y(sun.elevation)))
-        }
-        Text(stringResource(R.string.solar_elevation, ltrValue(String.format(Locale.ROOT, "%+.1f", sun.elevation), LocalLayoutDirection.current), stringResource(if (sun.rising) R.string.sun_rising else R.string.sun_falling)),
-            style = MaterialTheme.typography.labelMedium, color = colors.onSurfaceVariant)
-    }
 }

@@ -21,7 +21,7 @@
     <string name="gallery_description">Vorschau: %1$s</string>
     <string name="current_sky">Aktuell</string>
     <string name="preview_badge">Vorschau</string>
-    <string name="view_wallpaper">Hintergrundbild ansehen</string>
+    <string name="view_wallpaper">Vollbildvorschau</string>
     <string name="enable_wallpaper">Hintergrundbild festlegen</string>
     <string name="preview_status">Vorschau: %1$s · Aktuell: %2$s</string>
     <string name="today">Sonnenaufgang und Sonnenuntergang</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">Dient zur Berechnung von Sonnenaufgang, Sonnenuntergang und Hintergrundwechseln.</string>
     <string name="get_gps">Gerätestandort verwenden</string>
     <string name="manual_coordinates">Koordinaten eingeben</string>
-    <string name="fixed_using">Fest: %1$s</string>
-    <string name="next_sky">Als Nächstes: %1$s · %2$s</string>
-    <string name="no_transition">Kein Wechsel in den nächsten 48 Stunden</string>
     <string name="polar_notice">An diesem Standort gibt es heute keinen Sonnenaufgang und keinen Sonnenuntergang.</string>
-    <string name="stale_location">Der Standort wurde seit über einem Tag nicht aktualisiert. Aktualisiere ihn nach einem Ortswechsel.</string>
     <string name="follow_sun">Automatischer Wechsel</string>
     <string name="follow_description">Wechsel passend zum Sonnenstand am gespeicherten Standort</string>
     <string name="fix_preview">%1$s beibehalten</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">Farbverlaufvorschau</string>
     <string name="gradient_geometry">Geometrie</string>
     <string name="done">Fertig</string>
+    <string name="enter_fullscreen">Vollbild</string>
+    <string name="exit_fullscreen">Vollbild beenden</string>
+    <string name="preview_time">Vorschauzeit</string>
 </resources>

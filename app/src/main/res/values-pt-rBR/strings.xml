@@ -21,7 +21,7 @@
     <string name="gallery_description">Prévia de %1$s</string>
     <string name="current_sky">Atual</string>
     <string name="preview_badge">Prévia</string>
-    <string name="view_wallpaper">Prévia do papel de parede</string>
+    <string name="view_wallpaper">Prévia em tela cheia</string>
     <string name="enable_wallpaper">Definir papel de parede</string>
     <string name="preview_status">Prévia: %1$s · Atual: %2$s</string>
     <string name="today">Nascer e pôr do sol</string>
@@ -30,11 +30,7 @@
     <string name="location_intro">Usado para calcular o nascer, o pôr do sol e as mudanças do papel de parede.</string>
     <string name="get_gps">Usar localização do dispositivo</string>
     <string name="manual_coordinates">Inserir coordenadas</string>
-    <string name="fixed_using">Fixo: %1$s</string>
-    <string name="next_sky">Próximo: %1$s · %2$s</string>
-    <string name="no_transition">Sem mudanças nas próximas 48 horas</string>
     <string name="polar_notice">Hoje não há nascer nem pôr do sol neste local.</string>
-    <string name="stale_location">A localização não é atualizada há mais de um dia. Atualize-a se você se deslocou.</string>
     <string name="follow_sun">Alternância automática</string>
     <string name="follow_description">Muda conforme o sol na localização salva</string>
     <string name="fix_preview">Manter %1$s</string>
@@ -142,4 +138,7 @@
     <string name="gradient_preview">Prévia do gradiente</string>
     <string name="gradient_geometry">Geometria</string>
     <string name="done">Concluir</string>
+    <string name="enter_fullscreen">Tela cheia</string>
+    <string name="exit_fullscreen">Sair da tela cheia</string>
+    <string name="preview_time">Horário da prévia</string>
 </resources>
