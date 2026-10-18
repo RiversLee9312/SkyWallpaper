@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">На весь екран</string>
     <string name="exit_fullscreen">Вийти з повноекранного режиму</string>
     <string name="preview_time">Час попереднього перегляду</string>
+    <string name="wallpaper_config_title">Конфігурація шпалер</string>
+    <string name="export_wallpaper_config">Експортувати конфігурацію</string>
+    <string name="import_wallpaper_config">Імпортувати конфігурацію</string>
+    <string name="wallpaper_config_description">Містить градієнти й власні зображення</string>
+    <string name="config_exported">Конфігурацію експортовано</string>
+    <string name="config_imported">Конфігурацію імпортовано</string>
+    <string name="config_export_failed">Не вдалося експортувати конфігурацію</string>
+    <string name="config_import_failed">Не вдалося імпортувати цей пакет конфігурації</string>
+    <string name="config_import_title">Імпортувати конфігурацію шпалер?</string>
+    <string name="config_import_replace">Поточну конфігурацію шпалер буде замінено.</string>
+    <string name="config_import_action">Імпортувати</string>
+    <string name="config_processing">Обробка…</string>
 </resources>

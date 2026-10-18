@@ -350,6 +350,60 @@ class SkyDeviceTest {
         compose.onNodeWithText(context.getString(R.string.phase_dawn)).performClick()
     }
 
+    @Test fun gradientEditorKeepsItsOriginalTypeWhenTheGlobalTypeChanges() {
+        openGradientEditor(GradientType.RADIAL)
+        compose.onNodeWithText(context.getString(R.string.color_stop, 1)).performClick()
+        compose.onNode(hasSetTextAction()).performTextReplacement("123456")
+        compose.onNodeWithText(context.getString(R.string.done)).performClick()
+        scenario?.onActivity { SkyRepository(it).wallpapers.setType(GradientType.SWEEP) }
+        scenario?.recreate()
+        compose.onNodeWithContentDescription(context.getString(R.string.gradient_center)).assertExists()
+        compose.onNodeWithText(context.getString(R.string.save_location)).performClick()
+        val store = SkyRepository(context).wallpapers
+        Assert.assertEquals(GradientType.SWEEP, store.type)
+        Assert.assertEquals(0xFF123456.toInt(), store.gradient(SkyPhase.DAWN, GradientType.RADIAL).stops.first().color)
+        Assert.assertEquals(SkyGradient.default(SkyPhase.DAWN, GradientType.SWEEP), store.gradient(SkyPhase.DAWN, GradientType.SWEEP))
+        Assert.assertEquals(SkyGradient.default(SkyPhase.DAWN, GradientType.LINEAR), store.gradient(SkyPhase.DAWN, GradientType.LINEAR))
+    }
+
+    @Test fun switchingGradientTypesRestoresTheirOwnColorsAfterRecreation() {
+        val colors = mapOf(GradientType.LINEAR to "123456", GradientType.RADIAL to "345678", GradientType.SWEEP to "56789A")
+        fun open(type: GradientType) {
+            compose.onNodeWithText(context.getString(R.string.gradient_type)).performClick()
+            compose.onNode(hasText(context.getString(type.titleRes)) and hasAnyAncestor(isDialog())).performClick()
+            compose.onNodeWithText(context.getString(R.string.phase_dawn)).performClick()
+        }
+        colors.entries.forEachIndexed { index, (type, value) ->
+            if (index == 0) openGradientEditor(type) else open(type)
+            compose.onNodeWithText(context.getString(R.string.color_stop, 1)).performClick()
+            compose.onNode(hasSetTextAction()).performTextReplacement(value)
+            compose.onNodeWithText(context.getString(R.string.done)).performClick()
+            compose.onNodeWithText(context.getString(R.string.save_location)).performClick()
+        }
+        colors.entries.reversed().forEach { (type, value) ->
+            open(type)
+            compose.onNodeWithText(context.getString(R.string.color_stop, 1)).performClick()
+            compose.onNode(hasSetTextAction()).assertTextContains(value)
+            scenario?.recreate()
+            compose.onNode(hasSetTextAction()).assertTextContains(value)
+            compose.onNodeWithText(context.getString(R.string.done)).performClick()
+            compose.onNodeWithText(context.getString(R.string.save_location)).performClick()
+        }
+    }
+
+    @Test fun wallpaperConfigurationActionsRestoreWithNavigation() {
+        compose.onNodeWithContentDescription(context.getString(R.string.settings)).performClick()
+        compose.onNodeWithText(context.getString(R.string.wallpaper_content)).performClick()
+        compose.onNodeWithText(context.getString(R.string.wallpaper_config_title)).performScrollTo().performClick()
+        compose.onNodeWithText(context.getString(R.string.export_wallpaper_config)).assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.import_wallpaper_config)).assertIsDisplayed()
+        scenario?.recreate()
+        compose.onNodeWithText(context.getString(R.string.export_wallpaper_config)).assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.import_wallpaper_config)).assertIsDisplayed()
+        compose.onNodeWithContentDescription(context.getString(R.string.back)).performClick()
+        compose.onNodeWithText(context.getString(R.string.wallpaper_content)).assertIsDisplayed()
+    }
+
     @Test fun rtlGradientGeometryKeepsPhysicalCoordinatesAndColorStopsDirection() {
         openGradientEditor(GradientType.LINEAR)
         val manager = context.getSystemService(android.app.LocaleManager::class.java)

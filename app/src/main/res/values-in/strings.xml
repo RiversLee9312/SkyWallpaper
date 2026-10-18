@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">Layar penuh</string>
     <string name="exit_fullscreen">Keluar dari layar penuh</string>
     <string name="preview_time">Waktu pratinjau</string>
+    <string name="wallpaper_config_title">Konfigurasi wallpaper</string>
+    <string name="export_wallpaper_config">Ekspor konfigurasi</string>
+    <string name="import_wallpaper_config">Impor konfigurasi</string>
+    <string name="wallpaper_config_description">Mencakup gradien dan gambar kustom</string>
+    <string name="config_exported">Konfigurasi diekspor</string>
+    <string name="config_imported">Konfigurasi diimpor</string>
+    <string name="config_export_failed">Konfigurasi tidak dapat diekspor</string>
+    <string name="config_import_failed">Paket konfigurasi ini tidak dapat diimpor</string>
+    <string name="config_import_title">Impor konfigurasi wallpaper?</string>
+    <string name="config_import_replace">Konfigurasi wallpaper saat ini akan diganti.</string>
+    <string name="config_import_action">Impor</string>
+    <string name="config_processing">Memproses…</string>
 </resources>

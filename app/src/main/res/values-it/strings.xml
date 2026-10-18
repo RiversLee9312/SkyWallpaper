@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">Schermo intero</string>
     <string name="exit_fullscreen">Esci da schermo intero</string>
     <string name="preview_time">Ora di anteprima</string>
+    <string name="wallpaper_config_title">Configurazione dello sfondo</string>
+    <string name="export_wallpaper_config">Esporta configurazione</string>
+    <string name="import_wallpaper_config">Importa configurazione</string>
+    <string name="wallpaper_config_description">Include gradienti e immagini personalizzate</string>
+    <string name="config_exported">Configurazione esportata</string>
+    <string name="config_imported">Configurazione importata</string>
+    <string name="config_export_failed">Impossibile esportare la configurazione</string>
+    <string name="config_import_failed">Impossibile importare questo pacchetto di configurazione</string>
+    <string name="config_import_title">Importare la configurazione dello sfondo?</string>
+    <string name="config_import_replace">La configurazione attuale dello sfondo verrà sostituita.</string>
+    <string name="config_import_action">Importa</string>
+    <string name="config_processing">Elaborazione…</string>
 </resources>

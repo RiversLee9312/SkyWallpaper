@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">ملء الشاشة</string>
     <string name="exit_fullscreen">الخروج من وضع ملء الشاشة</string>
     <string name="preview_time">وقت المعاينة</string>
+    <string name="wallpaper_config_title">إعدادات الخلفية</string>
+    <string name="export_wallpaper_config">تصدير الإعدادات</string>
+    <string name="import_wallpaper_config">استيراد الإعدادات</string>
+    <string name="wallpaper_config_description">تتضمن التدرجات والصور المخصصة</string>
+    <string name="config_exported">تم تصدير الإعدادات</string>
+    <string name="config_imported">تم استيراد الإعدادات</string>
+    <string name="config_export_failed">تعذر تصدير الإعدادات</string>
+    <string name="config_import_failed">تعذر استيراد حزمة الإعدادات هذه</string>
+    <string name="config_import_title">هل تريد استيراد إعدادات الخلفية؟</string>
+    <string name="config_import_replace">سيتم استبدال إعدادات الخلفية الحالية.</string>
+    <string name="config_import_action">استيراد</string>
+    <string name="config_processing">جارٍ المعالجة…</string>
 </resources>

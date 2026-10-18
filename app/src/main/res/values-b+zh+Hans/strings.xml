@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">全屏</string>
     <string name="exit_fullscreen">退出全屏</string>
     <string name="preview_time">预览时间</string>
+    <string name="wallpaper_config_title">壁纸配置</string>
+    <string name="export_wallpaper_config">导出配置</string>
+    <string name="import_wallpaper_config">导入配置</string>
+    <string name="wallpaper_config_description">包含渐变设置和自定义图片</string>
+    <string name="config_exported">配置已导出</string>
+    <string name="config_imported">配置已导入</string>
+    <string name="config_export_failed">无法导出配置</string>
+    <string name="config_import_failed">无法导入此配置包</string>
+    <string name="config_import_title">导入壁纸配置？</string>
+    <string name="config_import_replace">当前壁纸配置将被替换。</string>
+    <string name="config_import_action">导入</string>
+    <string name="config_processing">正在处理…</string>
 </resources>

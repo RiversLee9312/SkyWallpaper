@@ -38,27 +38,50 @@ internal object GradientCodec {
 
 /** Images and gradient settings share the Direct Boot store with the solar settings. */
 class WallpaperStore(private val context: Context, private val prefs: SharedPreferences) {
+    internal companion object {
+        private val configurationLock = Any()
+        fun gradientKey(phase: SkyPhase, type: GradientType) = "gradient_${type.name}_${phase.name}"
+    }
     private val directory get() = File(context.createDeviceProtectedStorageContext().filesDir, "wallpapers")
     private var anchorKey: Pair<Instant, GeoPoint>? = null
     private var anchors = emptyList<GradientAnchor>()
     val mode: WallpaperMode get() = WallpaperMode.entries.find { it.name == prefs.getString("wallpaper_mode", null) } ?: WallpaperMode.IMAGE
     val type: GradientType get() = GradientType.entries.find { it.name == prefs.getString("gradient_type", null) } ?: GradientType.LINEAR
-    fun setMode(mode: WallpaperMode) { prefs.edit().putString("wallpaper_mode", mode.name).apply() }
-    fun setType(type: GradientType) { prefs.edit().putString("gradient_type", type.name).apply() }
-    fun gradient(phase: SkyPhase): SkyGradient = prefs.getString("gradient_${phase.name}", null)?.let {
+    init {
+        withConfiguration {
+            if (!prefs.getBoolean("gradient_types_migrated", false)) {
+                val owner = type
+                val edit = prefs.edit()
+                SkyPhase.entries.forEach { phase ->
+                    val legacy = prefs.getString("gradient_${phase.name}", null)
+                    if (legacy != null && !prefs.contains(gradientKey(phase, owner)) && runCatching { GradientCodec.decode(legacy) }.isSuccess)
+                        edit.putString(gradientKey(phase, owner), legacy)
+                }
+                // Old records contain no type information. Keep their exact bytes as a recovery copy,
+                // and assign the surviving configuration only to the type selected before migration.
+                edit.putBoolean("gradient_types_migrated", true).commit()
+            }
+        }
+    }
+    internal fun <T> withConfiguration(block: () -> T): T = synchronized(configurationLock, block)
+    fun setMode(mode: WallpaperMode) { withConfiguration { prefs.edit().putString("wallpaper_mode", mode.name).apply() } }
+    fun setType(type: GradientType) { withConfiguration { prefs.edit().putString("gradient_type", type.name).apply() } }
+    fun gradient(phase: SkyPhase, type: GradientType = this.type): SkyGradient = prefs.getString(gradientKey(phase, type), null)?.let {
         runCatching { GradientCodec.decode(it) }.getOrNull()
     } ?: SkyGradient.default(phase, type)
-    fun saveGradient(phase: SkyPhase, value: SkyGradient) { prefs.edit().putString("gradient_${phase.name}", GradientCodec.encode(value)).apply() }
+    fun saveGradient(phase: SkyPhase, value: SkyGradient, type: GradientType = this.type) {
+        withConfiguration { prefs.edit().putString(gradientKey(phase, type), GradientCodec.encode(value)).apply() }
+    }
 
-    fun frame(now: Instant, point: GeoPoint?, automatic: Boolean, phase: SkyPhase): GradientFrame {
-        if (!automatic || point == null) return GradientFrame.from(gradient(phase))
+    fun frame(now: Instant, point: GeoPoint?, automatic: Boolean, phase: SkyPhase, type: GradientType = this.type): GradientFrame {
+        if (!automatic || point == null) return GradientFrame.from(gradient(phase, type))
         val key = SolarClock.dayStart(now, point) to point
         if (anchorKey != key) {
             anchors = SolarGradientClock.anchors(now, point)
             anchorKey = key
         }
         val blend = SolarGradientClock.blend(now, anchors, phase, SolarClock.position(now, point).elevation)
-        return GradientInterpolation.frame(blend, ::gradient)
+        return GradientInterpolation.frame(blend) { gradient(it, type) }
     }
 
     fun imageFile(phase: SkyPhase): File? {
@@ -67,7 +90,7 @@ class WallpaperStore(private val context: Context, private val prefs: SharedPref
         return File(directory, name).takeIf(File::isFile)
     }
 
-    fun useBuiltIn(phase: SkyPhase) {
+    fun useBuiltIn(phase: SkyPhase) = withConfiguration {
         val previous = imageFile(phase)
         prefs.edit().remove("image_${phase.name}").apply()
         previous?.delete()
@@ -86,12 +109,61 @@ class WallpaperStore(private val context: Context, private val prefs: SharedPref
         val destination = File(directory, "${phase.name}_${UUID.randomUUID()}.jpg")
         try {
             destination.outputStream().use { if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 94, it)) throw IOException("Image encoding failed") }
-            val previous = imageFile(phase)
-            if (!prefs.edit().putString("image_${phase.name}", destination.name).commit()) throw IOException("Image preference commit failed")
-            previous?.delete()
+            withConfiguration {
+                val previous = imageFile(phase)
+                if (!prefs.edit().putString("image_${phase.name}", destination.name).commit()) throw IOException("Image preference commit failed")
+                previous?.delete()
+            }
         } catch (error: Exception) {
             destination.delete()
             throw error
         } finally { bitmap.recycle() }
+    }
+
+    internal fun configuration() = WallpaperConfiguration(mode, type, prefs.getBoolean("automatic", true),
+        SkyPhase.entries.getOrElse(prefs.getInt("phase", 1)) { SkyPhase.DAY },
+        GradientType.entries.associateWith { type -> SkyPhase.entries.associateWith { gradient(it, type) } },
+        SkyPhase.entries.filter { imageFile(it) != null }.toSet())
+
+    internal fun replaceConfiguration(value: WallpaperConfiguration, images: Map<SkyPhase, File>) = withConfiguration {
+        require(value.images == images.keys)
+        val oldImages = SkyPhase.entries.mapNotNull(::imageFile)
+        val previous = prefs.all
+        val created = mutableListOf<File>()
+        var committed = false
+        try {
+            check(directory.isDirectory || directory.mkdirs())
+            val names = images.mapValues { (phase, source) ->
+                File(directory, "${phase.name}_${UUID.randomUUID()}.jpg").also { destination ->
+                    created += destination
+                    source.copyTo(destination)
+                }.name
+            }
+            val edit = prefs.edit().putString("wallpaper_mode", value.mode.name).putString("gradient_type", value.type.name)
+                .putBoolean("automatic", value.automatic).putInt("phase", value.phase.ordinal)
+            value.gradients.forEach { (type, phases) -> phases.forEach { (phase, gradient) -> edit.putString(gradientKey(phase, type), GradientCodec.encode(gradient)) } }
+            SkyPhase.entries.forEach { phase ->
+                names[phase]?.let { edit.putString("image_${phase.name}", it) } ?: edit.remove("image_${phase.name}")
+            }
+            if (!edit.commit()) {
+                // SharedPreferences updates memory even when its disk write fails. Restore all affected
+                // values before reporting failure; retain files if the rollback itself cannot persist.
+                val rollback = prefs.edit()
+                val keys = listOf("wallpaper_mode", "gradient_type", "automatic", "phase") + SkyPhase.entries.map { "image_${it.name}" } +
+                    GradientType.entries.flatMap { type -> SkyPhase.entries.map { gradientKey(it, type) } }
+                keys.forEach { key -> when (val old = previous[key]) {
+                    is String -> rollback.putString(key, old)
+                    is Boolean -> rollback.putBoolean(key, old)
+                    is Int -> rollback.putInt(key, old)
+                    else -> rollback.remove(key)
+                } }
+                if (!rollback.commit()) committed = true
+                throw IOException("Configuration commit failed")
+            }
+            committed = true
+            oldImages.forEach { it.delete() }
+        } finally {
+            if (!committed) created.forEach { it.delete() }
+        }
     }
 }

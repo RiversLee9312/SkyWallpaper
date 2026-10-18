@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">全画面表示</string>
     <string name="exit_fullscreen">全画面表示を終了</string>
     <string name="preview_time">プレビュー時刻</string>
+    <string name="wallpaper_config_title">壁紙の設定</string>
+    <string name="export_wallpaper_config">設定をエクスポート</string>
+    <string name="import_wallpaper_config">設定をインポート</string>
+    <string name="wallpaper_config_description">グラデーションとカスタム画像を含みます</string>
+    <string name="config_exported">設定をエクスポートしました</string>
+    <string name="config_imported">設定をインポートしました</string>
+    <string name="config_export_failed">設定をエクスポートできませんでした</string>
+    <string name="config_import_failed">この設定パッケージをインポートできませんでした</string>
+    <string name="config_import_title">壁紙の設定をインポートしますか？</string>
+    <string name="config_import_replace">現在の壁紙の設定は置き換えられます。</string>
+    <string name="config_import_action">インポート</string>
+    <string name="config_processing">処理中…</string>
 </resources>

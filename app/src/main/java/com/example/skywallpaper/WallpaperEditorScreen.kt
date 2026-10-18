@@ -39,7 +39,7 @@ val GradientType.titleRes: Int get() = when (this) {
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun WallpaperEditorScreen(store: WallpaperStore, revision: Int, onBack: () -> Unit, onGradient: (SkyPhase) -> Unit) {
+fun WallpaperEditorScreen(store: WallpaperStore, revision: Int, onBack: () -> Unit, onGradient: (SkyPhase, GradientType) -> Unit, onConfiguration: () -> Unit) {
     val importError = stringResource(R.string.image_import_failed)
     val scope = rememberCoroutineScope()
     val snackbar = remember { SnackbarHostState() }
@@ -86,7 +86,7 @@ fun WallpaperEditorScreen(store: WallpaperStore, revision: Int, onBack: () -> Un
             Column(verticalArrangement = Arrangement.spacedBy(ListItemDefaults.SegmentedGap)) {
                 SkyPhase.entries.forEachIndexed { index, phase ->
                     SegmentedListItem(
-                        onClick = { if (mode == WallpaperMode.GRADIENT) onGradient(phase) else sheet = phase },
+                        onClick = { if (mode == WallpaperMode.GRADIENT) onGradient(phase, store.type) else sheet = phase },
                         enabled = importing == null,
                         shapes = ListItemDefaults.segmentedShapes(index, SkyPhase.entries.size),
                         colors = ListItemDefaults.segmentedColors(containerColor = colors.surfaceContainerLow),
@@ -102,6 +102,8 @@ fun WallpaperEditorScreen(store: WallpaperStore, revision: Int, onBack: () -> Un
                     ) { Text(stringResource(phase.titleRes), fontWeight = FontWeight.Medium) }
                 }
             }
+            SettingsRow(title = stringResource(R.string.wallpaper_config_title), summary = stringResource(R.string.wallpaper_config_description),
+                icon = R.drawable.ic_symbol_folder_zip, position = 0, count = 1, color = colors.surfaceContainerLow, onClick = onConfiguration)
         }
     }
     sheet?.let { phase ->

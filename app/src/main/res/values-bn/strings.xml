@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">পূর্ণ পর্দা</string>
     <string name="exit_fullscreen">পূর্ণ পর্দা থেকে বের হন</string>
     <string name="preview_time">প্রিভিউয়ের সময়</string>
+    <string name="wallpaper_config_title">ওয়ালপেপার কনফিগারেশন</string>
+    <string name="export_wallpaper_config">কনফিগারেশন রপ্তানি</string>
+    <string name="import_wallpaper_config">কনফিগারেশন আমদানি</string>
+    <string name="wallpaper_config_description">গ্রেডিয়েন্ট ও কাস্টম ছবি অন্তর্ভুক্ত</string>
+    <string name="config_exported">কনফিগারেশন রপ্তানি করা হয়েছে</string>
+    <string name="config_imported">কনফিগারেশন আমদানি করা হয়েছে</string>
+    <string name="config_export_failed">কনফিগারেশন রপ্তানি করা যায়নি</string>
+    <string name="config_import_failed">এই কনফিগারেশন প্যাকেজটি আমদানি করা যায়নি</string>
+    <string name="config_import_title">ওয়ালপেপার কনফিগারেশন আমদানি করবেন?</string>
+    <string name="config_import_replace">এতে বর্তমান ওয়ালপেপার কনফিগারেশন প্রতিস্থাপিত হবে।</string>
+    <string name="config_import_action">আমদানি</string>
+    <string name="config_processing">প্রক্রিয়াকরণ চলছে…</string>
 </resources>

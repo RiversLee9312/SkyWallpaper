@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">Pełny ekran</string>
     <string name="exit_fullscreen">Wyjdź z pełnego ekranu</string>
     <string name="preview_time">Czas podglądu</string>
+    <string name="wallpaper_config_title">Konfiguracja tapety</string>
+    <string name="export_wallpaper_config">Eksportuj konfigurację</string>
+    <string name="import_wallpaper_config">Importuj konfigurację</string>
+    <string name="wallpaper_config_description">Zawiera gradienty i własne obrazy</string>
+    <string name="config_exported">Konfigurację wyeksportowano</string>
+    <string name="config_imported">Konfigurację zaimportowano</string>
+    <string name="config_export_failed">Nie udało się wyeksportować konfiguracji</string>
+    <string name="config_import_failed">Nie udało się zaimportować tego pakietu konfiguracji</string>
+    <string name="config_import_title">Zaimportować konfigurację tapety?</string>
+    <string name="config_import_replace">Bieżąca konfiguracja tapety zostanie zastąpiona.</string>
+    <string name="config_import_action">Importuj</string>
+    <string name="config_processing">Przetwarzanie…</string>
 </resources>

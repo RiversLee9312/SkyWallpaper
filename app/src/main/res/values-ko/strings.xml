@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">전체 화면</string>
     <string name="exit_fullscreen">전체 화면 종료</string>
     <string name="preview_time">미리보기 시간</string>
+    <string name="wallpaper_config_title">배경화면 구성</string>
+    <string name="export_wallpaper_config">구성 내보내기</string>
+    <string name="import_wallpaper_config">구성 가져오기</string>
+    <string name="wallpaper_config_description">그라디언트와 사용자 지정 이미지 포함</string>
+    <string name="config_exported">구성을 내보냈습니다</string>
+    <string name="config_imported">구성을 가져왔습니다</string>
+    <string name="config_export_failed">구성을 내보내지 못했습니다</string>
+    <string name="config_import_failed">이 구성 패키지를 가져오지 못했습니다</string>
+    <string name="config_import_title">배경화면 구성을 가져올까요?</string>
+    <string name="config_import_replace">현재 배경화면 구성이 대체됩니다.</string>
+    <string name="config_import_action">가져오기</string>
+    <string name="config_processing">처리 중…</string>
 </resources>

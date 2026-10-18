@@ -9,7 +9,8 @@ from xml.sax.saxutils import quoteattr
 ROOT = Path(__file__).resolve().parents[1]
 SYMBOLS = ['settings', 'wallpaper', 'routine', 'location_on', 'my_location',
            'edit_location_alt', 'share_location', 'admin_panel_settings', 'language',
-           'tune', 'shield', 'wb_twilight', 'dark_mode', 'history', 'gradient', 'photo_library', 'add', 'delete', 'description', 'code']
+           'tune', 'shield', 'wb_twilight', 'dark_mode', 'history', 'gradient', 'photo_library', 'add', 'delete', 'description', 'code',
+           'visibility', 'fullscreen', 'fullscreen_exit', 'folder_zip', 'file_export', 'file_open']
 BASE = 'https://raw.githubusercontent.com/google/material-design-icons/master/'
 
 def save(name):

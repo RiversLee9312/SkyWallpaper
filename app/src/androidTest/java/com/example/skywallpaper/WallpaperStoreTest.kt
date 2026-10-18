@@ -52,9 +52,9 @@ class WallpaperStoreTest {
         try {
             val store = WallpaperStore(context, prefs)
             val preset = SkyGradient.default(SkyPhase.DAWN).copy(center = GradientPoint(.3f, .7f), radius = .6f)
+            store.setType(GradientType.RADIAL)
             store.saveGradient(SkyPhase.DAWN, preset)
             store.setMode(WallpaperMode.GRADIENT)
-            store.setType(GradientType.RADIAL)
             val reopened = WallpaperStore(device, prefs)
             assertEquals(preset, reopened.gradient(SkyPhase.DAWN))
             assertEquals(WallpaperMode.GRADIENT, reopened.mode)
@@ -73,6 +73,73 @@ class WallpaperStoreTest {
                 assertNotNull(GradientRenderer.shader(GradientType.LINEAR, GradientFrame.from(zeroLine), 120f, 240f))
             } finally { bitmap.recycle() }
             assertEquals(GradientFrame.from(preset), reopened.frame(Instant.now(), null, false, SkyPhase.DAWN))
+        } finally { device.deleteSharedPreferences(name) }
+    }
+
+    @Test fun allTwelveProfilesKeepTheirOwnStopsAndGeometryAcrossSwitchesAndRecreation() {
+        val device = context.createDeviceProtectedStorageContext()
+        val name = "gradient_isolation_test"
+        val prefs = device.getSharedPreferences(name, 0)
+        prefs.edit().clear().commit()
+        try {
+            val expected = GradientType.entries.associateWith { type -> SkyPhase.entries.associateWith { phase ->
+                val index = type.ordinal * 4 + phase.ordinal
+                SkyGradient.default(phase, type).copy(
+                    stops = listOf(GradientStop(0xFF000000.toInt() or (0x10203 * (index + 1)), .02f * index),
+                        GradientStop(0xFFEEDDCC.toInt() - index, 1f)),
+                    start = GradientPoint(.03f * index, .01f * index), end = GradientPoint(1f - .02f * index, 1f),
+                    center = GradientPoint(.02f * index, .9f - .03f * index), radius = .2f + .1f * index)
+            } }
+            val store = WallpaperStore(context, prefs)
+            expected.forEach { (type, phases) ->
+                store.setType(type)
+                phases.forEach { (phase, value) -> store.saveGradient(phase, value, type) }
+            }
+            repeat(3) {
+                GradientType.entries.reversed().forEach { type ->
+                    store.setType(type)
+                    val recreated = WallpaperStore(device, prefs)
+                    expected.forEach { (kind, phases) -> phases.forEach { (phase, value) ->
+                        assertEquals(value, recreated.gradient(phase, kind))
+                    } }
+                    SkyPhase.entries.forEach { phase ->
+                        assertEquals(GradientFrame.from(expected.getValue(type).getValue(phase)), recreated.frame(Instant.now(), null, false, phase))
+                    }
+                }
+            }
+            store.saveGradient(SkyPhase.DAWN, SkyGradient.default(SkyPhase.DAWN, GradientType.RADIAL), GradientType.RADIAL)
+            assertEquals(expected.getValue(GradientType.LINEAR).getValue(SkyPhase.DAWN), store.gradient(SkyPhase.DAWN, GradientType.LINEAR))
+            assertEquals(expected.getValue(GradientType.SWEEP).getValue(SkyPhase.DAWN), store.gradient(SkyPhase.DAWN, GradientType.SWEEP))
+        } finally { device.deleteSharedPreferences(name) }
+    }
+
+    @Test fun legacyMigrationPreservesSurvivingTypeAndRawBackupWithoutCopyingToOtherTypes() {
+        val device = context.createDeviceProtectedStorageContext()
+        val name = "gradient_legacy_test"
+        val prefs = device.getSharedPreferences(name, 0)
+        val legacy = SkyGradient.default(SkyPhase.DAWN).copy(radius = .42f)
+        val existing = SkyGradient.default(SkyPhase.NIGHT).copy(radius = .88f)
+        val raw = GradientCodec.encode(legacy)
+        prefs.edit().clear().putString("gradient_type", "RADIAL").putString("gradient_DAWN", raw)
+            .putString("gradient_NIGHT", raw).putString("gradient_DAY", "broken legacy data")
+            .putString(WallpaperStore.gradientKey(SkyPhase.NIGHT, GradientType.RADIAL), GradientCodec.encode(existing)).commit()
+        try {
+            val locked = object : android.content.ContextWrapper(device) {
+                override fun createPackageContext(packageName: String, flags: Int): android.content.Context =
+                    error("Gradient migration must not access credential protected storage")
+            }
+            val store = WallpaperStore(locked, prefs)
+            assertEquals(legacy, store.gradient(SkyPhase.DAWN, GradientType.RADIAL))
+            assertEquals(existing, store.gradient(SkyPhase.NIGHT, GradientType.RADIAL))
+            assertEquals(SkyGradient.default(SkyPhase.DAY, GradientType.RADIAL), store.gradient(SkyPhase.DAY, GradientType.RADIAL))
+            assertEquals(raw, prefs.getString("gradient_DAWN", null))
+            assertEquals("broken legacy data", prefs.getString("gradient_DAY", null))
+            GradientType.entries.filter { it != GradientType.RADIAL }.forEach { type ->
+                store.setType(type)
+                val reopened = WallpaperStore(locked, prefs)
+                SkyPhase.entries.forEach { assertEquals(SkyGradient.default(it, type), reopened.gradient(it)) }
+                assertEquals(legacy, reopened.gradient(SkyPhase.DAWN, GradientType.RADIAL))
+            }
         } finally { device.deleteSharedPreferences(name) }
     }
 }

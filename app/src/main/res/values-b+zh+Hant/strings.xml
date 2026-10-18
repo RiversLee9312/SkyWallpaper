@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">全螢幕</string>
     <string name="exit_fullscreen">退出全螢幕</string>
     <string name="preview_time">預覽時間</string>
+    <string name="wallpaper_config_title">桌布設定</string>
+    <string name="export_wallpaper_config">匯出設定</string>
+    <string name="import_wallpaper_config">匯入設定</string>
+    <string name="wallpaper_config_description">包含漸層與自訂圖片</string>
+    <string name="config_exported">設定已匯出</string>
+    <string name="config_imported">設定已匯入</string>
+    <string name="config_export_failed">無法匯出設定</string>
+    <string name="config_import_failed">無法匯入此設定套件</string>
+    <string name="config_import_title">要匯入桌布設定嗎？</string>
+    <string name="config_import_replace">目前的桌布設定將會被取代。</string>
+    <string name="config_import_action">匯入</string>
+    <string name="config_processing">處理中…</string>
 </resources>

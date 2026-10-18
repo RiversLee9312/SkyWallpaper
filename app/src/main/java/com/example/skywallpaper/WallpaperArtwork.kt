@@ -20,7 +20,8 @@ import kotlinx.coroutines.withContext
 fun WallpaperArtwork(store: WallpaperStore, phase: SkyPhase, revision: Int, modifier: Modifier,
                      description: String? = null, liveFrame: GradientFrame? = null) {
     if (store.mode == WallpaperMode.GRADIENT) {
-        GradientArtwork(store.type, liveFrame ?: GradientFrame.from(store.gradient(phase)), modifier, description)
+        val type = store.type
+        GradientArtwork(type, liveFrame ?: GradientFrame.from(store.gradient(phase, type)), modifier, description)
     } else {
         val file = remember(revision, phase) { store.imageFile(phase) }
         val bitmap by produceState<Bitmap?>(null, file?.path) {

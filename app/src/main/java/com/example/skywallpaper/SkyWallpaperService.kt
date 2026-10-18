@@ -88,7 +88,8 @@ class SkyWallpaperService : WallpaperService() {
             val now = Instant.now()
             val phase = repository.phase(now)
             val store = repository.wallpapers
-            val gradient = if (store.mode == WallpaperMode.GRADIENT) store.frame(now, repository.point, repository.automatic, phase) else null
+            val type = store.type
+            val gradient = if (store.mode == WallpaperMode.GRADIENT) store.frame(now, repository.point, repository.automatic, phase, type) else null
             if (gradient != null) {
                 bitmap?.recycle(); bitmap = null; loadedImage = null
                 if (gradientColorMinute != now.epochSecond / 60) {
@@ -116,7 +117,7 @@ class SkyWallpaperService : WallpaperService() {
                     target.drawColor(Color.BLACK)
                     if (gradient != null) {
                         paint.isDither = true
-                        paint.shader = GradientRenderer.shader(store.type, gradient, target.width.toFloat(), target.height.toFloat())
+                        paint.shader = GradientRenderer.shader(type, gradient, target.width.toFloat(), target.height.toFloat())
                         target.drawRect(0f, 0f, target.width.toFloat(), target.height.toFloat(), paint)
                         paint.shader = null
                     } else bitmap?.let { image ->

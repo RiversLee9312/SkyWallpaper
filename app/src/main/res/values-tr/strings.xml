@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">Tam ekran</string>
     <string name="exit_fullscreen">Tam ekrandan çık</string>
     <string name="preview_time">Önizleme zamanı</string>
+    <string name="wallpaper_config_title">Duvar kâğıdı yapılandırması</string>
+    <string name="export_wallpaper_config">Yapılandırmayı dışa aktar</string>
+    <string name="import_wallpaper_config">Yapılandırmayı içe aktar</string>
+    <string name="wallpaper_config_description">Gradyanlar ve özel görseller içerir</string>
+    <string name="config_exported">Yapılandırma dışa aktarıldı</string>
+    <string name="config_imported">Yapılandırma içe aktarıldı</string>
+    <string name="config_export_failed">Yapılandırma dışa aktarılamadı</string>
+    <string name="config_import_failed">Bu yapılandırma paketi içe aktarılamadı</string>
+    <string name="config_import_title">Duvar kâğıdı yapılandırması içe aktarılsın mı?</string>
+    <string name="config_import_replace">Mevcut duvar kâğıdı yapılandırmanız değiştirilecek.</string>
+    <string name="config_import_action">İçe aktar</string>
+    <string name="config_processing">İşleniyor…</string>
 </resources>

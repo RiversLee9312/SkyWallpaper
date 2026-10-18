@@ -43,6 +43,8 @@ import androidx.core.net.toUri
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.delay
 import java.time.Instant
 import java.time.ZoneOffset
@@ -217,7 +219,21 @@ fun SkyScreen(repository: SkyRepository, revision: Int, locationStatus: String, 
             )
         }
         composable("wallpapers") {
-            WallpaperEditorScreen(store, revision, onBack = { navigation.popBackStack() }, onGradient = { phase -> navigation.navigate("gradient/${phase.name}") })
+            WallpaperEditorScreen(store, revision, onBack = { navigation.popBackStack() },
+                onGradient = { phase, type -> navigation.navigate("gradient/${type.name}/${phase.name}") },
+                onConfiguration = { navigation.navigate("wallpaper-config") })
+        }
+        composable("wallpaper-config") { entry ->
+            val transfer = remember(entry) {
+                ViewModelProvider(entry, object : ViewModelProvider.Factory {
+                    @Suppress("UNCHECKED_CAST")
+                    override fun <T : ViewModel> create(modelClass: Class<T>): T =
+                        WallpaperTransferModel(context.applicationContext, store, entry.savedStateHandle) as T
+                })[WallpaperTransferModel::class.java]
+            }
+            WallpaperConfigurationScreen(transfer, onBack = { navigation.popBackStack() }, onImported = {
+                stopLocation(); preview = null; scheduleLocationRefresh(context)
+            })
         }
         composable("licenses") {
             OpenSourceScreen(onBack = { navigation.popBackStack() }, onLicense = { navigation.navigate("license/$it") },
@@ -226,10 +242,11 @@ fun SkyScreen(repository: SkyRepository, revision: Int, locationStatus: String, 
         composable("license/{id}") { entry ->
             LicenseTextScreen(entry.arguments?.getString("id") ?: "project", onBack = { navigation.popBackStack() })
         }
-        composable("gradient/{phase}") { entry ->
+        composable("gradient/{type}/{phase}") { entry ->
             val phase = SkyPhase.entries.find { it.name == entry.arguments?.getString("phase") } ?: SkyPhase.DAY
-            GradientEditorScreen(phase, store.type, store.gradient(phase), onBack = { navigation.popBackStack() }, onSave = {
-                store.saveGradient(phase, it); navigation.popBackStack()
+            val type = GradientType.entries.find { it.name == entry.arguments?.getString("type") } ?: GradientType.LINEAR
+            GradientEditorScreen(phase, type, store.gradient(phase, type), onBack = { navigation.popBackStack() }, onSave = {
+                store.saveGradient(phase, it, type); navigation.popBackStack()
             })
         }
     }

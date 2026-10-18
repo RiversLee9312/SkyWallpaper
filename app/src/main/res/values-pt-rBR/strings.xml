@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">Tela cheia</string>
     <string name="exit_fullscreen">Sair da tela cheia</string>
     <string name="preview_time">Horário da prévia</string>
+    <string name="wallpaper_config_title">Configuração do papel de parede</string>
+    <string name="export_wallpaper_config">Exportar configuração</string>
+    <string name="import_wallpaper_config">Importar configuração</string>
+    <string name="wallpaper_config_description">Inclui gradientes e imagens personalizadas</string>
+    <string name="config_exported">Configuração exportada</string>
+    <string name="config_imported">Configuração importada</string>
+    <string name="config_export_failed">Não foi possível exportar a configuração</string>
+    <string name="config_import_failed">Não foi possível importar este pacote de configuração</string>
+    <string name="config_import_title">Importar configuração do papel de parede?</string>
+    <string name="config_import_replace">A configuração atual do papel de parede será substituída.</string>
+    <string name="config_import_action">Importar</string>
+    <string name="config_processing">Processando…</string>
 </resources>

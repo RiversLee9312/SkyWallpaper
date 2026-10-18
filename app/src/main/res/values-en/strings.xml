@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">Full screen</string>
     <string name="exit_fullscreen">Exit full screen</string>
     <string name="preview_time">Preview time</string>
+    <string name="wallpaper_config_title">Wallpaper configuration</string>
+    <string name="export_wallpaper_config">Export configuration</string>
+    <string name="import_wallpaper_config">Import configuration</string>
+    <string name="wallpaper_config_description">Includes gradients and custom images</string>
+    <string name="config_exported">Configuration exported</string>
+    <string name="config_imported">Configuration imported</string>
+    <string name="config_export_failed">Couldn’t export configuration</string>
+    <string name="config_import_failed">Couldn’t import this configuration package</string>
+    <string name="config_import_title">Import wallpaper configuration?</string>
+    <string name="config_import_replace">This will replace your current wallpaper configuration.</string>
+    <string name="config_import_action">Import</string>
+    <string name="config_processing">Processing…</string>
 </resources>

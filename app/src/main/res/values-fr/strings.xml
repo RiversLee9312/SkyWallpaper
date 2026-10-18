@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">Plein écran</string>
     <string name="exit_fullscreen">Quitter le plein écran</string>
     <string name="preview_time">Heure de l’aperçu</string>
+    <string name="wallpaper_config_title">Configuration du fond d’écran</string>
+    <string name="export_wallpaper_config">Exporter la configuration</string>
+    <string name="import_wallpaper_config">Importer la configuration</string>
+    <string name="wallpaper_config_description">Inclut des dégradés et des images personnalisées</string>
+    <string name="config_exported">Configuration exportée</string>
+    <string name="config_imported">Configuration importée</string>
+    <string name="config_export_failed">Impossible d’exporter la configuration</string>
+    <string name="config_import_failed">Impossible d’importer ce paquet de configuration</string>
+    <string name="config_import_title">Importer la configuration du fond d’écran ?</string>
+    <string name="config_import_replace">La configuration actuelle du fond d’écran sera remplacée.</string>
+    <string name="config_import_action">Importer</string>
+    <string name="config_processing">Traitement en cours…</string>
 </resources>

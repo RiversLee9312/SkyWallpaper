@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">Toàn màn hình</string>
     <string name="exit_fullscreen">Thoát toàn màn hình</string>
     <string name="preview_time">Thời gian xem trước</string>
+    <string name="wallpaper_config_title">Cấu hình hình nền</string>
+    <string name="export_wallpaper_config">Xuất cấu hình</string>
+    <string name="import_wallpaper_config">Nhập cấu hình</string>
+    <string name="wallpaper_config_description">Bao gồm chuyển màu và hình ảnh tùy chỉnh</string>
+    <string name="config_exported">Đã xuất cấu hình</string>
+    <string name="config_imported">Đã nhập cấu hình</string>
+    <string name="config_export_failed">Không thể xuất cấu hình</string>
+    <string name="config_import_failed">Không thể nhập gói cấu hình này</string>
+    <string name="config_import_title">Nhập cấu hình hình nền?</string>
+    <string name="config_import_replace">Cấu hình hình nền hiện tại sẽ bị thay thế.</string>
+    <string name="config_import_action">Nhập</string>
+    <string name="config_processing">Đang xử lý…</string>
 </resources>

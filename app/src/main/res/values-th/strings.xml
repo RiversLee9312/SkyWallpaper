@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">เต็มหน้าจอ</string>
     <string name="exit_fullscreen">ออกจากโหมดเต็มหน้าจอ</string>
     <string name="preview_time">เวลาแสดงตัวอย่าง</string>
+    <string name="wallpaper_config_title">การตั้งค่าวอลเปเปอร์</string>
+    <string name="export_wallpaper_config">ส่งออกการตั้งค่า</string>
+    <string name="import_wallpaper_config">นำเข้าการตั้งค่า</string>
+    <string name="wallpaper_config_description">รวมการไล่ระดับสีและรูปภาพที่กำหนดเอง</string>
+    <string name="config_exported">ส่งออกการตั้งค่าแล้ว</string>
+    <string name="config_imported">นำเข้าการตั้งค่าแล้ว</string>
+    <string name="config_export_failed">ส่งออกการตั้งค่าไม่ได้</string>
+    <string name="config_import_failed">นำเข้าแพ็กเกจการตั้งค่านี้ไม่ได้</string>
+    <string name="config_import_title">นำเข้าการตั้งค่าวอลเปเปอร์ไหม</string>
+    <string name="config_import_replace">การตั้งค่าวอลเปเปอร์ปัจจุบันจะถูกแทนที่</string>
+    <string name="config_import_action">นำเข้า</string>
+    <string name="config_processing">กำลังประมวลผล…</string>
 </resources>

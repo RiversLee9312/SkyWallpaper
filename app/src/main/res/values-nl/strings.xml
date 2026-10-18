@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">Volledig scherm</string>
     <string name="exit_fullscreen">Volledig scherm afsluiten</string>
     <string name="preview_time">Voorbeeldtijd</string>
+    <string name="wallpaper_config_title">Achtergrondconfiguratie</string>
+    <string name="export_wallpaper_config">Configuratie exporteren</string>
+    <string name="import_wallpaper_config">Configuratie importeren</string>
+    <string name="wallpaper_config_description">Bevat kleurverlopen en eigen afbeeldingen</string>
+    <string name="config_exported">Configuratie geëxporteerd</string>
+    <string name="config_imported">Configuratie geïmporteerd</string>
+    <string name="config_export_failed">Configuratie exporteren is mislukt</string>
+    <string name="config_import_failed">Dit configuratiepakket kan niet worden geïmporteerd</string>
+    <string name="config_import_title">Achtergrondconfiguratie importeren?</string>
+    <string name="config_import_replace">De huidige achtergrondconfiguratie wordt vervangen.</string>
+    <string name="config_import_action">Importeren</string>
+    <string name="config_processing">Bezig met verwerken…</string>
 </resources>

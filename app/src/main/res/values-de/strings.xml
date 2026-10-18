@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">Vollbild</string>
     <string name="exit_fullscreen">Vollbild beenden</string>
     <string name="preview_time">Vorschauzeit</string>
+    <string name="wallpaper_config_title">Hintergrundbildkonfiguration</string>
+    <string name="export_wallpaper_config">Konfiguration exportieren</string>
+    <string name="import_wallpaper_config">Konfiguration importieren</string>
+    <string name="wallpaper_config_description">Enthält Farbverläufe und eigene Bilder</string>
+    <string name="config_exported">Konfiguration exportiert</string>
+    <string name="config_imported">Konfiguration importiert</string>
+    <string name="config_export_failed">Konfiguration konnte nicht exportiert werden</string>
+    <string name="config_import_failed">Dieses Konfigurationspaket konnte nicht importiert werden</string>
+    <string name="config_import_title">Hintergrundbildkonfiguration importieren?</string>
+    <string name="config_import_replace">Die aktuelle Hintergrundbildkonfiguration wird ersetzt.</string>
+    <string name="config_import_action">Importieren</string>
+    <string name="config_processing">Wird verarbeitet…</string>
 </resources>

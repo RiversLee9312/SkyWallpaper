@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">फ़ुल स्क्रीन</string>
     <string name="exit_fullscreen">फ़ुल स्क्रीन से बाहर निकलें</string>
     <string name="preview_time">पूर्वावलोकन समय</string>
+    <string name="wallpaper_config_title">वॉलपेपर कॉन्फ़िगरेशन</string>
+    <string name="export_wallpaper_config">कॉन्फ़िगरेशन निर्यात करें</string>
+    <string name="import_wallpaper_config">कॉन्फ़िगरेशन आयात करें</string>
+    <string name="wallpaper_config_description">इसमें ग्रेडिएंट और कस्टम इमेज शामिल हैं</string>
+    <string name="config_exported">कॉन्फ़िगरेशन निर्यात किया गया</string>
+    <string name="config_imported">कॉन्फ़िगरेशन आयात किया गया</string>
+    <string name="config_export_failed">कॉन्फ़िगरेशन निर्यात नहीं हो सका</string>
+    <string name="config_import_failed">यह कॉन्फ़िगरेशन पैकेज आयात नहीं हो सका</string>
+    <string name="config_import_title">वॉलपेपर कॉन्फ़िगरेशन आयात करें?</string>
+    <string name="config_import_replace">इससे मौजूदा वॉलपेपर कॉन्फ़िगरेशन बदल जाएगा।</string>
+    <string name="config_import_action">आयात करें</string>
+    <string name="config_processing">प्रोसेस हो रहा है…</string>
 </resources>

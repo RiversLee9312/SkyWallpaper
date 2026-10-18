@@ -141,4 +141,16 @@
     <string name="enter_fullscreen">Полный экран</string>
     <string name="exit_fullscreen">Выйти из полноэкранного режима</string>
     <string name="preview_time">Время предпросмотра</string>
+    <string name="wallpaper_config_title">Конфигурация обоев</string>
+    <string name="export_wallpaper_config">Экспортировать конфигурацию</string>
+    <string name="import_wallpaper_config">Импортировать конфигурацию</string>
+    <string name="wallpaper_config_description">Включает градиенты и пользовательские изображения</string>
+    <string name="config_exported">Конфигурация экспортирована</string>
+    <string name="config_imported">Конфигурация импортирована</string>
+    <string name="config_export_failed">Не удалось экспортировать конфигурацию</string>
+    <string name="config_import_failed">Не удалось импортировать этот пакет конфигурации</string>
+    <string name="config_import_title">Импортировать конфигурацию обоев?</string>
+    <string name="config_import_replace">Текущая конфигурация обоев будет заменена.</string>
+    <string name="config_import_action">Импортировать</string>
+    <string name="config_processing">Обработка…</string>
 </resources>
