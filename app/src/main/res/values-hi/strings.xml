@@ -135,4 +135,8 @@
     <string name="color_hue">रंगत</string>
     <string name="color_saturation">संतृप्ति</string>
     <string name="color_brightness">चमक</string>
+    <string name="open_source_licenses">ओपन सोर्स लाइसेंस</string>
+    <string name="project_license">प्रोजेक्ट लाइसेंस</string>
+    <string name="third_party_libraries">तृतीय-पक्ष लाइब्रेरी</string>
+    <string name="source_code">सोर्स कोड</string>
 </resources>

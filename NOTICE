@@ -1,0 +1,13 @@
+Sky Wallpaper
+Copyright 2026 RiversLee9312 and contributors
+
+Original project code, documentation and project-owned artwork are licensed
+under the Apache License, Version 2.0. Third-party materials retain their
+respective copyrights and license terms.
+
+The interface uses Material Symbols Rounded by Google, licensed under
+Apache 2.0. The SVG artwork was converted to Android VectorDrawable format;
+viewport offsets were translated while preserving the original paths.
+Source: https://github.com/google/material-design-icons
+
+See THIRD_PARTY_NOTICES.md for dependency attributions and licenses.

@@ -40,6 +40,7 @@ fun SkySettingsScreen(
     onBackgroundPermission: () -> Unit,
     onSystemPermissions: () -> Unit,
     onLanguage: () -> Unit,
+    onLicenses: () -> Unit,
     wallpaperSummary: String,
     onWallpapers: () -> Unit,
     wallpaperThumbnail: @Composable (Modifier) -> Unit,
@@ -145,12 +146,14 @@ fun SkySettingsScreen(
                 SettingsGroup(stringResource(R.string.about_section)) {
                     SettingsRow(
                         title = stringResource(R.string.switch_rules), icon = R.drawable.ic_symbol_tune,
-                        position = 0, count = 2, color = rowColor, onClick = { info = R.string.switch_rules },
+                        position = 0, count = 3, color = rowColor, onClick = { info = R.string.switch_rules },
                     )
                     SettingsRow(
                         title = stringResource(R.string.privacy_title), icon = R.drawable.ic_symbol_shield,
-                        position = 1, count = 2, color = rowColor, onClick = { info = R.string.privacy_title },
+                        position = 1, count = 3, color = rowColor, onClick = { info = R.string.privacy_title },
                     )
+                    SettingsRow(title = stringResource(R.string.open_source_licenses), icon = R.drawable.ic_symbol_description,
+                        position = 2, count = 3, color = rowColor, onClick = onLicenses)
                 }
             }
         }

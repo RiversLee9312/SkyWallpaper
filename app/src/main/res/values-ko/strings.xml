@@ -135,4 +135,8 @@
     <string name="color_hue">색조</string>
     <string name="color_saturation">채도</string>
     <string name="color_brightness">밝기</string>
+    <string name="open_source_licenses">오픈소스 라이선스</string>
+    <string name="project_license">프로젝트 라이선스</string>
+    <string name="third_party_libraries">서드파티 라이브러리</string>
+    <string name="source_code">소스 코드</string>
 </resources>

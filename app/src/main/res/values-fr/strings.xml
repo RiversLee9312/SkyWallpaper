@@ -135,4 +135,8 @@
     <string name="color_hue">Teinte</string>
     <string name="color_saturation">Saturation</string>
     <string name="color_brightness">Luminosité</string>
+    <string name="open_source_licenses">Licences open source</string>
+    <string name="project_license">Licence du projet</string>
+    <string name="third_party_libraries">Bibliothèques tierces</string>
+    <string name="source_code">Code source</string>
 </resources>

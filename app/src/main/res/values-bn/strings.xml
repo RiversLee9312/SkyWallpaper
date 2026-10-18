@@ -135,4 +135,8 @@
     <string name="color_hue">রঙের আভা</string>
     <string name="color_saturation">স্যাচুরেশন</string>
     <string name="color_brightness">উজ্জ্বলতা</string>
+    <string name="open_source_licenses">ওপেন সোর্স লাইসেন্স</string>
+    <string name="project_license">প্রকল্পের লাইসেন্স</string>
+    <string name="third_party_libraries">তৃতীয় পক্ষের লাইব্রেরি</string>
+    <string name="source_code">সোর্স কোড</string>
 </resources>

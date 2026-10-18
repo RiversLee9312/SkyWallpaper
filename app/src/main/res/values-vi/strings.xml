@@ -135,4 +135,8 @@
     <string name="color_hue">Sắc độ</string>
     <string name="color_saturation">Độ bão hòa</string>
     <string name="color_brightness">Độ sáng</string>
+    <string name="open_source_licenses">Giấy phép nguồn mở</string>
+    <string name="project_license">Giấy phép dự án</string>
+    <string name="third_party_libraries">Thư viện bên thứ ba</string>
+    <string name="source_code">Mã nguồn</string>
 </resources>

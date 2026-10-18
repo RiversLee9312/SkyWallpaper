@@ -42,6 +42,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.core.net.toUri
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -245,6 +246,7 @@ fun SkyScreen(repository: SkyRepository, revision: Int, locationStatus: String, 
                 onBackgroundPermission = { if (context.hasFine()) backgroundDialog = true else requestLocation() },
                 onSystemPermissions = { context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${context.packageName}"))) },
                 onLanguage = { context.startActivity(Intent(Settings.ACTION_APP_LOCALE_SETTINGS, Uri.parse("package:${context.packageName}"))) },
+                onLicenses = { navigation.navigate("licenses") },
                 wallpaperSummary = stringResource(if (store.mode == WallpaperMode.IMAGE) R.string.picture_mode else R.string.gradient_mode),
                 onWallpapers = { navigation.navigate("wallpapers") },
                 wallpaperThumbnail = { modifier -> WallpaperArtwork(store, selected, revision, modifier) },
@@ -252,6 +254,13 @@ fun SkyScreen(repository: SkyRepository, revision: Int, locationStatus: String, 
         }
         composable("wallpapers") {
             WallpaperEditorScreen(store, revision, onBack = { navigation.popBackStack() }, onGradient = { phase -> navigation.navigate("gradient/${phase.name}") })
+        }
+        composable("licenses") {
+            OpenSourceScreen(onBack = { navigation.popBackStack() }, onLicense = { navigation.navigate("license/$it") },
+                onSource = { context.startActivity(Intent(Intent.ACTION_VIEW, "https://github.com/RiversLee9312/SkyWallpaper".toUri())) })
+        }
+        composable("license/{id}") { entry ->
+            LicenseTextScreen(entry.arguments?.getString("id") ?: "project", onBack = { navigation.popBackStack() })
         }
         composable("gradient/{phase}") { entry ->
             val phase = SkyPhase.entries.find { it.name == entry.arguments?.getString("phase") } ?: SkyPhase.DAY

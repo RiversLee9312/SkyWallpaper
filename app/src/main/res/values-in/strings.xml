@@ -135,4 +135,8 @@
     <string name="color_hue">Rona</string>
     <string name="color_saturation">Saturasi</string>
     <string name="color_brightness">Kecerahan</string>
+    <string name="open_source_licenses">Lisensi sumber terbuka</string>
+    <string name="project_license">Lisensi proyek</string>
+    <string name="third_party_libraries">Pustaka pihak ketiga</string>
+    <string name="source_code">Kode sumber</string>
 </resources>

@@ -135,4 +135,8 @@
     <string name="color_hue">Matiz</string>
     <string name="color_saturation">Saturação</string>
     <string name="color_brightness">Brilho</string>
+    <string name="open_source_licenses">Licenças de código aberto</string>
+    <string name="project_license">Licença do projeto</string>
+    <string name="third_party_libraries">Bibliotecas de terceiros</string>
+    <string name="source_code">Código-fonte</string>
 </resources>

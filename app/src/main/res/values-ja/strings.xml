@@ -135,4 +135,8 @@
     <string name="color_hue">色相</string>
     <string name="color_saturation">彩度</string>
     <string name="color_brightness">明度</string>
+    <string name="open_source_licenses">オープンソースライセンス</string>
+    <string name="project_license">プロジェクトライセンス</string>
+    <string name="third_party_libraries">サードパーティ製ライブラリ</string>
+    <string name="source_code">ソースコード</string>
 </resources>

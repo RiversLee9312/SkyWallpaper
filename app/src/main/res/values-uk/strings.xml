@@ -135,4 +135,8 @@
     <string name="color_hue">Відтінок</string>
     <string name="color_saturation">Насиченість</string>
     <string name="color_brightness">Яскравість</string>
+    <string name="open_source_licenses">Ліцензії відкритого програмного забезпечення</string>
+    <string name="project_license">Ліцензія проєкту</string>
+    <string name="third_party_libraries">Сторонні бібліотеки</string>
+    <string name="source_code">Вихідний код</string>
 </resources>

@@ -135,4 +135,8 @@
     <string name="color_hue">เฉดสี</string>
     <string name="color_saturation">ความอิ่มตัว</string>
     <string name="color_brightness">ความสว่าง</string>
+    <string name="open_source_licenses">ใบอนุญาตโอเพนซอร์ส</string>
+    <string name="project_license">ใบอนุญาตโครงการ</string>
+    <string name="third_party_libraries">ไลบรารีของบุคคลที่สาม</string>
+    <string name="source_code">ซอร์สโค้ด</string>
 </resources>

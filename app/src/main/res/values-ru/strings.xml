@@ -135,4 +135,8 @@
     <string name="color_hue">Тон</string>
     <string name="color_saturation">Насыщенность</string>
     <string name="color_brightness">Яркость</string>
+    <string name="open_source_licenses">Лицензии с открытым исходным кодом</string>
+    <string name="project_license">Лицензия проекта</string>
+    <string name="third_party_libraries">Сторонние библиотеки</string>
+    <string name="source_code">Исходный код</string>
 </resources>

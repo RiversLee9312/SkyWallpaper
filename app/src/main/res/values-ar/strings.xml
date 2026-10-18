@@ -135,4 +135,8 @@
     <string name="color_hue">درجة اللون</string>
     <string name="color_saturation">التشبع</string>
     <string name="color_brightness">السطوع</string>
+    <string name="open_source_licenses">تراخيص المصادر المفتوحة</string>
+    <string name="project_license">ترخيص المشروع</string>
+    <string name="third_party_libraries">مكتبات الطرف الثالث</string>
+    <string name="source_code">الشفرة المصدرية</string>
 </resources>

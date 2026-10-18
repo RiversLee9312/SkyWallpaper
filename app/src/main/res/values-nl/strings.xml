@@ -135,4 +135,8 @@
     <string name="color_hue">Kleurtoon</string>
     <string name="color_saturation">Verzadiging</string>
     <string name="color_brightness">Helderheid</string>
+    <string name="open_source_licenses">Open-sourcelicenties</string>
+    <string name="project_license">Projectlicentie</string>
+    <string name="third_party_libraries">Bibliotheken van derden</string>
+    <string name="source_code">Broncode</string>
 </resources>

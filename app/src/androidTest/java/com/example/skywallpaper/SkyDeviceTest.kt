@@ -177,6 +177,33 @@ class SkyDeviceTest {
         Assert.assertEquals(WallpaperMode.IMAGE, SkyRepository(context).wallpapers.mode)
     }
 
+    @Test fun openSourceLicensesAreAvailableOfflineAndRestoreNavigation() {
+        val libraries = OpenSourceLicenses.libraries(context)
+        Assert.assertEquals(libraries.size, libraries.map { it.id }.toSet().size)
+        Assert.assertTrue(libraries.any { it.id == "androidx" })
+        Assert.assertTrue(libraries.any { it.id == "material-symbols" })
+        for (entry in libraries + OpenSourceLicenses.project) {
+            val legalText = context.assets.open(entry.asset).bufferedReader().use { it.readText() }
+            Assert.assertTrue("Missing license for ${entry.name}", legalText.contains("TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION"))
+            Assert.assertTrue("Missing attribution for ${entry.name}", legalText.contains("Copyright"))
+        }
+        compose.onNodeWithContentDescription(context.getString(R.string.settings)).performClick()
+        compose.onNode(hasScrollAction()).performScrollToNode(hasText(context.getString(R.string.open_source_licenses)))
+        compose.onNodeWithText(context.getString(R.string.open_source_licenses)).performClick()
+        compose.onNodeWithContentDescription(context.getString(R.string.source_code)).assertIsDisplayed()
+        compose.onNodeWithText("Sky Wallpaper").performClick()
+        compose.onNodeWithText("Copyright 2026 RiversLee9312", substring = true).assertIsDisplayed()
+        scenario?.recreate()
+        compose.onNodeWithText("Copyright 2026 RiversLee9312", substring = true).assertIsDisplayed()
+        compose.onNodeWithContentDescription(context.getString(R.string.back)).performClick()
+        compose.onNodeWithText("AndroidX").performScrollTo().performClick()
+        compose.onNodeWithText("Copyright The Android Open Source Project").assertIsDisplayed()
+        compose.onNodeWithContentDescription(context.getString(R.string.back)).performClick()
+        compose.onNodeWithText(context.getString(R.string.project_license)).assertIsDisplayed()
+        compose.onNodeWithContentDescription(context.getString(R.string.back)).performClick()
+        compose.onNodeWithText(context.getString(R.string.open_source_licenses)).assertIsDisplayed()
+    }
+
     @Test fun changingPhoneTimezoneKeepsUtcSunriseUnchanged() {
         val originalZone = java.util.TimeZone.getDefault().id
         val now = Instant.now()

@@ -135,4 +135,8 @@
     <string name="color_hue">Renk tonu</string>
     <string name="color_saturation">Doygunluk</string>
     <string name="color_brightness">Parlaklık</string>
+    <string name="open_source_licenses">Açık kaynak lisansları</string>
+    <string name="project_license">Proje lisansı</string>
+    <string name="third_party_libraries">Üçüncü taraf kitaplıkları</string>
+    <string name="source_code">Kaynak kodu</string>
 </resources>

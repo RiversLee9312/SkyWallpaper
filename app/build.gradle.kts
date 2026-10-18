@@ -1,7 +1,79 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+import org.gradle.api.artifacts.result.ResolvedArtifactResult
+import org.gradle.maven.MavenModule
+import org.gradle.maven.MavenPomArtifact
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
 }
+
+// Export the resolved runtime artifacts, including transitive dependencies, for offline notices.
+tasks.register("exportLicenseDependencies") {
+    notCompatibleWithConfigurationCache("Resolves dependency metadata for the maintenance tool")
+    doLast {
+        val artifacts = listOf("releaseRuntimeClasspath", "debugRuntimeClasspath").flatMap { name ->
+            configurations.getByName(name).incoming.artifacts.artifacts.mapNotNull { artifact ->
+                val id = artifact.id.componentIdentifier as? ModuleComponentIdentifier ?: return@mapNotNull null
+                Triple(id, name.removeSuffix("RuntimeClasspath"), artifact.file)
+            }
+        }
+        val poms = dependencies.createArtifactResolutionQuery()
+            .forComponents(artifacts.map { it.first }.distinct())
+            .withArtifacts(MavenModule::class.java, MavenPomArtifact::class.java).execute()
+            .resolvedComponents.associate { component ->
+                component.id to component.getArtifacts(MavenPomArtifact::class.java)
+                    .filterIsInstance<ResolvedArtifactResult>().single().file.absolutePath
+            }
+        val entries = artifacts.groupBy { "${it.first.group}:${it.first.module}:${it.first.version}" }
+            .toSortedMap().map { (coordinate, values) ->
+                mapOf("coordinate" to coordinate, "scopes" to values.map { it.second }.distinct().sorted(),
+                    "artifacts" to values.map { it.third.absolutePath }.distinct().sorted(), "pom" to poms.getValue(values.first().first))
+            }
+        val report = layout.buildDirectory.file("reports/licenses/dependencies.json").get().asFile
+        report.parentFile.mkdirs()
+        report.writeText(JsonOutput.prettyPrint(JsonOutput.toJson(entries)))
+        logger.lifecycle("Exported ${entries.size} runtime dependencies to $report")
+    }
+}
+
+abstract class VerifyOpenSourceNotices : DefaultTask() {
+    @get:Input abstract val coordinates: ListProperty<String>
+    @get:InputDirectory @get:PathSensitive(PathSensitivity.RELATIVE) abstract val notices: DirectoryProperty
+    @get:InputFile @get:PathSensitive(PathSensitivity.RELATIVE) abstract val projectLicense: RegularFileProperty
+    @get:InputFile @get:PathSensitive(PathSensitivity.RELATIVE) abstract val projectNotice: RegularFileProperty
+
+    @TaskAction fun verify() {
+        val directory = notices.get().asFile
+        val entries = JsonSlurper().parse(directory.resolve("catalog.json")) as List<*>
+        val documented = entries.flatMap { (it as Map<*, *>)["coordinates"] as List<*> }.toSet()
+        check(documented == coordinates.get().toSet()) { "Dependency notices are stale. Run python tools/update_licenses.py." }
+        entries.forEach { entry ->
+            val asset = (entry as Map<*, *>)["asset"] as String
+            check(directory.parentFile.resolve(asset).isFile) { "Missing license asset: $asset" }
+        }
+        fun normalized(file: File) = file.readText().replace("\r\n", "\n")
+        val expected = normalized(projectNotice.get().asFile).trimEnd() + "\n\n" + normalized(projectLicense.get().asFile).trim() + "\n"
+        check(normalized(directory.resolve("project.txt")) == expected) { "Project license text is stale. Run python tools/update_licenses.py." }
+    }
+}
+
+fun runtimeCoordinates(name: String) = configurations.named(name).flatMap { it.incoming.artifacts.resolvedArtifacts }.map { artifacts ->
+    artifacts.mapNotNull { artifact ->
+        (artifact.id.componentIdentifier as? ModuleComponentIdentifier)?.let { "${it.group}:${it.module}:${it.version}" }
+    }
+}
+val verifyOpenSourceNotices = tasks.register<VerifyOpenSourceNotices>("verifyOpenSourceNotices") {
+    coordinates.set(runtimeCoordinates("releaseRuntimeClasspath").zip(runtimeCoordinates("debugRuntimeClasspath")) { release, debug ->
+        (release + debug).distinct().sorted()
+    })
+    notices.set(layout.projectDirectory.dir("src/main/assets/licenses"))
+    projectLicense.set(rootProject.layout.projectDirectory.file("LICENSE"))
+    projectNotice.set(rootProject.layout.projectDirectory.file("NOTICE"))
+}
+tasks.named("preBuild").configure { dependsOn(verifyOpenSourceNotices) }
 
 android {
     namespace = "com.example.skywallpaper"
