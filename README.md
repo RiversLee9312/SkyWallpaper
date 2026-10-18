@@ -13,6 +13,12 @@ An Android live wallpaper that switches among four periods based on solar elevat
 - 20 languages across 21 locale variants, with Arabic RTL and support for large text.
 - View the project license, third-party components, and full license texts offline in the app.
 
+## Download
+
+[Download the latest release](https://github.com/RiversLee9312/SkyWallpaper/releases/latest) for Android 14 and later. The release assets include the APK and `SHA256SUMS`.
+
+The official release APK uses a different signing key from local debug builds, so Android cannot install it directly over a debug build.
+
 ## Use
 
 1. Open the app and allow location access, or enter fixed coordinates.
@@ -52,7 +58,29 @@ On Windows:
 .\gradlew.bat :app:assembleDebug
 ```
 
-The debug APK is at `app/build/outputs/apk/debug/app-debug.apk`. Material 3 Expressive is pinned to `1.5.0-alpha14`, and Navigation Compose to `2.9.8`. Release builds require you to configure signing; the repository does not include signing keys.
+The debug APK is at `app/build/outputs/apk/debug/app-debug.apk`. Material 3 Expressive is pinned to `1.5.0-alpha14`, and Navigation Compose to `2.9.8`. For official release signing, see [Release signing](#release-signing).
+
+## Release signing
+
+On Windows, use PowerShell 7 with JDK 21 and Android SDK build-tools 36.0.0. Initialize a signing key once for a new application:
+
+```powershell
+pwsh -File tools/build_release.ps1 -InitializeSigningKey
+```
+
+For later updates, reuse the existing key:
+
+```powershell
+pwsh -File tools/build_release.ps1
+```
+
+Never initialize a new key for an update; updates must use the original signing key. By default, the PKCS12 key and Windows DPAPI-encrypted password are stored outside the repository in `~/.android/skywallpaper-signing/`. DPAPI is tied to the current Windows user. Keep independent secure backups of both the key and password; the DPAPI file alone is not a portable password backup.
+
+On other platforms, set all four Gradle signing environment variables: `SKYWALLPAPER_KEYSTORE_FILE`, `SKYWALLPAPER_STORE_PASSWORD`, `SKYWALLPAPER_KEY_ALIAS`, and `SKYWALLPAPER_KEY_PASSWORD`. Then run:
+
+```sh
+./gradlew :app:assembleRelease --no-configuration-cache
+```
 
 ## Verification and maintenance
 

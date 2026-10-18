@@ -13,6 +13,12 @@
 - 20 种语言、21 个本地化选项，支持阿拉伯语 RTL 与大字号。
 - 应用内离线查看项目许可证、第三方组件及完整许可正文。
 
+## 下载
+
+[下载最新正式版](https://github.com/RiversLee9312/SkyWallpaper/releases/latest)，适用于 Android 14 及以上版本。Release 附件包含 APK 和 `SHA256SUMS`。
+
+正式版 APK 使用的签名与本地调试构建不同，Android 无法将其直接覆盖安装到调试版上。
+
 ## 使用
 
 1. 打开应用，允许定位，或输入固定经纬度。
@@ -52,7 +58,29 @@ Windows：
 .\gradlew.bat :app:assembleDebug
 ```
 
-调试 APK 位于 `app/build/outputs/apk/debug/app-debug.apk`。Material 3 Expressive 固定为 `1.5.0-alpha14`，Navigation Compose 固定为 `2.9.8`。Release 构建需要开发者自行配置签名；仓库不包含签名密钥。
+调试 APK 位于 `app/build/outputs/apk/debug/app-debug.apk`。Material 3 Expressive 固定为 `1.5.0-alpha14`，Navigation Compose 固定为 `2.9.8`。正式版签名方式请参阅[发布签名](#发布签名)。
+
+## 发布签名
+
+Windows 上使用 PowerShell 7、JDK 21 和 Android SDK Build-Tools 36.0.0。新应用首次发布时，只初始化一次签名密钥：
+
+```powershell
+pwsh -File tools/build_release.ps1 -InitializeSigningKey
+```
+
+后续更新复用现有密钥：
+
+```powershell
+pwsh -File tools/build_release.ps1
+```
+
+更新时禁止重新初始化密钥，必须继续使用原签名密钥。默认情况下，PKCS12 密钥和 Windows DPAPI 加密口令保存在仓库外的 `~/.android/skywallpaper-signing/`。DPAPI 与当前 Windows 用户绑定。请分别安全备份密钥和口令；DPAPI 文件本身不能作为跨设备使用的口令备份。
+
+其他平台可通过以下四个环境变量配置 Gradle 签名：`SKYWALLPAPER_KEYSTORE_FILE`、`SKYWALLPAPER_STORE_PASSWORD`、`SKYWALLPAPER_KEY_ALIAS` 和 `SKYWALLPAPER_KEY_PASSWORD`。然后运行：
+
+```sh
+./gradlew :app:assembleRelease --no-configuration-cache
+```
 
 ## 验证与维护
 

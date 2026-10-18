@@ -84,13 +84,28 @@ android {
         minSdk = 34
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    val releaseSigning = listOf("SKYWALLPAPER_KEYSTORE_FILE", "SKYWALLPAPER_STORE_PASSWORD", "SKYWALLPAPER_KEY_ALIAS", "SKYWALLPAPER_KEY_PASSWORD")
+        .associateWith { providers.environmentVariable(it).orNull }
+    require(releaseSigning.values.all { it == null } || releaseSigning.values.all { !it.isNullOrBlank() }) {
+        "Provide all four SKYWALLPAPER signing environment variables, or leave all unset."
+    }
+    if (releaseSigning.values.all { it != null }) {
+        signingConfigs.create("release") {
+            storeFile = file(releaseSigning.getValue("SKYWALLPAPER_KEYSTORE_FILE")!!)
+            storePassword = releaseSigning.getValue("SKYWALLPAPER_STORE_PASSWORD")
+            keyAlias = releaseSigning.getValue("SKYWALLPAPER_KEY_ALIAS")
+            keyPassword = releaseSigning.getValue("SKYWALLPAPER_KEY_PASSWORD")
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.findByName("release")
             optimization {
                 enable = false
             }
