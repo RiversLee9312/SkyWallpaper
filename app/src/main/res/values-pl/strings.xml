@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">Zresetować ten gradient?</string>
     <string name="reset_gradient_body">Przywróć domyślne kolory i pozycje dla %1$s.</string>
     <string name="reset">Resetuj</string>
-    <string name="gradient_hint">Każdy okres używa tych wartości w swoim punkcie środkowym. Przejścia są automatyczne.</string>
+    <string name="gradient_hint">Świt, dzień i zmierzch przechodzą jeden w drugi między środkowymi punktami poszczególnych okresów. Noc stopniowo się pojawia lub zanika, gdy wysokość Słońca mieści się między −6° a 0°.</string>
     <string name="image_import_failed">Nie można otworzyć tego obrazu. Spróbuj innego.</string>
     <string name="image_importing">Importowanie obrazu…</string>
     <string name="gradient_invalid_color">Wpisz sześciocyfrowy kod koloru HEX</string>
@@ -139,4 +139,7 @@
     <string name="project_license">Licencja projektu</string>
     <string name="third_party_libraries">Biblioteki firm trzecich</string>
     <string name="source_code">Kod źródłowy</string>
+    <string name="gradient_preview">Podgląd gradientu</string>
+    <string name="gradient_geometry">Geometria</string>
+    <string name="done">Gotowe</string>
 </resources>

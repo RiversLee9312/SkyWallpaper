@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">รีเซ็ตการไล่ระดับสีนี้หรือไม่</string>
     <string name="reset_gradient_body">คืนค่าสีและตำแหน่งของ %1$s เป็นค่าเริ่มต้น</string>
     <string name="reset">รีเซ็ต</string>
-    <string name="gradient_hint">แต่ละช่วงเวลาใช้ค่าเหล่านี้ ณ จุดกึ่งกลาง การเปลี่ยนผ่านจะทำงานโดยอัตโนมัติ</string>
+    <string name="gradient_hint">รุ่งอรุณ กลางวัน และพลบค่ำเปลี่ยนผ่านระหว่างจุดกึ่งกลางของแต่ละช่วง กลางคืนจะค่อย ๆ ปรากฏหรือจางหายเมื่อมุมเงยของดวงอาทิตย์อยู่ระหว่าง −6° ถึง 0°</string>
     <string name="image_import_failed">เปิดรูปภาพนี้ไม่ได้ ลองรูปอื่น</string>
     <string name="image_importing">กำลังนำเข้ารูปภาพ…</string>
     <string name="gradient_invalid_color">ป้อนรหัสสีฐานสิบหก 6 หลัก</string>
@@ -139,4 +139,7 @@
     <string name="project_license">ใบอนุญาตโครงการ</string>
     <string name="third_party_libraries">ไลบรารีของบุคคลที่สาม</string>
     <string name="source_code">ซอร์สโค้ด</string>
+    <string name="gradient_preview">ตัวอย่างการไล่ระดับสี</string>
+    <string name="gradient_geometry">ตำแหน่ง</string>
+    <string name="done">เสร็จสิ้น</string>
 </resources>

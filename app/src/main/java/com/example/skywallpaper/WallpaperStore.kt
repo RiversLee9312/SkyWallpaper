@@ -57,8 +57,8 @@ class WallpaperStore(private val context: Context, private val prefs: SharedPref
             anchors = SolarGradientClock.anchors(now, point)
             anchorKey = key
         }
-        val blend = SolarGradientClock.blend(now, anchors, phase)
-        return GradientInterpolation.frame(gradient(blend.from), gradient(blend.to), blend.fraction)
+        val blend = SolarGradientClock.blend(now, anchors, phase, SolarClock.position(now, point).elevation)
+        return GradientInterpolation.frame(blend, ::gradient)
     }
 
     fun imageFile(phase: SkyPhase): File? {

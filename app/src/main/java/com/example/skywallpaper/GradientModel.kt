@@ -50,10 +50,21 @@ data class SkyGradient(
 
 /** Interpolate corresponding stop ranks, retaining every knot even with unequal stop counts. */
 object GradientInterpolation {
-    fun frame(from: SkyGradient, to: SkyGradient, fraction: Float): GradientFrame {
+    fun frame(blend: GradientBlend, gradient: (SkyPhase) -> SkyGradient): GradientFrame {
+        if (blend.nightFraction == 1f) return GradientFrame.from(gradient(SkyPhase.NIGHT))
+        val daylight = if (blend.from == blend.to) GradientFrame.from(gradient(blend.from))
+            else frame(gradient(blend.from), gradient(blend.to), blend.fraction)
+        return if (blend.nightFraction == 0f) daylight
+            else frame(daylight, GradientFrame.from(gradient(SkyPhase.NIGHT)), blend.nightFraction)
+    }
+
+    fun frame(from: SkyGradient, to: SkyGradient, fraction: Float): GradientFrame =
+        frame(GradientFrame.from(from), GradientFrame.from(to), fraction)
+
+    private fun frame(from: GradientFrame, to: GradientFrame, fraction: Float): GradientFrame {
         val t = fraction.coerceIn(0f, 1f)
-        if (t == 0f) return GradientFrame.from(from)
-        if (t == 1f) return GradientFrame.from(to)
+        if (t == 0f) return from
+        if (t == 1f) return to
         val ranks = (from.stops.indices.map { it.toFloat() / (from.stops.size - 1) } +
             to.stops.indices.map { it.toFloat() / (to.stops.size - 1) }).distinct().sorted()
         return GradientFrame(ranks.map { rank ->
@@ -88,7 +99,7 @@ data class GradientFrame(val stops: List<GradientStop>, val start: GradientPoint
 }
 
 data class GradientAnchor(val instant: Instant, val phase: SkyPhase)
-data class GradientBlend(val from: SkyPhase, val to: SkyPhase, val fraction: Float)
+data class GradientBlend(val from: SkyPhase, val to: SkyPhase, val fraction: Float, val nightFraction: Float = 0f)
 
 /** Midpoints of actual solar phase spans, including the night that crosses a geographic date. */
 object SolarGradientClock {
@@ -118,14 +129,23 @@ object SolarGradientClock {
         }
     }
 
-    fun blend(now: Instant, anchors: List<GradientAnchor>, fallback: SkyPhase): GradientBlend {
+    fun blend(now: Instant, anchors: List<GradientAnchor>, fallback: SkyPhase, elevation: Double): GradientBlend {
+        require(elevation.isFinite())
+        // Geometric 0°, rather than the -0.833° threshold used by the sunrise/set labels.
+        val night = smoothstep((-elevation / 6.0).toFloat().coerceIn(0f, 1f))
+        if (night == 1f) return GradientBlend(SkyPhase.NIGHT, SkyPhase.NIGHT, 0f, night)
         val right = anchors.indexOfFirst { it.instant > now }
-        if (right <= 0) return GradientBlend(fallback, fallback, 0f)
+        if (right <= 0) return GradientBlend(fallback, fallback, 0f, night)
         val a = anchors[right - 1]
         val b = anchors[right]
+        // Retain dawn -> day -> dusk timing; hold dawn/dusk outside those midpoint spans.
+        val from = if (a.phase == SkyPhase.NIGHT) b.phase else a.phase
+        val to = if (b.phase == SkyPhase.NIGHT) a.phase else b.phase
+        if (from == to) return GradientBlend(from, to, 0f, night)
         val t = ((now.toEpochMilli() - a.instant.toEpochMilli()).toDouble() /
             (b.instant.toEpochMilli() - a.instant.toEpochMilli())).toFloat().coerceIn(0f, 1f)
-        // Zero slope at each midpoint avoids a change in velocity at the interpolation nodes.
-        return GradientBlend(a.phase, b.phase, t * t * (3f - 2f * t))
+        return GradientBlend(from, to, smoothstep(t), night)
     }
+
+    private fun smoothstep(t: Float) = t * t * (3f - 2f * t)
 }

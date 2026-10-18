@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">Atur ulang gradien ini?</string>
     <string name="reset_gradient_body">Pulihkan warna dan posisi default untuk %1$s.</string>
     <string name="reset">Atur ulang</string>
-    <string name="gradient_hint">Setiap periode menggunakan nilai ini pada titik tengahnya. Transisi berlangsung otomatis.</string>
+    <string name="gradient_hint">Fajar, siang, dan senja beralih di antara titik tengah masing-masing. Nuansa malam muncul atau memudar saat ketinggian matahari berada di antara −6° dan 0°.</string>
     <string name="image_import_failed">Gambar ini tidak dapat dibuka. Coba gambar lain.</string>
     <string name="image_importing">Mengimpor gambar…</string>
     <string name="gradient_invalid_color">Masukkan kode warna heksadesimal enam digit</string>
@@ -139,4 +139,7 @@
     <string name="project_license">Lisensi proyek</string>
     <string name="third_party_libraries">Pustaka pihak ketiga</string>
     <string name="source_code">Kode sumber</string>
+    <string name="gradient_preview">Pratinjau gradien</string>
+    <string name="gradient_geometry">Geometri</string>
+    <string name="done">Selesai</string>
 </resources>

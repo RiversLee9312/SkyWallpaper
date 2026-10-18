@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">Reset this gradient?</string>
     <string name="reset_gradient_body">Restore the default colors and positions for %1$s.</string>
     <string name="reset">Reset</string>
-    <string name="gradient_hint">Each period uses these values at its midpoint. Transitions are automatic.</string>
+    <string name="gradient_hint">Dawn, day and dusk transition between their midpoints. Night fades in or out between −6° and 0° solar elevation.</string>
     <string name="image_import_failed">Could not open this image. Try another one.</string>
     <string name="image_importing">Importing image…</string>
     <string name="gradient_invalid_color">Enter a six-digit hex color</string>
@@ -139,4 +139,7 @@
     <string name="project_license">Project license</string>
     <string name="third_party_libraries">Third-party libraries</string>
     <string name="source_code">Source code</string>
+    <string name="gradient_preview">Gradient preview</string>
+    <string name="gradient_geometry">Geometry</string>
+    <string name="done">Done</string>
 </resources>

@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">重置此渐变？</string>
     <string name="reset_gradient_body">将%1$s的颜色与位置恢复为默认值。</string>
     <string name="reset">重置</string>
-    <string name="gradient_hint">各时段在中间时刻使用所设参数，时段之间自动过渡。</string>
+    <string name="gradient_hint">清晨、白天、黄昏按时段中点过渡。夜色在太阳高度 −6° 至 0° 之间衔接。</string>
     <string name="image_import_failed">无法读取此图片，请换一张重试。</string>
     <string name="image_importing">正在导入图片…</string>
     <string name="gradient_invalid_color">输入六位十六进制颜色</string>
@@ -139,4 +139,7 @@
     <string name="project_license">项目许可证</string>
     <string name="third_party_libraries">第三方组件</string>
     <string name="source_code">源代码</string>
+    <string name="gradient_preview">渐变预览</string>
+    <string name="gradient_geometry">位置</string>
+    <string name="done">完成</string>
 </resources>

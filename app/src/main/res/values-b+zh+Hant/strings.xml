@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">要重設此漸層嗎？</string>
     <string name="reset_gradient_body">將%1$s的預設顏色與位置還原。</string>
     <string name="reset">重設</string>
-    <string name="gradient_hint">各時段以中間時刻的參數為準，時段之間會自動過渡。</string>
+    <string name="gradient_hint">清晨、白天與黃昏按各自時段的中點過渡。夜色在太陽高度 −6° 至 0° 之間淡入或淡出。</string>
     <string name="image_import_failed">無法開啟此圖片，請嘗試其他圖片。</string>
     <string name="image_importing">正在匯入圖片…</string>
     <string name="gradient_invalid_color">請輸入六位數十六進位色碼</string>
@@ -139,4 +139,7 @@
     <string name="project_license">專案授權</string>
     <string name="third_party_libraries">第三方程式庫</string>
     <string name="source_code">原始碼</string>
+    <string name="gradient_preview">漸層預覽</string>
+    <string name="gradient_geometry">位置</string>
+    <string name="done">完成</string>
 </resources>

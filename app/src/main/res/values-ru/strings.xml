@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">Сбросить этот градиент?</string>
     <string name="reset_gradient_body">Восстановить цвета и положения по умолчанию для %1$s.</string>
     <string name="reset">Сбросить</string>
-    <string name="gradient_hint">Каждый период использует эти значения в своей средней точке. Переходы выполняются автоматически.</string>
+    <string name="gradient_hint">Рассвет, день и сумерки переходят друг в друга между средними точками соответствующих периодов. Ночная цветовая схема плавно появляется или исчезает при высоте Солнца от −6° до 0°.</string>
     <string name="image_import_failed">Не удалось открыть это изображение. Попробуйте другое.</string>
     <string name="image_importing">Импорт изображения…</string>
     <string name="gradient_invalid_color">Введите шестнадцатеричный код цвета из шести цифр</string>
@@ -139,4 +139,7 @@
     <string name="project_license">Лицензия проекта</string>
     <string name="third_party_libraries">Сторонние библиотеки</string>
     <string name="source_code">Исходный код</string>
+    <string name="gradient_preview">Предпросмотр градиента</string>
+    <string name="gradient_geometry">Геометрия</string>
+    <string name="done">Готово</string>
 </resources>

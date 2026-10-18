@@ -12,7 +12,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import java.util.Locale
-import kotlin.math.abs
 import kotlin.math.roundToInt
 
 val GradientType.titleRes: Int get() = when (this) {
@@ -137,86 +135,6 @@ fun WallpaperEditorScreen(store: WallpaperStore, revision: Int, onBack: () -> Un
         }, confirmButton = { TextButton(onClick = { typeDialog = false }) { Text(stringResource(R.string.cancel)) } })
 }
 
-private val gradientSaver = Saver<SkyGradient, String>(save = { GradientCodec.encode(it) }, restore = { GradientCodec.decode(it) })
-
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
-@Composable
-fun GradientEditorScreen(phase: SkyPhase, type: GradientType, initial: SkyGradient, onBack: () -> Unit, onSave: (SkyGradient) -> Unit) {
-    var draft by rememberSaveable(phase, stateSaver = gradientSaver) { mutableStateOf(initial) }
-    var colorIndex by rememberSaveable { mutableStateOf<Int?>(null) }
-    var reset by rememberSaveable { mutableStateOf(false) }
-    val valid = type != GradientType.LINEAR || abs(draft.start.x - draft.end.x) + abs(draft.start.y - draft.end.y) >= .01f
-    val colors = MaterialTheme.colorScheme
-    Scaffold(topBar = {
-        WallpaperTopBar(stringResource(phase.titleRes), onBack) {
-            IconButton(onClick = { reset = true }) { Icon(painterResource(R.drawable.ic_symbol_history), stringResource(R.string.reset_gradient)) }
-            TextButton(onClick = { onSave(draft) }, enabled = valid) { Text(stringResource(R.string.save_location)) }
-        }
-    }, contentWindowInsets = WindowInsets.safeDrawing) { padding ->
-        Column(Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState()).padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)) {
-            GradientArtwork(type, GradientFrame.from(draft), Modifier.fillMaxWidth().height(240.dp).clip(MaterialTheme.shapes.extraLarge),
-                stringResource(R.string.image_description, stringResource(phase.titleRes)))
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text(stringResource(R.string.gradient_colors), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
-                TextButton(onClick = { draft = draft.copy(stops = addStop(draft.stops)) }, enabled = draft.stops.size < 6) {
-                    Icon(painterResource(R.drawable.ic_symbol_add), null, Modifier.size(18.dp))
-                    Spacer(Modifier.width(6.dp))
-                    Text(stringResource(R.string.add_color))
-                }
-            }
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                draft.stops.forEachIndexed { index, stop ->
-                    Surface(shape = MaterialTheme.shapes.large, color = colors.surfaceContainerLow) {
-                        Column(Modifier.padding(16.dp)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Row(Modifier.weight(1f).clip(MaterialTheme.shapes.small).clickable { colorIndex = index }.padding(vertical = 4.dp),
-                                    verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                    Box(Modifier.size(36.dp).clip(CircleShape).background(Color(stop.color)))
-                                    Column {
-                                        Text(stringResource(R.string.color_stop, index + 1), style = MaterialTheme.typography.labelLarge)
-                                        Text("#${hex(stop.color)}", style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant)
-                                    }
-                                }
-                                IconButton(onClick = { draft = draft.copy(stops = draft.stops.filterIndexed { i, _ -> i != index }) }, enabled = draft.stops.size > 2) {
-                                    Icon(painterResource(R.drawable.ic_symbol_delete), stringResource(R.string.remove_color))
-                                }
-                            }
-                            ParameterSlider(stringResource(R.string.stop_position), stop.position, onChange = { value ->
-                                val min = if (index == 0) 0f else draft.stops[index - 1].position + .01f
-                                val max = if (index == draft.stops.lastIndex) 1f else draft.stops[index + 1].position - .01f
-                                draft = draft.copy(stops = draft.stops.mapIndexed { i, item -> if (i == index) item.copy(position = value.coerceIn(min, max)) else item })
-                            }, description = stringResource(R.string.color_stop, index + 1) + ", " + stringResource(R.string.stop_position))
-                        }
-                    }
-                }
-            }
-            Text(stringResource(R.string.geometry_hint), style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant)
-            if (type == GradientType.LINEAR) {
-                PointControls(stringResource(R.string.gradient_start), draft.start) { draft = draft.copy(start = it) }
-                PointControls(stringResource(R.string.gradient_end), draft.end) { draft = draft.copy(end = it) }
-                if (!valid) Text(stringResource(R.string.gradient_invalid_points), color = colors.error, style = MaterialTheme.typography.bodySmall)
-            } else {
-                PointControls(stringResource(R.string.gradient_center), draft.center) { draft = draft.copy(center = it) }
-                if (type == GradientType.RADIAL) EditorSection(stringResource(R.string.gradient_radius)) {
-                    Text(stringResource(R.string.gradient_radius_hint), style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant)
-                    ParameterSlider(stringResource(R.string.gradient_radius), draft.radius, { draft = draft.copy(radius = it) }, range = .1f..2f)
-                }
-            }
-        }
-    }
-    colorIndex?.let { index ->
-        ColorDialog(draft.stops[index].color, stringResource(R.string.color_stop, index + 1), onDismiss = { colorIndex = null }) { color ->
-            draft = draft.copy(stops = draft.stops.mapIndexed { i, stop -> if (i == index) stop.copy(color = color) else stop })
-            colorIndex = null
-        }
-    }
-    if (reset) AlertDialog(onDismissRequest = { reset = false }, title = { Text(stringResource(R.string.reset_gradient_title)) },
-        text = { Text(stringResource(R.string.reset_gradient_body, stringResource(phase.titleRes))) },
-        confirmButton = { TextButton(onClick = { draft = SkyGradient.default(phase, type); reset = false }) { Text(stringResource(R.string.reset)) } },
-        dismissButton = { TextButton(onClick = { reset = false }) { Text(stringResource(R.string.cancel)) } })
-}
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 internal fun WallpaperTopBar(title: String, onBack: () -> Unit, actions: @Composable RowScope.() -> Unit = {}) {
@@ -229,7 +147,7 @@ internal fun WallpaperTopBar(title: String, onBack: () -> Unit, actions: @Compos
 }
 
 @Composable
-private fun PointControls(title: String, point: GradientPoint, onChange: (GradientPoint) -> Unit) {
+internal fun PointControls(title: String, point: GradientPoint, onChange: (GradientPoint) -> Unit) {
     EditorSection(title) {
         ParameterSlider(stringResource(R.string.coordinate_x), point.x, { onChange(point.copy(x = it)) }, description = title + ", " + stringResource(R.string.coordinate_x))
         ParameterSlider(stringResource(R.string.coordinate_y), point.y, { onChange(point.copy(y = it)) }, description = title + ", " + stringResource(R.string.coordinate_y))
@@ -247,7 +165,7 @@ private fun EditorSection(title: String, content: @Composable ColumnScope.() -> 
 }
 
 @Composable
-private fun ParameterSlider(label: String, value: Float, onChange: (Float) -> Unit, range: ClosedFloatingPointRange<Float> = 0f..1f,
+internal fun ParameterSlider(label: String, value: Float, onChange: (Float) -> Unit, range: ClosedFloatingPointRange<Float> = 0f..1f,
                             description: String = label, valueText: String? = null) {
     Column {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -258,45 +176,45 @@ private fun ParameterSlider(label: String, value: Float, onChange: (Float) -> Un
     }
 }
 
-private fun hex(color: Int) = String.format(Locale.ROOT, "%06X", color and 0xFFFFFF)
+internal fun hex(color: Int) = String.format(Locale.ROOT, "%06X", color and 0xFFFFFF)
 
 @Composable
-private fun ColorDialog(initial: Int, title: String, onDismiss: () -> Unit, onSave: (Int) -> Unit) {
+internal fun GradientColorControls(initial: Int, onValid: (Boolean) -> Unit, onColor: (Int) -> Unit) {
     var value by rememberSaveable { mutableStateOf(hex(initial)) }
-    val initialHsv = remember(initial) { FloatArray(3).also { android.graphics.Color.colorToHSV(initial, it) } }
+    val initialHsv = remember { FloatArray(3).also { android.graphics.Color.colorToHSV(initial, it) } }
     var hue by rememberSaveable { mutableFloatStateOf(initialHsv[0]) }
     var saturation by rememberSaveable { mutableFloatStateOf(initialHsv[1]) }
     var brightness by rememberSaveable { mutableFloatStateOf(initialHsv[2]) }
     val parsed = value.takeIf { it.matches(Regex("[0-9A-F]{6}")) }?.toLongOrNull(16)?.toInt()?.or(0xFF shl 24)
+    LaunchedEffect(parsed) { onValid(parsed != null) }
     fun change(index: Int, number: Float) {
         val hsv = floatArrayOf(hue, saturation, brightness).apply { this[index] = number }
         hue = hsv[0]; saturation = hsv[1]; brightness = hsv[2]
-        value = hex(android.graphics.Color.HSVToColor(hsv))
+        val color = android.graphics.Color.HSVToColor(hsv)
+        value = hex(color)
+        onColor(color)
     }
-    AlertDialog(onDismissRequest = onDismiss, title = { Text(title) }, icon = {
-        Box(Modifier.size(48.dp).clip(CircleShape).background(Color(parsed ?: initial)))
-    }, text = {
-        Column(Modifier.verticalScroll(rememberScrollState())) {
-            OutlinedTextField(value, { text ->
-                value = text.uppercase(Locale.ROOT).take(6)
-                value.takeIf { it.matches(Regex("[0-9A-F]{6}")) }?.toLongOrNull(16)?.let {
-                    val hsv = FloatArray(3).also { values -> android.graphics.Color.colorToHSV(it.toInt() or (0xFF shl 24), values) }
-                    hue = hsv[0]; saturation = hsv[1]; brightness = hsv[2]
-                }
-            }, label = { Text(stringResource(R.string.color_value)) },
-                prefix = { Text("#") }, singleLine = true, isError = parsed == null,
-                supportingText = if (parsed == null) { { Text(stringResource(R.string.gradient_invalid_color)) } } else null,
-                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters, keyboardType = KeyboardType.Ascii))
-            Spacer(Modifier.height(16.dp))
-            ParameterSlider(stringResource(R.string.color_hue), hue, { change(0, it) }, range = 0f..360f, valueText = "${hue.roundToInt()}°")
-            ParameterSlider(stringResource(R.string.color_saturation), saturation, { change(1, it) })
-            ParameterSlider(stringResource(R.string.color_brightness), brightness, { change(2, it) })
-        }
-    }, confirmButton = { TextButton(onClick = { parsed?.let(onSave) }, enabled = parsed != null) { Text(stringResource(R.string.save_location)) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } })
+    Column {
+        OutlinedTextField(value, { text ->
+            value = text.uppercase(Locale.ROOT).take(6)
+            value.takeIf { it.matches(Regex("[0-9A-F]{6}")) }?.toLongOrNull(16)?.let {
+                val color = it.toInt() or (0xFF shl 24)
+                val hsv = FloatArray(3).also { values -> android.graphics.Color.colorToHSV(color, values) }
+                hue = hsv[0]; saturation = hsv[1]; brightness = hsv[2]
+                onColor(color)
+            }
+        }, modifier = Modifier.fillMaxWidth(), label = { Text(stringResource(R.string.color_value)) },
+            prefix = { Text("#") }, singleLine = true, isError = parsed == null,
+            supportingText = if (parsed == null) { { Text(stringResource(R.string.gradient_invalid_color)) } } else null,
+            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters, keyboardType = KeyboardType.Ascii))
+        Spacer(Modifier.height(16.dp))
+        ParameterSlider(stringResource(R.string.color_hue), hue, { change(0, it) }, range = 0f..360f, valueText = "${hue.roundToInt()}°")
+        ParameterSlider(stringResource(R.string.color_saturation), saturation, { change(1, it) })
+        ParameterSlider(stringResource(R.string.color_brightness), brightness, { change(2, it) })
+    }
 }
 
-private fun addStop(stops: List<GradientStop>): List<GradientStop> {
+internal fun addStop(stops: List<GradientStop>): List<GradientStop> {
     val positions = listOf(0f) + stops.map { it.position } + 1f
     val gap = positions.zipWithNext().maxBy { it.second - it.first }
     val position = (gap.first + gap.second) / 2

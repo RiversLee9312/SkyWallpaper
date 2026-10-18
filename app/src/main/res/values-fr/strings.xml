@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">Réinitialiser ce dégradé ?</string>
     <string name="reset_gradient_body">Rétablir les couleurs et positions par défaut pour %1$s.</string>
     <string name="reset">Réinitialiser</string>
-    <string name="gradient_hint">Chaque période utilise ces valeurs en son milieu. Les transitions sont automatiques.</string>
+    <string name="gradient_hint">Aube, jour et crépuscule se fondent d’un point médian au suivant. La nuit apparaît ou s’atténue entre −6° et 0° d’altitude solaire.</string>
     <string name="image_import_failed">Impossible d’ouvrir cette image. Essayez-en une autre.</string>
     <string name="image_importing">Importation de l’image…</string>
     <string name="gradient_invalid_color">Saisissez un code couleur hexadécimal à six chiffres</string>
@@ -139,4 +139,7 @@
     <string name="project_license">Licence du projet</string>
     <string name="third_party_libraries">Bibliothèques tierces</string>
     <string name="source_code">Code source</string>
+    <string name="gradient_preview">Aperçu du dégradé</string>
+    <string name="gradient_geometry">Géométrie</string>
+    <string name="done">Terminé</string>
 </resources>

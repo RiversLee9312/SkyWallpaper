@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">Bu gradyan sıfırlansın mı?</string>
     <string name="reset_gradient_body">%1$s için varsayılan renkleri ve konumları geri yükle.</string>
     <string name="reset">Sıfırla</string>
-    <string name="gradient_hint">Her dönem bu değerleri orta noktasında kullanır. Geçişler otomatik yapılır.</string>
+    <string name="gradient_hint">Şafak, gündüz ve alacakaranlık kendi orta noktaları arasında geçiş yapar. Gece görünümü, Güneş yüksekliği −6° ile 0° arasındayken yavaşça belirir veya kaybolur.</string>
     <string name="image_import_failed">Bu görsel açılamadı. Başka bir görsel deneyin.</string>
     <string name="image_importing">Görsel içe aktarılıyor…</string>
     <string name="gradient_invalid_color">Altı basamaklı onaltılık renk kodu girin</string>
@@ -139,4 +139,7 @@
     <string name="project_license">Proje lisansı</string>
     <string name="third_party_libraries">Üçüncü taraf kitaplıkları</string>
     <string name="source_code">Kaynak kodu</string>
+    <string name="gradient_preview">Gradyan önizlemesi</string>
+    <string name="gradient_geometry">Geometri</string>
+    <string name="done">Bitti</string>
 </resources>

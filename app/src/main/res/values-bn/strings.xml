@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">এই গ্রেডিয়েন্ট রিসেট করবেন?</string>
     <string name="reset_gradient_body">%1$s-এর ডিফল্ট রং ও অবস্থান ফিরিয়ে আনুন।</string>
     <string name="reset">রিসেট করুন</string>
-    <string name="gradient_hint">প্রতিটি সময়পর্বের মধ্যবিন্দুতে এই মানগুলো ব্যবহৃত হয়। পরিবর্তন স্বয়ংক্রিয়।</string>
+    <string name="gradient_hint">ভোর, দিন ও গোধূলির আকাশ সংশ্লিষ্ট সময়পর্বের মধ্যবিন্দুর মধ্যে বদলায়। সূর্যের উচ্চতা −6° থেকে 0°-এর মধ্যে রাতের আভা ধীরে ফুটে ওঠে বা মিলিয়ে যায়।</string>
     <string name="image_import_failed">এই ছবিটি খোলা যায়নি। অন্য ছবি চেষ্টা করুন।</string>
     <string name="image_importing">ছবি আমদানি হচ্ছে…</string>
     <string name="gradient_invalid_color">ছয় অঙ্কের হেক্স রঙের কোড লিখুন</string>
@@ -139,4 +139,7 @@
     <string name="project_license">প্রকল্পের লাইসেন্স</string>
     <string name="third_party_libraries">তৃতীয় পক্ষের লাইব্রেরি</string>
     <string name="source_code">সোর্স কোড</string>
+    <string name="gradient_preview">গ্রেডিয়েন্ট প্রিভিউ</string>
+    <string name="gradient_geometry">জ্যামিতি</string>
+    <string name="done">সম্পন্ন</string>
 </resources>

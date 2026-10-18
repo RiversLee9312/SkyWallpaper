@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">Dit kleurverloop herstellen?</string>
     <string name="reset_gradient_body">Standaardkleuren en -posities voor %1$s herstellen.</string>
     <string name="reset">Herstellen</string>
-    <string name="gradient_hint">Elke periode gebruikt deze waarden op het middelpunt. Overgangen verlopen automatisch.</string>
+    <string name="gradient_hint">Dageraad, dag en schemering gaan tussen hun middelpunten in elkaar over. De nacht wordt zichtbaar of vervaagt tussen −6° en 0° zonnehoogte.</string>
     <string name="image_import_failed">Deze afbeelding kan niet worden geopend. Probeer een andere.</string>
     <string name="image_importing">Afbeelding importeren…</string>
     <string name="gradient_invalid_color">Voer een hex-kleurcode van zes tekens in</string>
@@ -139,4 +139,7 @@
     <string name="project_license">Projectlicentie</string>
     <string name="third_party_libraries">Bibliotheken van derden</string>
     <string name="source_code">Broncode</string>
+    <string name="gradient_preview">Voorbeeld van kleurverloop</string>
+    <string name="gradient_geometry">Geometrie</string>
+    <string name="done">Klaar</string>
 </resources>

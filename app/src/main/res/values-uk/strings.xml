@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">Скинути цей градієнт?</string>
     <string name="reset_gradient_body">Відновити стандартні кольори й позиції для %1$s.</string>
     <string name="reset">Скинути</string>
-    <string name="gradient_hint">Кожен період використовує ці значення в середині. Перехід між періодами відбувається автоматично.</string>
+    <string name="gradient_hint">Світанок, день і сутінки переходять один в одного між серединами відповідних періодів. Нічний вигляд поступово з’являється або зникає за висоти Сонця від −6° до 0°.</string>
     <string name="image_import_failed">Не вдалося відкрити це зображення. Спробуйте інше.</string>
     <string name="image_importing">Імпортування зображення…</string>
     <string name="gradient_invalid_color">Введіть шестизначний шістнадцятковий код кольору</string>
@@ -139,4 +139,7 @@
     <string name="project_license">Ліцензія проєкту</string>
     <string name="third_party_libraries">Сторонні бібліотеки</string>
     <string name="source_code">Вихідний код</string>
+    <string name="gradient_preview">Попередній перегляд градієнта</string>
+    <string name="gradient_geometry">Геометрія</string>
+    <string name="done">Готово</string>
 </resources>

@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.AdaptiveIconDrawable
 import androidx.activity.BackEventCompat
 import androidx.compose.ui.test.*
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
@@ -165,9 +166,9 @@ class SkyDeviceTest {
         compose.onNodeWithText(context.getString(R.string.gradient_type)).performClick()
         compose.onNodeWithText(context.getString(R.string.gradient_radial)).performClick()
         compose.onNodeWithText(context.getString(R.string.phase_dawn)).performClick()
-        compose.onNodeWithText(context.getString(R.string.color_stop, 1)).performScrollTo().performClick()
+        compose.onNodeWithText(context.getString(R.string.color_stop, 1)).performClick()
         compose.onNode(hasSetTextAction()).performTextReplacement("123456")
-        compose.onNode(hasText(context.getString(R.string.save_location)) and hasAnyAncestor(isDialog())).performClick()
+        compose.onNodeWithText(context.getString(R.string.done)).performClick()
         compose.onNodeWithText(context.getString(R.string.save_location)).performClick()
         scenario?.recreate()
         val store = SkyRepository(context).wallpapers
@@ -175,6 +176,117 @@ class SkyDeviceTest {
         Assert.assertEquals(0xFF123456.toInt(), store.gradient(SkyPhase.DAWN).stops.first().color)
         compose.onNodeWithText(context.getString(R.string.picture_mode)).performClick()
         Assert.assertEquals(WallpaperMode.IMAGE, SkyRepository(context).wallpapers.mode)
+    }
+
+    @Test fun photoGradientEditorDragsPointsAndStopsAndKeepsUnsavedDraftAcrossRecreation() {
+        openGradientEditor(GradientType.LINEAR)
+        val preview = compose.onNodeWithTag("gradient-preview").fetchSemanticsNode().boundsInRoot
+        val metrics = context.resources.displayMetrics
+        Assert.assertTrue(preview.width < metrics.widthPixels)
+        Assert.assertTrue(preview.height < metrics.heightPixels)
+        Assert.assertEquals(metrics.widthPixels.toFloat() / metrics.heightPixels, preview.width / preview.height, .002f)
+        Assert.assertTrue(preview.bottom < compose.onNodeWithTag("gradient-tools").fetchSemanticsNode().boundsInRoot.top)
+        compose.onNodeWithContentDescription(context.getString(R.string.gradient_start)).performTouchInput {
+            swipe(center, center + Offset(140f, 200f))
+        }
+        compose.onNodeWithContentDescription(context.getString(R.string.color_stop, 2)).performTouchInput {
+            swipe(center, center + Offset(300f, 0f))
+        }
+        val draggedStop = compose.onNodeWithContentDescription(context.getString(R.string.color_stop, 2))
+            .fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.ProgressBarRangeInfo].current
+        Assert.assertTrue("Color stop did not drag: $draggedStop", draggedStop > .55f)
+        scenario?.recreate()
+        compose.onNodeWithText(context.getString(R.string.color_stop, 2)).assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.save_location)).performClick()
+        val saved = SkyRepository(context).wallpapers.gradient(SkyPhase.DAWN)
+        Assert.assertTrue("Start point did not move horizontally", saved.start.x > .53f)
+        Assert.assertTrue("Start point did not move vertically", saved.start.y > .02f)
+        Assert.assertEquals("Color stop changed after recreation", draggedStop, saved.stops[1].position, .00001f)
+        Assert.assertEquals(0f, saved.stops[0].position, 0f)
+        Assert.assertEquals(1f, saved.stops.last().position, 0f)
+    }
+
+    @Test fun radialAndSweepCentersDragAndPreciseControlsAreAccessible() {
+        for (type in listOf(GradientType.RADIAL, GradientType.SWEEP)) {
+            if (type == GradientType.RADIAL) openGradientEditor(type) else {
+                compose.onNodeWithText(context.getString(R.string.gradient_type)).performClick()
+                compose.onNodeWithText(context.getString(type.titleRes)).performClick()
+                compose.onNodeWithText(context.getString(R.string.phase_dawn)).performClick()
+            }
+            compose.onNodeWithContentDescription(context.getString(R.string.gradient_center)).performTouchInput {
+                swipe(center, center + Offset(160f, -160f))
+            }
+            compose.onNodeWithContentDescription(context.getString(R.string.gradient_geometry)).performClick()
+            compose.onNodeWithContentDescription(context.getString(R.string.gradient_center) + ", " + context.getString(R.string.coordinate_x)).assertExists()
+            compose.onNodeWithContentDescription(context.getString(R.string.gradient_center) + ", " + context.getString(R.string.coordinate_y)).assertExists()
+            compose.onNodeWithText(context.getString(R.string.done)).performClick()
+            compose.onNodeWithText(context.getString(R.string.save_location)).performClick()
+            val saved = SkyRepository(context).wallpapers.gradient(SkyPhase.DAWN)
+            Assert.assertTrue(saved.center.x > .39f)
+            Assert.assertTrue(saved.center.y < .68f)
+        }
+    }
+
+    private fun openGradientEditor(type: GradientType) {
+        compose.onNodeWithContentDescription(context.getString(R.string.settings)).performClick()
+        compose.onNodeWithText(context.getString(R.string.wallpaper_content)).performClick()
+        compose.onNodeWithText(context.getString(R.string.gradient_mode)).performClick()
+        compose.onNodeWithText(context.getString(R.string.gradient_type)).performClick()
+        compose.onNode(hasText(context.getString(type.titleRes)) and hasAnyAncestor(isDialog())).performClick()
+        compose.onNodeWithText(context.getString(R.string.phase_dawn)).performClick()
+    }
+
+    @Test fun rtlGradientGeometryKeepsPhysicalCoordinatesAndColorStopsDirection() {
+        openGradientEditor(GradientType.LINEAR)
+        val manager = context.getSystemService(android.app.LocaleManager::class.java)
+        val locales = manager.applicationLocales
+        try {
+            manager.applicationLocales = android.os.LocaleList.forLanguageTags("ar")
+            scenario?.recreate()
+            val arabic = context.createConfigurationContext(android.content.res.Configuration(context.resources.configuration).apply {
+                setLocale(java.util.Locale.forLanguageTag("ar"))
+            })
+            compose.onNodeWithContentDescription(arabic.getString(R.string.gradient_start)).performTouchInput {
+                swipe(center, center + Offset(200f, 200f))
+            }
+            compose.onNodeWithContentDescription(arabic.getString(R.string.color_stop, 2)).performTouchInput {
+                swipe(center, center + Offset(300f, 0f))
+            }
+            compose.onNodeWithText(arabic.getString(R.string.save_location)).performClick()
+            val saved = SkyRepository(context).wallpapers.gradient(SkyPhase.DAWN)
+            Assert.assertTrue("RTL drag right must increase physical X", saved.start.x > .55f)
+            Assert.assertTrue("RTL drag right must increase stop position", saved.stops[1].position > .55f)
+        } finally {
+            manager.applicationLocales = locales
+            scenario?.recreate()
+        }
+    }
+
+    @Test fun colorAndGeometryToolsKeepThePhotoVisibleWithKeyboardAndRestoreDraft() {
+        openGradientEditor(GradientType.LINEAR)
+        compose.onNodeWithText(context.getString(R.string.color_stop, 1)).performClick()
+        compose.onNode(hasSetTextAction()).performClick().performTextReplacement("123456")
+        fun assertPhotoAboveTools() {
+            val photo = compose.onNodeWithTag("gradient-preview").fetchSemanticsNode().boundsInRoot
+            val tools = compose.onNodeWithTag("gradient-tools").fetchSemanticsNode().boundsInRoot
+            Assert.assertTrue("Preview covered by tools", photo.bottom < tools.top)
+            Assert.assertTrue("Preview collapsed", photo.height > 100)
+            val metrics = context.resources.displayMetrics
+            Assert.assertEquals(metrics.widthPixels.toFloat() / metrics.heightPixels, photo.width / photo.height, .004f)
+            compose.onNodeWithContentDescription(context.getString(R.string.gradient_start)).assertIsDisplayed()
+            compose.onNodeWithContentDescription(context.getString(R.string.gradient_end)).assertIsDisplayed()
+            compose.onAllNodes(isDialog()).assertCountEquals(0)
+        }
+        assertPhotoAboveTools()
+        scenario?.recreate()
+        compose.onNode(hasSetTextAction()).assertTextContains("123456")
+        assertPhotoAboveTools()
+        compose.onNodeWithText(context.getString(R.string.done)).performClick()
+        compose.onNodeWithContentDescription(context.getString(R.string.gradient_geometry)).performClick()
+        assertPhotoAboveTools()
+        compose.onNodeWithText(context.getString(R.string.done)).performClick()
+        compose.onNodeWithText(context.getString(R.string.save_location)).performClick()
+        Assert.assertEquals(0xFF123456.toInt(), SkyRepository(context).wallpapers.gradient(SkyPhase.DAWN).stops[0].color)
     }
 
     @Test fun openSourceLicensesAreAvailableOfflineAndRestoreNavigation() {

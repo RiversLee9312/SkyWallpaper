@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">Reimpostare questo gradiente?</string>
     <string name="reset_gradient_body">Ripristina i colori e le posizioni predefiniti per %1$s.</string>
     <string name="reset">Reimposta</string>
-    <string name="gradient_hint">Ogni periodo usa questi valori nel punto centrale. Le transizioni sono automatiche.</string>
+    <string name="gradient_hint">Alba, giorno e crepuscolo passano gradualmente da un punto medio al successivo. La notte appare o svanisce tra −6° e 0° di elevazione solare.</string>
     <string name="image_import_failed">Impossibile aprire questa immagine. Provane un’altra.</string>
     <string name="image_importing">Importazione dell’immagine…</string>
     <string name="gradient_invalid_color">Inserisci un codice colore esadecimale di sei cifre</string>
@@ -139,4 +139,7 @@
     <string name="project_license">Licenza del progetto</string>
     <string name="third_party_libraries">Librerie di terze parti</string>
     <string name="source_code">Codice sorgente</string>
+    <string name="gradient_preview">Anteprima gradiente</string>
+    <string name="gradient_geometry">Geometria</string>
+    <string name="done">Fine</string>
 </resources>

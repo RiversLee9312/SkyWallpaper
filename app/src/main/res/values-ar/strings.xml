@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">هل تريد إعادة ضبط هذا التدرج؟</string>
     <string name="reset_gradient_body">استعادة الألوان والمواضع الافتراضية لـ %1$s.</string>
     <string name="reset">إعادة ضبط</string>
-    <string name="gradient_hint">تُستخدم هذه القيم لكل فترة عند منتصفها. وتحدث الانتقالات تلقائيًا.</string>
+    <string name="gradient_hint">تنتقل فترات الفجر والنهار والغسق بين نقاط منتصفها. يظهر الليل تدريجيًا أو يتلاشى عندما يتراوح ارتفاع الشمس بين −6° و0°.</string>
     <string name="image_import_failed">تعذر فتح هذه الصورة. جرّب صورة أخرى.</string>
     <string name="image_importing">جارٍ استيراد الصورة…</string>
     <string name="gradient_invalid_color">أدخل رمز لون سداسيًا من ستة أرقام</string>
@@ -139,4 +139,7 @@
     <string name="project_license">ترخيص المشروع</string>
     <string name="third_party_libraries">مكتبات الطرف الثالث</string>
     <string name="source_code">الشفرة المصدرية</string>
+    <string name="gradient_preview">معاينة التدرج اللوني</string>
+    <string name="gradient_geometry">الهندسة</string>
+    <string name="done">تم</string>
 </resources>

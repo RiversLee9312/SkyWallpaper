@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">क्या इस ग्रेडिएंट को रीसेट करें?</string>
     <string name="reset_gradient_body">%1$s के डिफ़ॉल्ट रंग और स्थितियाँ बहाल करें।</string>
     <string name="reset">रीसेट करें</string>
-    <string name="gradient_hint">हर समयावधि के मध्य बिंदु पर ये मान लागू होते हैं। बदलाव अपने आप होते हैं।</string>
+    <string name="gradient_hint">भोर, दिन और साँझ अपने-अपने मध्य बिंदुओं के बीच बदलते हैं। सूर्य की ऊँचाई −6° से 0° के बीच रात का प्रभाव धीरे-धीरे उभरता या फीका पड़ता है।</string>
     <string name="image_import_failed">यह चित्र नहीं खुल सका। दूसरा चित्र आज़माएँ।</string>
     <string name="image_importing">चित्र आयात हो रहा है…</string>
     <string name="gradient_invalid_color">छह अंकों वाला हेक्स रंग कोड दर्ज करें</string>
@@ -139,4 +139,7 @@
     <string name="project_license">प्रोजेक्ट लाइसेंस</string>
     <string name="third_party_libraries">तृतीय-पक्ष लाइब्रेरी</string>
     <string name="source_code">सोर्स कोड</string>
+    <string name="gradient_preview">ग्रेडिएंट पूर्वावलोकन</string>
+    <string name="gradient_geometry">ज्यामिति</string>
+    <string name="done">पूरा</string>
 </resources>

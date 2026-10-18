@@ -127,7 +127,7 @@
     <string name="reset_gradient_title">¿Restablecer este degradado?</string>
     <string name="reset_gradient_body">Restaurar los colores y las posiciones predeterminados de %1$s.</string>
     <string name="reset">Restablecer</string>
-    <string name="gradient_hint">Cada periodo usa estos valores en su punto medio. Las transiciones son automáticas.</string>
+    <string name="gradient_hint">Amanecer, día y atardecer cambian gradualmente entre sus puntos medios. La noche aparece o se desvanece entre −6° y 0° de elevación solar.</string>
     <string name="image_import_failed">No se ha podido abrir esta imagen. Prueba con otra.</string>
     <string name="image_importing">Importando imagen…</string>
     <string name="gradient_invalid_color">Introduce un código hexadecimal de color de seis dígitos</string>
@@ -139,4 +139,7 @@
     <string name="project_license">Licencia del proyecto</string>
     <string name="third_party_libraries">Bibliotecas de terceros</string>
     <string name="source_code">Código fuente</string>
+    <string name="gradient_preview">Vista previa del degradado</string>
+    <string name="gradient_geometry">Geometría</string>
+    <string name="done">Listo</string>
 </resources>
