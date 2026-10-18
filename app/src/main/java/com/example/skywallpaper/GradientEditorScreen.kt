@@ -108,7 +108,7 @@ fun GradientEditorScreen(phase: SkyPhase, type: GradientType, initial: SkyGradie
                                     PointControls(stringResource(R.string.gradient_center), draft.center) { draft = draft.copy(center = it) }
                                     if (type == GradientType.RADIAL) {
                                         Text(stringResource(R.string.gradient_radius_hint), style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant)
-                                        ParameterSlider(stringResource(R.string.gradient_radius), draft.radius, { draft = draft.copy(radius = it) }, range = .1f..2f)
+                                        ParameterSlider(stringResource(R.string.gradient_radius), draft.radius, { draft = draft.copy(radius = it) }, range = SkyGradient.radiusRange)
                                     }
                                 }
                                 HorizontalDivider()
@@ -159,7 +159,7 @@ fun GradientEditorScreen(phase: SkyPhase, type: GradientType, initial: SkyGradie
                                 StopRail(draft.stops, selected, onSelect = { selected = it }, onMove = ::updatePosition)
                             }
                             if (type == GradientType.RADIAL) ParameterSlider(stringResource(R.string.gradient_radius), draft.radius,
-                                { draft = draft.copy(radius = it) }, range = .1f..2f)
+                                { draft = draft.copy(radius = it) }, range = SkyGradient.radiusRange)
                             if (!valid) Text(stringResource(R.string.gradient_invalid_points), color = colors.error, style = MaterialTheme.typography.bodySmall)
                         }
                     }

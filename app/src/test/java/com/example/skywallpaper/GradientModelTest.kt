@@ -170,6 +170,17 @@ class GradientModelTest {
         assertThrows(IllegalArgumentException::class.java) { SkyGradient.default(SkyPhase.DAY).copy(radius = 0f) }
     }
 
+    @Test fun radiusAcceptsFourHundredPercentAndInterpolatesWithoutClamping() {
+        val minimum = SkyGradient.default(SkyPhase.DAWN, GradientType.RADIAL).copy(radius = .1f)
+        val maximum = SkyGradient.default(SkyPhase.DAY, GradientType.RADIAL).copy(radius = 4f)
+        assertEquals(4f, maximum.radius, 0f)
+        assertEquals(2.05f, GradientInterpolation.frame(minimum, maximum, .5f).radius, .00001f)
+        assertEquals(4f, GradientInterpolation.frame(minimum, maximum, 1f).radius, 0f)
+        for (invalid in listOf(.099f, 4.01f, Float.NaN, Float.POSITIVE_INFINITY)) {
+            assertThrows(IllegalArgumentException::class.java) { maximum.copy(radius = invalid) }
+        }
+    }
+
     @Test fun defaultSweepPalettesAndTheirInterpolationsHaveNoColorSeam() {
         val a = SkyGradient.default(SkyPhase.DAWN, GradientType.SWEEP)
         val b = SkyGradient.default(SkyPhase.DAY, GradientType.SWEEP)

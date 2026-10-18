@@ -25,10 +25,12 @@ data class SkyGradient(
     init {
         require(stops.size in 2..6)
         require(stops.zipWithNext().all { (a, b) -> b.position - a.position >= .009f })
-        require(radius.isFinite() && radius in .1f..2f)
+        require(radius.isFinite() && radius in radiusRange)
     }
 
     companion object {
+        val radiusRange = .1f..4f
+
         fun default(phase: SkyPhase, type: GradientType = GradientType.LINEAR): SkyGradient {
             val colors = when (phase) {
                 SkyPhase.DAWN -> listOf(0xFF697CB4, 0xFFE9B2BA, 0xFFFFD9AA)

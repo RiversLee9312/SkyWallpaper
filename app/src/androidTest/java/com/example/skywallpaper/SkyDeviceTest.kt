@@ -366,6 +366,24 @@ class SkyDeviceTest {
         Assert.assertEquals(SkyGradient.default(SkyPhase.DAWN, GradientType.LINEAR), store.gradient(SkyPhase.DAWN, GradientType.LINEAR))
     }
 
+    @Test fun radialRadiusReachesFourHundredPercentInBothEditorsAndPersists() {
+        openGradientEditor(GradientType.RADIAL)
+        val radius = context.getString(R.string.gradient_radius)
+        compose.onNodeWithContentDescription(radius).performScrollTo()
+            .performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.SetProgress) { it(4f) }
+        scenario?.recreate()
+        Assert.assertEquals(4f, compose.onNodeWithContentDescription(radius).fetchSemanticsNode()
+            .config[androidx.compose.ui.semantics.SemanticsProperties.ProgressBarRangeInfo].current, 0f)
+        compose.onNodeWithContentDescription(context.getString(R.string.gradient_geometry)).performScrollTo().performClick()
+        compose.onNodeWithContentDescription(radius).performScrollTo()
+            .performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.SetProgress) { it(.1f) }
+        compose.onNodeWithContentDescription(radius)
+            .performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.SetProgress) { it(4f) }
+        compose.onNodeWithText(context.getString(R.string.percent_format, 400)).assertExists()
+        compose.onNodeWithText(context.getString(R.string.save_location)).performClick()
+        Assert.assertEquals(4f, SkyRepository(context).wallpapers.gradient(SkyPhase.DAWN, GradientType.RADIAL).radius, 0f)
+    }
+
     @Test fun switchingGradientTypesRestoresTheirOwnColorsAfterRecreation() {
         val colors = mapOf(GradientType.LINEAR to "123456", GradientType.RADIAL to "345678", GradientType.SWEEP to "56789A")
         fun open(type: GradientType) {

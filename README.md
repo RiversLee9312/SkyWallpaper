@@ -32,7 +32,7 @@ Images are imported through the system photo picker, without requiring access to
 
 ## Gradients
 
-All four periods share one gradient type so transitions can be interpolated continuously. Each period supports 2–6 colors and stop positions. The photo-style editor keeps a screen-proportioned preview separate from its tools. Drag the start/end points or center on the image and drag color stops along the color strip. Tap a color for live hex/HSV adjustments, or use Geometry for precise coordinates and stop positions. Both tools occupy their own pane, leaving the preview visible. Radial gradients also have a radius slider. Coordinates start at the top-left; the radius is based on the shorter side of the screen.
+All four periods share one gradient type so transitions can be interpolated continuously. Each period supports 2–6 colors and stop positions. The photo-style editor keeps a screen-proportioned preview separate from its tools. Drag the start/end points or center on the image and drag color stops along the color strip. Tap a color for live hex/HSV adjustments, or use Geometry for precise coordinates and stop positions. Both tools occupy their own pane, leaving the preview visible. Radial gradients also have a radius slider ranging from 10% to 400%. Coordinates start at the top-left; the radius is based on the shorter side of the screen.
 
 Each gradient type saves its own four period configurations. Switching types restores that type’s colors, stops and geometry. The editor saves to the type it was opened with. On upgrade from 1.0.2, the surviving shared configuration is assigned to the previously selected type; the original records are retained locally. Values already overwritten by older versions cannot be reconstructed.
 

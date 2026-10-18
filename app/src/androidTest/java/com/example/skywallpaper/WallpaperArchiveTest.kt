@@ -76,7 +76,7 @@ class WallpaperArchiveTest {
             .putLong("latitude", 31.23.toBits()).putLong("longitude", 121.47.toBits()).commit()
         GradientType.entries.forEach { type -> SkyPhase.entries.forEach { phase ->
             val id = type.ordinal * 4 + phase.ordinal
-            source.saveGradient(phase, SkyGradient.default(phase, type).copy(radius = .25f + id * .1f,
+            source.saveGradient(phase, SkyGradient.default(phase, type).copy(radius = if (type == GradientType.RADIAL && phase == SkyPhase.NIGHT) 4f else .25f + id * .1f,
                 center = GradientPoint(.1f + id * .03f, .9f - id * .04f)), type)
         } }
         val dawn = jpeg(0xFF3478C8.toInt()); val night = jpeg(0xFF7144A8.toInt())
@@ -127,7 +127,7 @@ class WallpaperArchiveTest {
             { it.put("mode", "UNKNOWN") }, { it.put("type", "UNKNOWN") }, { it.put("automatic", "true") },
             { it.getJSONObject("gradients").remove("RADIAL") },
             { it.getJSONObject("gradients").getJSONObject("SWEEP").remove("NIGHT") },
-            { it.getJSONObject("gradients").getJSONObject("LINEAR").getJSONObject("DAWN").put("radius", 99) },
+            { it.getJSONObject("gradients").getJSONObject("RADIAL").getJSONObject("DAWN").put("radius", 4.01) },
             { it.getJSONObject("gradients").getJSONObject("LINEAR").getJSONObject("DAWN").getJSONArray("start").put(0, 2) },
             { it.getJSONObject("images").put("DAWN", "../../outside.jpg") },
             { it.getJSONObject("images").put("DAWN", "images/DAWN.jpg") },

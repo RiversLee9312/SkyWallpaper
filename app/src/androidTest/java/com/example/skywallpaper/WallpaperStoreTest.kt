@@ -51,7 +51,7 @@ class WallpaperStoreTest {
         prefs.edit().clear().commit()
         try {
             val store = WallpaperStore(context, prefs)
-            val preset = SkyGradient.default(SkyPhase.DAWN).copy(center = GradientPoint(.3f, .7f), radius = .6f)
+            val preset = SkyGradient.default(SkyPhase.DAWN).copy(center = GradientPoint(.3f, .7f), radius = 4f)
             store.setType(GradientType.RADIAL)
             store.saveGradient(SkyPhase.DAWN, preset)
             store.setMode(WallpaperMode.GRADIENT)
