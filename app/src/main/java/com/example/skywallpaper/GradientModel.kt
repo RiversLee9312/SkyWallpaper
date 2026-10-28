@@ -32,20 +32,7 @@ data class SkyGradient(
         val radiusRange = .1f..4f
 
         fun default(phase: SkyPhase, type: GradientType = GradientType.LINEAR): SkyGradient {
-            val colors = when (phase) {
-                SkyPhase.DAWN -> listOf(0xFF697CB4, 0xFFE9B2BA, 0xFFFFD9AA)
-                SkyPhase.DAY -> listOf(0xFF277BCE, 0xFF86C5ED, 0xFFDCEEF6)
-                SkyPhase.DUSK -> listOf(0xFF55518F, 0xFFD481A1, 0xFFF4B777)
-                SkyPhase.NIGHT -> listOf(0xFF0C142B, 0xFF1C2C50, 0xFF34486C)
-            }
-            val palette = if (type == GradientType.SWEEP) colors + colors.first() else colors
-            return SkyGradient(palette.mapIndexed { i, c -> GradientStop(c.toInt(), i.toFloat() / (palette.size - 1)) },
-                center = when (phase) {
-                    SkyPhase.DAWN -> GradientPoint(.35f, .7f)
-                    SkyPhase.DAY -> GradientPoint(.65f, .25f)
-                    SkyPhase.DUSK -> GradientPoint(.65f, .7f)
-                    SkyPhase.NIGHT -> GradientPoint(.5f, .2f)
-                })
+            return GradientDefaults.get(phase, type)
         }
     }
 }
@@ -54,8 +41,10 @@ data class SkyGradient(
 object GradientInterpolation {
     fun frame(blend: GradientBlend, gradient: (SkyPhase) -> SkyGradient): GradientFrame {
         if (blend.nightFraction == 1f) return GradientFrame.from(gradient(SkyPhase.NIGHT))
-        val daylight = if (blend.from == blend.to) GradientFrame.from(gradient(blend.from))
+        val twilight = if (blend.from == blend.to) GradientFrame.from(gradient(blend.from))
             else frame(gradient(blend.from), gradient(blend.to), blend.fraction)
+        val daylight = if (blend.dayFraction == 0f) twilight
+            else frame(twilight, GradientFrame.from(gradient(SkyPhase.DAY)), blend.dayFraction)
         return if (blend.nightFraction == 0f) daylight
             else frame(daylight, GradientFrame.from(gradient(SkyPhase.NIGHT)), blend.nightFraction)
     }
@@ -101,25 +90,28 @@ data class GradientFrame(val stops: List<GradientStop>, val start: GradientPoint
 }
 
 data class GradientAnchor(val instant: Instant, val phase: SkyPhase)
-data class GradientBlend(val from: SkyPhase, val to: SkyPhase, val fraction: Float, val nightFraction: Float = 0f)
+data class GradientBlend(val from: SkyPhase, val to: SkyPhase, val fraction: Float, val nightFraction: Float = 0f, val dayFraction: Float = 0f)
 
 /** Midpoints of actual solar phase spans, including the night that crosses a geographic date. */
 object SolarGradientClock {
-    fun anchors(now: Instant, point: GeoPoint): List<GradientAnchor> {
+    const val DAY_ELEVATION = 40.0
+
+    fun anchors(now: Instant, point: GeoPoint, dayElevation: Double = DAY_ELEVATION): List<GradientAnchor> {
         val start = SolarClock.dayStart(now, point).minusSeconds(3 * 86400L)
         val end = start.plusSeconds(7 * 86400L)
         val changes = mutableListOf<Pair<Instant, SkyPhase>>()
         var left = start
-        var phase = SolarClock.phase(left, point)
+        fun phaseAt(instant: Instant) = SolarClock.phase(SolarClock.position(instant, point), dayElevation)
+        var phase = phaseAt(left)
         while (left < end) {
             val right = left.plusSeconds(300)
-            val next = SolarClock.phase(right, point)
+            val next = phaseAt(right)
             if (next != phase) {
                 var lo = left.epochSecond
                 var hi = right.epochSecond
                 while (hi - lo > 1) {
                     val mid = (lo + hi) / 2
-                    if (SolarClock.phase(Instant.ofEpochSecond(mid), point) == phase) lo = mid else hi = mid
+                    if (phaseAt(Instant.ofEpochSecond(mid)) == phase) lo = mid else hi = mid
                 }
                 changes += Instant.ofEpochSecond(hi) to next
             }
@@ -131,22 +123,29 @@ object SolarGradientClock {
         }
     }
 
-    fun blend(now: Instant, anchors: List<GradientAnchor>, fallback: SkyPhase, elevation: Double): GradientBlend {
+    fun blend(now: Instant, anchors: List<GradientAnchor>, sun: SunPosition): GradientBlend {
+        val elevation = sun.elevation
         require(elevation.isFinite())
         // Geometric 0°, rather than the -0.833° threshold used by the sunrise/set labels.
         val night = smoothstep((-elevation / 6.0).toFloat().coerceIn(0f, 1f))
         if (night == 1f) return GradientBlend(SkyPhase.NIGHT, SkyPhase.NIGHT, 0f, night)
+        val day = smoothstep((elevation / DAY_ELEVATION).toFloat().coerceIn(0f, 1f))
+        if (day == 1f) return GradientBlend(SkyPhase.DAY, SkyPhase.DAY, 0f)
+        val twilight = if (sun.rising) SkyPhase.DAWN else SkyPhase.DUSK
         val right = anchors.indexOfFirst { it.instant > now }
-        if (right <= 0) return GradientBlend(fallback, fallback, 0f, night)
-        val a = anchors[right - 1]
-        val b = anchors[right]
-        // Retain dawn -> day -> dusk timing; hold dawn/dusk outside those midpoint spans.
-        val from = if (a.phase == SkyPhase.NIGHT) b.phase else a.phase
-        val to = if (b.phase == SkyPhase.NIGHT) a.phase else b.phase
-        if (from == to) return GradientBlend(from, to, 0f, night)
-        val t = ((now.toEpochMilli() - a.instant.toEpochMilli()).toDouble() /
-            (b.instant.toEpochMilli() - a.instant.toEpochMilli())).toFloat().coerceIn(0f, 1f)
-        return GradientBlend(from, to, smoothstep(t), night)
+        if (right > 0) {
+            val a = anchors[right - 1]
+            val b = anchors[right]
+            // The sun may turn around without reaching 40° or −6°.
+            // Blend the adjacent twilight palettes through that turn, avoiding a noon/midnight
+            // jump. Their day/night contribution still follows actual solar elevation.
+            if (setOf(a.phase, b.phase) == setOf(SkyPhase.DAWN, SkyPhase.DUSK)) {
+                val t = ((now.toEpochMilli() - a.instant.toEpochMilli()).toDouble() /
+                    (b.instant.toEpochMilli() - a.instant.toEpochMilli())).toFloat().coerceIn(0f, 1f)
+                return GradientBlend(a.phase, b.phase, smoothstep(t), night, day)
+            }
+        }
+        return GradientBlend(twilight, twilight, 0f, night, day)
     }
 
     private fun smoothstep(t: Float) = t * t * (3f - 2f * t)

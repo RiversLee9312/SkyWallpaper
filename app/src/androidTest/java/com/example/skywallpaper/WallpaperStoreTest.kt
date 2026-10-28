@@ -16,6 +16,27 @@ import java.time.Instant
 class WallpaperStoreTest {
     private val context get() = InstrumentationRegistry.getInstrumentation().targetContext
 
+    @Test fun bundledDefaultsMatchEveryExportedDeviceProfileWithoutOverwritingSavedSettings() {
+        val exported = org.json.JSONObject(context.assets.open("default_gradients.json").bufferedReader().use { it.readText() })
+        val device = context.createDeviceProtectedStorageContext()
+        val name = "bundled_gradient_defaults_test"
+        val prefs = device.getSharedPreferences(name, 0)
+        prefs.edit().clear().commit()
+        try {
+            val store = WallpaperStore(context, prefs)
+            GradientType.entries.forEach { type -> SkyPhase.entries.forEach { phase ->
+                val expected = GradientCodec.decode(exported.getJSONObject(type.name).getJSONObject(phase.name).toString())
+                assertEquals(expected, SkyGradient.default(phase, type))
+                assertEquals(expected, store.gradient(phase, type))
+            } }
+            val custom = store.gradient(SkyPhase.DAY, GradientType.RADIAL).copy(radius = .67f)
+            store.saveGradient(SkyPhase.DAY, custom, GradientType.RADIAL)
+            val reopened = WallpaperStore(device, prefs)
+            assertEquals(custom, reopened.gradient(SkyPhase.DAY, GradientType.RADIAL))
+            assertEquals(SkyGradient.default(SkyPhase.DAY, GradientType.SWEEP), reopened.gradient(SkyPhase.DAY, GradientType.SWEEP))
+        } finally { device.deleteSharedPreferences(name) }
+    }
+
     @Test fun importedImagesPersistBeforeUnlockAndRestoreIndependently() = runBlocking {
         val name = "wallpaper_import_test"
         val device = context.createDeviceProtectedStorageContext()

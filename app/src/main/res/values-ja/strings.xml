@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">このグラデーションをリセットしますか？</string>
     <string name="reset_gradient_body">%1$sの色と位置を初期値に戻します。</string>
     <string name="reset">リセット</string>
-    <string name="gradient_hint">明け方・昼・夕暮れは、それぞれの中間時刻をつないで移り変わります。夜の色合いは、太陽高度 −6° から 0° の間で徐々に現れたり消えたりします。</string>
+    <string name="gradient_hint">明け方と夕暮れは、太陽高度0°〜40°で昼と、−6°〜0°で夜と移り変わります。</string>
     <string name="image_import_failed">この画像を開けませんでした。別の画像をお試しください。</string>
     <string name="image_importing">画像を読み込み中…</string>
     <string name="gradient_invalid_color">6桁の16進カラーコードを入力してください</string>

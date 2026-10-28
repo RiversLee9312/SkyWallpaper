@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">이 그라데이션을 초기화할까요?</string>
     <string name="reset_gradient_body">%1$s의 기본 색상과 위치를 복원합니다.</string>
     <string name="reset">초기화</string>
-    <string name="gradient_hint">새벽, 낮, 황혼은 각 시간대의 중간 시점 사이에서 전환됩니다. 밤의 색감은 태양 고도 −6°에서 0° 사이에서 서서히 나타나거나 사라집니다.</string>
+    <string name="gradient_hint">새벽과 황혼은 태양 고도 0°~40°에서 낮과, −6°~0°에서 밤과 자연스럽게 이어집니다.</string>
     <string name="image_import_failed">이미지를 열 수 없습니다. 다른 이미지를 선택하세요.</string>
     <string name="image_importing">이미지 가져오는 중…</string>
     <string name="gradient_invalid_color">6자리 16진수 색상 코드를 입력하세요</string>

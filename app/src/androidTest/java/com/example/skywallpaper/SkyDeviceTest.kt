@@ -327,8 +327,10 @@ class SkyDeviceTest {
                 compose.onNodeWithText(context.getString(type.titleRes)).performClick()
                 compose.onNodeWithText(context.getString(R.string.phase_dawn)).performClick()
             }
+            val original = SkyRepository(context).wallpapers.gradient(SkyPhase.DAWN, type).center
+            val movement = Offset(if (original.x > .5f) -160f else 160f, if (original.y > .5f) -160f else 160f)
             compose.onNodeWithContentDescription(context.getString(R.string.gradient_center)).performTouchInput {
-                swipe(center, center + Offset(160f, -160f))
+                swipe(center, center + movement)
             }
             compose.onNodeWithContentDescription(context.getString(R.string.gradient_geometry)).performClick()
             compose.onNodeWithContentDescription(context.getString(R.string.gradient_center) + ", " + context.getString(R.string.coordinate_x)).assertExists()
@@ -336,8 +338,8 @@ class SkyDeviceTest {
             compose.onNodeWithText(context.getString(R.string.done)).performClick()
             compose.onNodeWithText(context.getString(R.string.save_location)).performClick()
             val saved = SkyRepository(context).wallpapers.gradient(SkyPhase.DAWN)
-            Assert.assertTrue(saved.center.x > .39f)
-            Assert.assertTrue(saved.center.y < .68f)
+            Assert.assertTrue(kotlin.math.abs(saved.center.x - original.x) > .03f)
+            Assert.assertTrue(kotlin.math.abs(saved.center.y - original.y) > .03f)
         }
     }
 

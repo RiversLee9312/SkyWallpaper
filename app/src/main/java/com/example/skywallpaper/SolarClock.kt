@@ -54,10 +54,10 @@ object SolarClock {
 
     fun phase(instant: Instant, point: GeoPoint): SkyPhase = phase(position(instant, point))
 
-    fun phase(sun: SunPosition): SkyPhase = when {
+    fun phase(sun: SunPosition, dayElevation: Double = 10.0): SkyPhase = when {
         sun.elevation < -6 -> SkyPhase.NIGHT
-        sun.rising && sun.elevation < 10 -> SkyPhase.DAWN
-        !sun.rising && sun.elevation <= 10 -> SkyPhase.DUSK
+        sun.rising && sun.elevation < dayElevation -> SkyPhase.DAWN
+        !sun.rising && sun.elevation <= dayElevation -> SkyPhase.DUSK
         else -> SkyPhase.DAY
     }
 

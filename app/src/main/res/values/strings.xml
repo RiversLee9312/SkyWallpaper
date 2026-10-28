@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">Reset this gradient?</string>
     <string name="reset_gradient_body">Restore the default colors and positions for %1$s.</string>
     <string name="reset">Reset</string>
-    <string name="gradient_hint">Dawn, day and dusk transition between their midpoints. Night fades in or out between −6° and 0° solar elevation.</string>
+    <string name="gradient_hint">Dawn and dusk blend with day between 0° and 40° solar elevation, and with night between −6° and 0°.</string>
     <string name="image_import_failed">Could not open this image. Try another one.</string>
     <string name="image_importing">Importing image…</string>
     <string name="gradient_invalid_color">Enter a six-digit hex color</string>

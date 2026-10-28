@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">Сбросить этот градиент?</string>
     <string name="reset_gradient_body">Восстановить цвета и положения по умолчанию для %1$s.</string>
     <string name="reset">Сбросить</string>
-    <string name="gradient_hint">Рассвет, день и сумерки переходят друг в друга между средними точками соответствующих периодов. Ночная цветовая схема плавно появляется или исчезает при высоте Солнца от −6° до 0°.</string>
+    <string name="gradient_hint">Рассвет и сумерки плавно переходят в день при высоте Солнца от 0° до 40°, а в ночь — от −6° до 0°.</string>
     <string name="image_import_failed">Не удалось открыть это изображение. Попробуйте другое.</string>
     <string name="image_importing">Импорт изображения…</string>
     <string name="gradient_invalid_color">Введите шестнадцатеричный код цвета из шести цифр</string>

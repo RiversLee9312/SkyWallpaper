@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">هل تريد إعادة ضبط هذا التدرج؟</string>
     <string name="reset_gradient_body">استعادة الألوان والمواضع الافتراضية لـ %1$s.</string>
     <string name="reset">إعادة ضبط</string>
-    <string name="gradient_hint">تنتقل فترات الفجر والنهار والغسق بين نقاط منتصفها. يظهر الليل تدريجيًا أو يتلاشى عندما يتراوح ارتفاع الشمس بين −6° و0°.</string>
+    <string name="gradient_hint">يمتزج الفجر والغسق مع النهار عند ارتفاع شمسي من 0° إلى 40°، ومع الليل من −6° إلى 0°.</string>
     <string name="image_import_failed">تعذر فتح هذه الصورة. جرّب صورة أخرى.</string>
     <string name="image_importing">جارٍ استيراد الصورة…</string>
     <string name="gradient_invalid_color">أدخل رمز لون سداسيًا من ستة أرقام</string>

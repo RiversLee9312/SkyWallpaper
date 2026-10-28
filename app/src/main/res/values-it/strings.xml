@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">Reimpostare questo gradiente?</string>
     <string name="reset_gradient_body">Ripristina i colori e le posizioni predefiniti per %1$s.</string>
     <string name="reset">Reimposta</string>
-    <string name="gradient_hint">Alba, giorno e crepuscolo passano gradualmente da un punto medio al successivo. La notte appare o svanisce tra −6° e 0° di elevazione solare.</string>
+    <string name="gradient_hint">Alba e crepuscolo si fondono con il giorno tra 0° e 40° di elevazione solare e con la notte tra −6° e 0°.</string>
     <string name="image_import_failed">Impossibile aprire questa immagine. Provane un’altra.</string>
     <string name="image_importing">Importazione dell’immagine…</string>
     <string name="gradient_invalid_color">Inserisci un codice colore esadecimale di sei cifre</string>

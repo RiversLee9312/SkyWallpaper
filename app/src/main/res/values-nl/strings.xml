@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">Dit kleurverloop herstellen?</string>
     <string name="reset_gradient_body">Standaardkleuren en -posities voor %1$s herstellen.</string>
     <string name="reset">Herstellen</string>
-    <string name="gradient_hint">Dageraad, dag en schemering gaan tussen hun middelpunten in elkaar over. De nacht wordt zichtbaar of vervaagt tussen −6° en 0° zonnehoogte.</string>
+    <string name="gradient_hint">Dageraad en schemering vloeien bij een zonnehoogte van 0° tot 40° over in de dag en tussen −6° en 0° in de nacht.</string>
     <string name="image_import_failed">Deze afbeelding kan niet worden geopend. Probeer een andere.</string>
     <string name="image_importing">Afbeelding importeren…</string>
     <string name="gradient_invalid_color">Voer een hex-kleurcode van zes tekens in</string>

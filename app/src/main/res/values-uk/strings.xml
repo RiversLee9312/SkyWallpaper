@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">Скинути цей градієнт?</string>
     <string name="reset_gradient_body">Відновити стандартні кольори й позиції для %1$s.</string>
     <string name="reset">Скинути</string>
-    <string name="gradient_hint">Світанок, день і сутінки переходять один в одного між серединами відповідних періодів. Нічний вигляд поступово з’являється або зникає за висоти Сонця від −6° до 0°.</string>
+    <string name="gradient_hint">Світанок і сутінки плавно переходять у день за висоти Сонця від 0° до 40°, а в ніч — від −6° до 0°.</string>
     <string name="image_import_failed">Не вдалося відкрити це зображення. Спробуйте інше.</string>
     <string name="image_importing">Імпортування зображення…</string>
     <string name="gradient_invalid_color">Введіть шестизначний шістнадцятковий код кольору</string>

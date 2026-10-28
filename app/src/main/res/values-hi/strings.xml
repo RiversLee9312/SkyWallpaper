@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">क्या इस ग्रेडिएंट को रीसेट करें?</string>
     <string name="reset_gradient_body">%1$s के डिफ़ॉल्ट रंग और स्थितियाँ बहाल करें।</string>
     <string name="reset">रीसेट करें</string>
-    <string name="gradient_hint">भोर, दिन और साँझ अपने-अपने मध्य बिंदुओं के बीच बदलते हैं। सूर्य की ऊँचाई −6° से 0° के बीच रात का प्रभाव धीरे-धीरे उभरता या फीका पड़ता है।</string>
+    <string name="gradient_hint">भोर और साँझ से दिन का बदलाव सूर्य की ऊँचाई 0° से 40° के बीच होता है, और रात का बदलाव −6° से 0° के बीच।</string>
     <string name="image_import_failed">यह चित्र नहीं खुल सका। दूसरा चित्र आज़माएँ।</string>
     <string name="image_importing">चित्र आयात हो रहा है…</string>
     <string name="gradient_invalid_color">छह अंकों वाला हेक्स रंग कोड दर्ज करें</string>

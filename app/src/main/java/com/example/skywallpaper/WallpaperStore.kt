@@ -80,7 +80,7 @@ class WallpaperStore(private val context: Context, private val prefs: SharedPref
             anchors = SolarGradientClock.anchors(now, point)
             anchorKey = key
         }
-        val blend = SolarGradientClock.blend(now, anchors, phase, SolarClock.position(now, point).elevation)
+        val blend = SolarGradientClock.blend(now, anchors, SolarClock.position(now, point))
         return GradientInterpolation.frame(blend) { gradient(it, type) }
     }
 

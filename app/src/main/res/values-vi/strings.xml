@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">Đặt lại dải màu này?</string>
     <string name="reset_gradient_body">Khôi phục màu và vị trí mặc định cho %1$s.</string>
     <string name="reset">Đặt lại</string>
-    <string name="gradient_hint">Rạng đông, ban ngày và chạng vạng chuyển tiếp giữa các điểm giữa của từng khoảng. Sắc thái ban đêm hiện dần hoặc mờ đi khi độ cao Mặt Trời nằm trong khoảng −6° đến 0°.</string>
+    <string name="gradient_hint">Rạng đông và chạng vạng chuyển sắc sang ban ngày khi độ cao Mặt Trời từ 0° đến 40°, và sang ban đêm từ −6° đến 0°.</string>
     <string name="image_import_failed">Không mở được ảnh này. Hãy thử ảnh khác.</string>
     <string name="image_importing">Đang nhập ảnh…</string>
     <string name="gradient_invalid_color">Nhập mã màu hex gồm sáu chữ số</string>

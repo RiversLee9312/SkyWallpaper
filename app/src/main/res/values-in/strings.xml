@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">Atur ulang gradien ini?</string>
     <string name="reset_gradient_body">Pulihkan warna dan posisi default untuk %1$s.</string>
     <string name="reset">Atur ulang</string>
-    <string name="gradient_hint">Fajar, siang, dan senja beralih di antara titik tengah masing-masing. Nuansa malam muncul atau memudar saat ketinggian matahari berada di antara −6° dan 0°.</string>
+    <string name="gradient_hint">Fajar dan senja berbaur dengan siang pada ketinggian matahari 0° hingga 40°, dan dengan malam pada −6° hingga 0°.</string>
     <string name="image_import_failed">Gambar ini tidak dapat dibuka. Coba gambar lain.</string>
     <string name="image_importing">Mengimpor gambar…</string>
     <string name="gradient_invalid_color">Masukkan kode warna heksadesimal enam digit</string>

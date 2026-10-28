@@ -52,7 +52,8 @@ fun WallpaperPreviewScreen(store: WallpaperStore, revision: Int, point: GeoPoint
                            locationStatus: String, onBack: () -> Unit, onPhase: (SkyPhase?) -> Unit,
                            onLocation: () -> Unit, onManualLocation: () -> Unit, initialPhase: SkyPhase? = null) {
     val initialAnchor = remember {
-        point?.takeIf { initialPhase != null }?.let { location -> SolarGradientClock.anchors(now, location).firstOrNull {
+        point?.takeIf { initialPhase != null }?.let { location -> SolarGradientClock.anchors(now, location,
+            if (store.mode == WallpaperMode.GRADIENT) SolarGradientClock.DAY_ELEVATION else 10.0).firstOrNull {
             it.phase == initialPhase && SolarClock.dayStart(it.instant, location) == SolarClock.dayStart(now, location)
         } }
     }

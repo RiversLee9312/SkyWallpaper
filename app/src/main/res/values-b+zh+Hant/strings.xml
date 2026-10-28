@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">要重設此漸層嗎？</string>
     <string name="reset_gradient_body">將%1$s的預設顏色與位置還原。</string>
     <string name="reset">重設</string>
-    <string name="gradient_hint">清晨、白天與黃昏按各自時段的中點過渡。夜色在太陽高度 −6° 至 0° 之間淡入或淡出。</string>
+    <string name="gradient_hint">太陽高度 0° 至 40° 時，清晨與黃昏銜接白天；−6° 至 0° 時銜接夜色。</string>
     <string name="image_import_failed">無法開啟此圖片，請嘗試其他圖片。</string>
     <string name="image_importing">正在匯入圖片…</string>
     <string name="gradient_invalid_color">請輸入六位數十六進位色碼</string>

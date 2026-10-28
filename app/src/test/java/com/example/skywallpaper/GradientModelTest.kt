@@ -33,16 +33,13 @@ class GradientModelTest {
         }
     }
 
-    @Test fun everyNormalDayHasFourRealPhaseMidpoints() {
+    @Test fun gradientAnchorsUseFortyDegreesAndRemainWithinTheirActualPeriods() {
         val anchors = SolarGradientClock.anchors(now, beijing)
         val today = SolarClock.dayStart(now, beijing)
         val phases = anchors.filter { it.instant >= today && it.instant < today.plusSeconds(86400) }.map { it.phase }.toSet()
         assertEquals(SkyPhase.entries.toSet(), phases)
         anchors.forEach { anchor ->
-            assertEquals(anchor.phase, SolarClock.phase(anchor.instant, beijing))
-            val blend = blend(anchor.instant, anchors)
-            assertEquals(anchor.phase, blend.from)
-            assertEquals(0f, blend.fraction, 0f)
+            assertEquals(anchor.phase, SolarClock.phase(SolarClock.position(anchor.instant, beijing), 40.0))
         }
     }
 
@@ -64,12 +61,11 @@ class GradientModelTest {
     @Test fun polarDayAndNightHoldTheActualSkyAndTimezoneNeverChangesNodes() {
         val north = GeoPoint(90.0, 0.0)
         val solstice = Instant.parse("2026-06-21T12:00:00Z")
-        assertTrue(SolarGradientClock.anchors(solstice, north).isEmpty())
-        assertEquals(GradientBlend(SkyPhase.DAY, SkyPhase.DAY, 0f),
-            SolarGradientClock.blend(solstice, emptyList(), SkyPhase.DAY, SolarClock.position(solstice, north).elevation))
+        val summer = SolarGradientClock.blend(solstice, SolarGradientClock.anchors(solstice, north), SolarClock.position(solstice, north))
+        assertEquals(0f, summer.nightFraction, 0f)
+        assertTrue(summer.dayFraction > 0f && summer.dayFraction < 1f)
         val winter = Instant.parse("2026-12-21T12:00:00Z")
-        assertEquals(1f, SolarGradientClock.blend(winter, emptyList(), SkyPhase.NIGHT,
-            SolarClock.position(winter, north).elevation).nightFraction, 0f)
+        assertEquals(1f, SolarGradientClock.blend(winter, emptyList(), SolarClock.position(winter, north)).nightFraction, 0f)
         val original = TimeZone.getDefault()
         val expected = SolarGradientClock.anchors(now, beijing)
         try {
@@ -84,21 +80,21 @@ class GradientModelTest {
         val anchors = SolarGradientClock.anchors(winter, point)
         assertTrue(anchors.any { it.phase == SkyPhase.DAWN })
         assertTrue(anchors.any { it.phase == SkyPhase.DUSK })
-        anchors.forEach { assertEquals(it.phase, SolarClock.phase(it.instant, point)) }
+        anchors.forEach { assertEquals(it.phase, SolarClock.phase(SolarClock.position(it.instant, point), 40.0)) }
     }
 
-    @Test fun daylightMidpointInterpolationKeepsItsOriginalTiming() {
-        val anchors = SolarGradientClock.anchors(now, beijing)
-        anchors.zipWithNext().filter { (a, b) ->
-            a.phase == SkyPhase.DAWN && b.phase == SkyPhase.DAY || a.phase == SkyPhase.DAY && b.phase == SkyPhase.DUSK
-        }.forEach { (a, b) ->
-            for (t in listOf(.25f, .5f, .75f)) {
-                val instant = a.instant.plusMillis(((b.instant.toEpochMilli() - a.instant.toEpochMilli()) * t).toLong())
-                val actual = blend(instant, anchors)
-                assertEquals(a.phase, actual.from)
-                assertEquals(b.phase, actual.to)
-                assertEquals(t * t * (3 - 2 * t), actual.fraction, .00001f)
-                assertEquals(0f, actual.nightFraction, 0f)
+    @Test fun dayTransitionsUseZeroToFortyDegreesInBothDirectionsForEveryType() {
+        for (rising in listOf(true, false)) {
+            val phase = if (rising) SkyPhase.DAWN else SkyPhase.DUSK
+            for (type in GradientType.entries) {
+                for (elevation in listOf(0.0, 5.0, 10.0, 20.0, 30.0, 40.0, 65.0)) {
+                    val blend = SolarGradientClock.blend(now, emptyList(), SunPosition(elevation, rising))
+                    val actual = GradientInterpolation.frame(blend) { SkyGradient.default(it, type) }
+                    val t = (elevation / 40.0).toFloat().coerceIn(0f, 1f)
+                    val expected = GradientInterpolation.frame(SkyGradient.default(phase, type), SkyGradient.default(SkyPhase.DAY, type), t * t * (3 - 2 * t))
+                    assertFramesClose(expected, actual)
+                    assertEquals(0f, blend.nightFraction, 0f)
+                }
             }
         }
     }
@@ -112,20 +108,23 @@ class GradientModelTest {
                 val preset = SkyGradient.default(phase, type)
                 val night = SkyGradient(listOf(GradientStop(0xFF001122.toInt(), .1f), GradientStop(0xFF556677.toInt(), .9f)),
                     start = GradientPoint(.1f, .2f), end = GradientPoint(.8f, .9f), center = GradientPoint(.7f, .3f), radius = 1.7f)
-                fun frame(elevation: Double) = GradientInterpolation.frame(SolarGradientClock.blend(instant, anchors, phase, elevation)) {
+                fun frame(elevation: Double) = GradientInterpolation.frame(SolarGradientClock.blend(instant, anchors, SunPosition(elevation, phase == SkyPhase.DAWN))) {
                     if (it == SkyPhase.NIGHT) night else SkyGradient.default(it, type)
                 }
                 assertEquals(GradientFrame.from(preset), frame(0.0))
                 assertEquals(GradientFrame.from(night), frame(-6.0))
                 assertFramesClose(GradientInterpolation.frame(preset, night, .5f), frame(-3.0))
-                val apparentSunrise = SolarGradientClock.blend(instant, anchors, phase, -.833)
+                val apparentSunrise = SolarGradientClock.blend(instant, anchors, SunPosition(-.833, phase == SkyPhase.DAWN))
                 assertTrue(apparentSunrise.nightFraction > 0f && apparentSunrise.nightFraction < 1f)
             }
         }
     }
 
     @Test fun twilightStaysContinuousAtHorizonAndAtHighLatitudeBelowHorizonNoon() {
-        for ((point, day) in listOf(beijing to now, GeoPoint(69.65, 18.96) to Instant.parse("2026-12-15T12:00:00Z"))) {
+        for ((point, day) in listOf(beijing to now,
+            beijing to Instant.parse("2026-10-28T12:00:00Z"),
+            GeoPoint(69.65, 18.96) to Instant.parse("2026-06-21T12:00:00Z"),
+            GeoPoint(69.65, 18.96) to Instant.parse("2026-12-15T12:00:00Z"))) {
             val anchors = SolarGradientClock.anchors(day, point)
             val start = SolarClock.dayStart(day, point)
             // One-minute steps include 0° and −6° crossings and the rising/falling direction change.
@@ -139,14 +138,14 @@ class GradientModelTest {
                     val b = sample(next.stops, x / 20f)
                     for (shift in listOf(0, 8, 16)) assertTrue(abs((a ushr shift and 255) - (b ushr shift and 255)) <= 14)
                 }
-                if (point != beijing) assertTrue("Polar twilight must retain night color", blend.nightFraction > 0f)
+                if (day == Instant.parse("2026-12-15T12:00:00Z")) assertTrue("Polar twilight must retain night color", blend.nightFraction > 0f)
                 previous = next
             }
         }
     }
 
     private fun blend(instant: Instant, anchors: List<GradientAnchor>, point: GeoPoint = beijing) =
-        SolarGradientClock.blend(instant, anchors, SolarClock.phase(instant, point), SolarClock.position(instant, point).elevation)
+        SolarGradientClock.blend(instant, anchors, SolarClock.position(instant, point))
 
     private fun assertFramesClose(a: GradientFrame, b: GradientFrame) {
         assertEquals(a.start.x, b.start.x, .00001f)
@@ -181,12 +180,18 @@ class GradientModelTest {
         }
     }
 
-    @Test fun defaultSweepPalettesAndTheirInterpolationsHaveNoColorSeam() {
+    @Test fun defaultSweepRetainsTheDevicesThreeStopsAndCustomPositions() {
         val a = SkyGradient.default(SkyPhase.DAWN, GradientType.SWEEP)
         val b = SkyGradient.default(SkyPhase.DAY, GradientType.SWEEP)
+        assertEquals(3, a.stops.size)
+        assertEquals(3, b.stops.size)
+        assertEquals(.5029738545417786f, b.stops[1].position, 0f)
+        assertEquals(GradientPoint(.4972571134567261f, .5015639066696167f), b.center)
+        assertEquals(GradientFrame.from(a), GradientInterpolation.frame(a, b, 0f))
+        assertEquals(GradientFrame.from(b), GradientInterpolation.frame(a, b, 1f))
         for (t in listOf(0f, .25f, .5f, .75f, 1f)) {
             val frame = GradientInterpolation.frame(a, b, t)
-            assertEquals(frame.stops.first().color, frame.stops.last().color)
+            assertEquals(3, frame.stops.size)
             assertEquals(0f, frame.stops.first().position, 0f)
             assertEquals(1f, frame.stops.last().position, 0f)
         }

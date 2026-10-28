@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">Réinitialiser ce dégradé ?</string>
     <string name="reset_gradient_body">Rétablir les couleurs et positions par défaut pour %1$s.</string>
     <string name="reset">Réinitialiser</string>
-    <string name="gradient_hint">Aube, jour et crépuscule se fondent d’un point médian au suivant. La nuit apparaît ou s’atténue entre −6° et 0° d’altitude solaire.</string>
+    <string name="gradient_hint">L’aube et le crépuscule se fondent avec le jour entre 0° et 40° d’élévation solaire, et avec la nuit entre −6° et 0°.</string>
     <string name="image_import_failed">Impossible d’ouvrir cette image. Essayez-en une autre.</string>
     <string name="image_importing">Importation de l’image…</string>
     <string name="gradient_invalid_color">Saisissez un code couleur hexadécimal à six chiffres</string>

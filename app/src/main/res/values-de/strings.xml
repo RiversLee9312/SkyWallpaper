@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">Diesen Farbverlauf zurücksetzen?</string>
     <string name="reset_gradient_body">Standardfarben und -positionen für %1$s wiederherstellen.</string>
     <string name="reset">Zurücksetzen</string>
-    <string name="gradient_hint">Morgendämmerung, Tag und Abenddämmerung gehen zwischen ihren Mittelpunkten ineinander über. Die Nacht wird bei einer Sonnenhöhe zwischen −6° und 0° ein- oder ausgeblendet.</string>
+    <string name="gradient_hint">Morgen- und Abenddämmerung gehen bei einer Sonnenhöhe von 0° bis 40° in den Tag über und zwischen −6° und 0° in die Nacht.</string>
     <string name="image_import_failed">Bild konnte nicht geöffnet werden. Versuche es mit einem anderen.</string>
     <string name="image_importing">Bild wird importiert…</string>
     <string name="gradient_invalid_color">Gib einen sechsstelligen Hex-Farbwert ein</string>

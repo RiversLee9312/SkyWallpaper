@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">Zresetować ten gradient?</string>
     <string name="reset_gradient_body">Przywróć domyślne kolory i pozycje dla %1$s.</string>
     <string name="reset">Resetuj</string>
-    <string name="gradient_hint">Świt, dzień i zmierzch przechodzą jeden w drugi między środkowymi punktami poszczególnych okresów. Noc stopniowo się pojawia lub zanika, gdy wysokość Słońca mieści się między −6° a 0°.</string>
+    <string name="gradient_hint">Świt i zmierzch łączą się z dniem przy wysokości Słońca od 0° do 40°, a z nocą od −6° do 0°.</string>
     <string name="image_import_failed">Nie można otworzyć tego obrazu. Spróbuj innego.</string>
     <string name="image_importing">Importowanie obrazu…</string>
     <string name="gradient_invalid_color">Wpisz sześciocyfrowy kod koloru HEX</string>

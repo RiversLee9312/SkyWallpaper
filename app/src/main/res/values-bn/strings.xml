@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">এই গ্রেডিয়েন্ট রিসেট করবেন?</string>
     <string name="reset_gradient_body">%1$s-এর ডিফল্ট রং ও অবস্থান ফিরিয়ে আনুন।</string>
     <string name="reset">রিসেট করুন</string>
-    <string name="gradient_hint">ভোর, দিন ও গোধূলির আকাশ সংশ্লিষ্ট সময়পর্বের মধ্যবিন্দুর মধ্যে বদলায়। সূর্যের উচ্চতা −6° থেকে 0°-এর মধ্যে রাতের আভা ধীরে ফুটে ওঠে বা মিলিয়ে যায়।</string>
+    <string name="gradient_hint">সূর্যের উচ্চতা 0° থেকে 40° হলে ভোর ও গোধূলি দিনের সঙ্গে মিশে যায়, আর −6° থেকে 0° হলে রাতের সঙ্গে।</string>
     <string name="image_import_failed">এই ছবিটি খোলা যায়নি। অন্য ছবি চেষ্টা করুন।</string>
     <string name="image_importing">ছবি আমদানি হচ্ছে…</string>
     <string name="gradient_invalid_color">ছয় অঙ্কের হেক্স রঙের কোড লিখুন</string>

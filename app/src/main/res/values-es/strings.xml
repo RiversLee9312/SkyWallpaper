@@ -123,7 +123,7 @@
     <string name="reset_gradient_title">¿Restablecer este degradado?</string>
     <string name="reset_gradient_body">Restaurar los colores y las posiciones predeterminados de %1$s.</string>
     <string name="reset">Restablecer</string>
-    <string name="gradient_hint">Amanecer, día y atardecer cambian gradualmente entre sus puntos medios. La noche aparece o se desvanece entre −6° y 0° de elevación solar.</string>
+    <string name="gradient_hint">El amanecer y el atardecer se funden con el día entre 0° y 40° de elevación solar, y con la noche entre −6° y 0°.</string>
     <string name="image_import_failed">No se ha podido abrir esta imagen. Prueba con otra.</string>
     <string name="image_importing">Importando imagen…</string>
     <string name="gradient_invalid_color">Introduce un código hexadecimal de color de seis dígitos</string>
