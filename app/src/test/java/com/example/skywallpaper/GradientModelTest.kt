@@ -99,6 +99,18 @@ class GradientModelTest {
         }
     }
 
+    @Test fun galleryPresetInstantsMatchPurePalettesAndDoNotInventUnreachableDaylight() {
+        val summer = Instant.parse("2026-06-21T12:00:00Z")
+        for (phase in SkyPhase.entries) {
+            val instant = SolarGradientClock.previewInstant(summer, beijing, phase)!!
+            val frame = GradientInterpolation.frame(blend(instant, SolarGradientClock.anchors(instant, beijing))) { SkyGradient.default(it) }
+            assertFramesClose(GradientFrame.from(SkyGradient.default(phase)), frame)
+        }
+        val winter = Instant.parse("2026-12-21T12:00:00Z")
+        assertNull(SolarGradientClock.previewInstant(winter, beijing, SkyPhase.DAY))
+        assertNull(SolarGradientClock.previewInstant(winter, GeoPoint(90.0, 0.0), SkyPhase.DAWN))
+    }
+
     @Test fun nightTransitionsUseGeometricHorizonAndTwilightLimitWithCustomGeometry() {
         val anchors = SolarGradientClock.anchors(now, beijing)
         val events = SolarClock.events(now, beijing)

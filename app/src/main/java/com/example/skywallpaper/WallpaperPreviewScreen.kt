@@ -51,14 +51,16 @@ private val previewTime = DateTimeFormatter.ofPattern("MM-dd HH:mm", Locale.ROOT
 fun WallpaperPreviewScreen(store: WallpaperStore, revision: Int, point: GeoPoint?, now: Instant, fallback: SkyPhase,
                            locationStatus: String, onBack: () -> Unit, onPhase: (SkyPhase?) -> Unit,
                            onLocation: () -> Unit, onManualLocation: () -> Unit, initialPhase: SkyPhase? = null) {
-    val initialAnchor = remember {
-        point?.takeIf { initialPhase != null }?.let { location -> SolarGradientClock.anchors(now, location,
-            if (store.mode == WallpaperMode.GRADIENT) SolarGradientClock.DAY_ELEVATION else 10.0).firstOrNull {
-            it.phase == initialPhase && SolarClock.dayStart(it.instant, location) == SolarClock.dayStart(now, location)
-        } }
+    val initialInstant = remember {
+        point?.takeIf { initialPhase != null }?.let { location ->
+            if (store.mode == WallpaperMode.GRADIENT) SolarGradientClock.previewInstant(now, location, initialPhase!!)
+            else SolarGradientClock.anchors(now, location, 10.0).firstOrNull {
+                it.phase == initialPhase && SolarClock.dayStart(it.instant, location) == SolarClock.dayStart(now, location)
+            }?.instant
+        }
     }
-    var pickedMillis by rememberSaveable { mutableStateOf(initialAnchor?.instant?.toEpochMilli()) }
-    var pickedPhase by rememberSaveable { mutableStateOf(initialPhase.takeIf { initialAnchor == null }) }
+    var pickedMillis by rememberSaveable { mutableStateOf(initialInstant?.toEpochMilli()) }
+    var pickedPhase by rememberSaveable { mutableStateOf(initialPhase.takeIf { initialInstant == null }) }
     var fullscreen by rememberSaveable { mutableStateOf(false) }
     val time = pickedMillis?.let(Instant::ofEpochMilli) ?: now
     val phase = pickedPhase ?: point?.let { SolarClock.phase(time, it) } ?: fallback

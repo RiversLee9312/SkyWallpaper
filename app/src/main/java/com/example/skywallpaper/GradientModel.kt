@@ -96,6 +96,33 @@ data class GradientBlend(val from: SkyPhase, val to: SkyPhase, val fraction: Flo
 object SolarGradientClock {
     const val DAY_ELEVATION = 40.0
 
+    /** A representative instant for a gallery preset under the elevation-based blend. */
+    fun previewInstant(now: Instant, point: GeoPoint, phase: SkyPhase): Instant? {
+        val start = SolarClock.dayStart(now, point)
+        if (phase == SkyPhase.DAY || phase == SkyPhase.NIGHT) return anchors(now, point).firstOrNull {
+            it.phase == phase && it.instant >= start && it.instant < start.plusSeconds(86400)
+        }?.instant
+        val rising = phase == SkyPhase.DAWN
+        var left = start
+        var previous = SolarClock.position(left, point).elevation
+        repeat(288) {
+            val right = left.plusSeconds(300)
+            val next = SolarClock.position(right, point).elevation
+            if (if (rising) previous < 0 && next >= 0 else previous >= 0 && next < 0) {
+                var lo = left.epochSecond
+                var hi = right.epochSecond
+                while (hi - lo > 1) {
+                    val mid = (lo + hi) / 2
+                    if ((SolarClock.position(Instant.ofEpochSecond(mid), point).elevation >= 0) == rising) hi = mid else lo = mid
+                }
+                return Instant.ofEpochSecond(hi)
+            }
+            previous = next
+            left = right
+        }
+        return null
+    }
+
     fun anchors(now: Instant, point: GeoPoint, dayElevation: Double = DAY_ELEVATION): List<GradientAnchor> {
         val start = SolarClock.dayStart(now, point).minusSeconds(3 * 86400L)
         val end = start.plusSeconds(7 * 86400L)

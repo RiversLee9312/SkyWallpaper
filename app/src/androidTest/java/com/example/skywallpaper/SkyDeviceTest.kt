@@ -140,6 +140,26 @@ class SkyDeviceTest {
         Assert.assertEquals(night, store.gradient(SkyPhase.NIGHT))
     }
 
+    @Test fun gradientGalleryDawnPreviewStartsAtItsSavedPalette() {
+        val store = SkyRepository(context).wallpapers
+        store.setMode(WallpaperMode.GRADIENT)
+        store.setType(GradientType.RADIAL)
+        compose.onNodeWithContentDescription(context.getString(R.string.gallery_description, context.getString(R.string.phase_dawn))).performClick()
+        compose.onNodeWithText(context.getString(R.string.view_wallpaper)).performScrollTo().performClick()
+        val description = context.getString(R.string.image_description, context.getString(R.string.phase_dawn))
+        compose.onNodeWithContentDescription(description).assertExists()
+        compose.onNodeWithContentDescription(context.getString(R.string.enter_fullscreen)).performClick()
+        val bitmap = compose.onNodeWithContentDescription(description).captureToImage()
+        val x = bitmap.width / 2; val y = bitmap.height / 2
+        val actual = bitmap.toPixelMap()[x, y].toArgb()
+        val reference = android.graphics.Bitmap.createBitmap(bitmap.width, bitmap.height, android.graphics.Bitmap.Config.ARGB_8888)
+        android.graphics.Canvas(reference).drawRect(0f, 0f, bitmap.width.toFloat(), bitmap.height.toFloat(),
+            GradientRenderer.paint(GradientType.RADIAL, GradientFrame.from(store.gradient(SkyPhase.DAWN)), bitmap.width.toFloat(), bitmap.height.toFloat()))
+        val expected = reference.getPixel(x, y)
+        reference.recycle()
+        for (shift in listOf(0, 8, 16)) Assert.assertTrue(kotlin.math.abs((actual ushr shift and 255) - (expected ushr shift and 255)) <= 2)
+    }
+
     @Test fun previewWithoutLocationKeepsPresetsAndLocationEntryAvailable() {
         SkyPreferenceStorage.open(context).edit().remove("latitude").remove("longitude").commit()
         compose.onNodeWithText(context.getString(R.string.view_wallpaper)).performClick()
